@@ -3,226 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERABOX LINKS</title>
+    <title>TERABOX LINKS | PREMIUM</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        :root {
+            --primary: #2563eb;
+            --bg-dark: #0a0a0c;
+            --card-bg: rgba(20, 20, 25, 0.95);
         }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: #f0f2f5;
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
         }
-        .main-content-wrapper {
-            width: 100%;
-            max-width: none;
-            box-sizing: border-box;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            min-height: 100vh;
-            height: auto;
-            gap: 1rem;
-            padding-bottom: 70px; 
+
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-dark);
+            padding-bottom: 4px;
+        }
+
         .video-container {
             position: relative;
             padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 0.75rem;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 0.75rem;
-        }
-        .carousel-image {
-            width: auto;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 0.75rem;
-        }
-        .carousel-wrapper {
-            display: flex;
-            overflow-x: scroll;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 5px;
-        }
-        .carousel-wrapper > div {
-            flex: 0 0 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            cursor: pointer;
-            padding: 0.5rem;
-            box-sizing: border-box;
-        }
-        .carousel-wrapper::-webkit-scrollbar { display: none; }
-        .carousel-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        .scrollable-carousels-area {
-            flex-grow: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .titulo, .subtitulo {
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-            display: block;
-        }
-        .titulo span, .subtitulo span {
-            display: inline-block;
-            will-change: transform;
-        }
-        .marquee span {
-            padding-left: 100%;
-            animation: marquee 10s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            background: #000;
         }
 
-        /* Estilos para el Modal de Novedades */
-        #news-modal {
+        .controls-bar {
+            height: 44px;
+            margin-top: -1px;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .main-content {
+            padding: 12px 12px 100px 12px;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 12px;
+            padding: 8px 0;
+            scrollbar-width: none;
+        }
+        .carousel-wrapper::-webkit-scrollbar { display: none; }
+
+        .carousel-item {
+            flex: 0 0 75%;
+            scroll-snap-align: center;
+        }
+
+        @media (min-width: 640px) {
+            .carousel-item { flex: 0 0 35%; }
+        }
+
+        .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.9);
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            backdrop-filter: blur(4px);
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px);
         }
-        #news-modal.active { display: flex; }
+        .modal-overlay.active { 
+        			display: flex; 
+        	}
     </style>
 </head>
 
-<body class="p-0">
+<body class="select-none">
 
-    <!-- Modal de Novedades y Donación -->
-    <div id="news-modal">
-        <div class="bg-gray-900 border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-gray-800">
-                <h3 class="text-xl font-bold text-yellow-500 flex items-center gap-2">
-                    <span>🎬</span> ÚLTIMOS ESTRENOS
+    <!-- MODAL DE NOVEDADES -->
+    <div id="news-modal" class="modal-overlay items-center justify-center p-4">
+        <div class="glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
+            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 class="text-md font-extrabold text-yellow-400 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"/></svg>
+                    NOVEDADES
                 </h3>
-                <button onclick="closeNewsModal()" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+                <button onclick="closeNewsModal()" class="p-2 hover:bg-white/10 rounded-full transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
+                </button>
             </div>
             
-            <div id="news-list" class="p-4 overflow-y-auto space-y-3 bg-black/20">
-                <!-- Se llena dinámicamente con el último carrusel -->
-            </div>
+            <div id="news-list" class="p-3 space-y-2 max-h-[40vh] overflow-y-auto"></div>
 
-            <div class="p-5 bg-gray-800 border-t border-gray-700">
-                <div class="text-center mb-4">
-                    <p class="text-sm text-gray-300 italic mb-3">
-                        "Si disfrutas de este contenido, considera apoyarnos con una donación. ¡Tu ayuda mantiene vivo este proyecto!"
-                    </p>
-                    <button onclick="window.open('https://paypal.me/marzam', '_blank')" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 px-4 py-2 rounded-full font-bold text-sm transition flex items-center justify-center gap-2 mx-auto">
-                        💙 Donar por PayPal
-                    </button>
-                </div>
-                <button onclick="closeNewsModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition uppercase tracking-wider">
-                    ENTRAR AL SITIO
+            <div class="p-5 pt-2 bg-black/20 text-center">
+                <p class="text-[12px] text-gray-300 font-medium">Si te gusta el contenido</p>
+                <p class="text-[12px] text-gray-300 font-medium">Considera apoyarnos con una donación</p>
+                <p class="text-[12px] text-gray-300 font-medium" style="color:#FF5733;">!!TU AYUDA MANTIENE VIVO ESTE PROYECTO!!</p>
+                <button onclick="window.open('https://paypal.me/marzam', '_blank')" class="w-full h-10 glass hover:bg-white/10 rounded-xl transition-all flex items-center justify-center p-2 border-yellow-500/20 shadow-lg mt-2">
+                    <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="Paypal" class="h-full object-contain" />
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="main-content-wrapper shadow-lg rounded-xl">
-        
-        <div class="flex-shrink-0">
-            <div class="video-container shadow-md">
-                <iframe id="youtube-player" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <!-- MODAL DE BÚSQUEDA -->
+    <div id="search-modal" class="modal-overlay items-center justify-center p-4">
+        <div class="glass w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-5 bg-blue-600 rounded-full"></span>
+                    <h3 class="text-sm font-black text-white uppercase tracking-widest">Resultados</h3>
+                </div>
+                <button onclick="closeSearchModal()" class="p-2 hover:bg-white/10 rounded-full transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
+                </button>
+            </div>
+            
+            <div id="search-results-grid" class="p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto"></div>
+            
+            <div id="search-empty" class="p-10 text-center hidden">
+                <p class="text-gray-500 text-xs italic">No hay coincidencias...</p>
             </div>
         </div>
-        
-        <div class="p-3 bg-gray-800 rounded-lg shadow-sm flex-shrink-0">
-            <div class="flex gap-2">
-                <div class="relative w-1/2">
-                    <input type="text" id="image-search-input" placeholder="Buscar" class="w-full p-1.5 pr-8 text-sm border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white placeholder-gray-400" />
-                    <button id="clear-search" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-red-300 hover:text-red text-lg">
-                        <b>❎️</b>
+    </div>
+
+    <!-- CABECERA FIJA -->
+    <div class="sticky-header">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="video-container overflow-hidden">
+                <iframe id="youtube-player" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            
+            <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
+                <div class="relative flex-grow">
+                    <input type="text" id="image-search-input" placeholder="Buscar..." class="w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
+                    <button id="clear-search" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="3"/></svg>
                     </button>
                 </div>
-                <button id="action-button" class="w-1/2 bg-blue-600 text-white px-3 py-1.5 rounded-md hover:bg-blue-700 text-lg font-bold uppercase transition">
-                    TERABOX 📥
+                <button id="action-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition active:scale-95 text-[10px]">
+                    TERABOX
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2.5"/></svg>
                 </button>
             </div>
         </div>
-        
-        <div class="scrollable-carousels-area">
-            <div id="search-results-section" class="carousels-section hidden">
-                <div class="mb-4">
-                    <h2 class="text-xl font-semibold mb-2 text-white">Resultados De La Búsqueda</h2>
-                    <div class="relative w-full overflow-hidden rounded-xl shadow-md flex flex-col">
-                        <div id="search-results-carousel" class="carousel-wrapper"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="original-carousels-section" class="carousels-section"></div>
-        </div>
+    </div>
+
+    <div class="main-content max-w-screen-xl mx-auto">
+        <div id="original-carousels-section" class="space-y-6"></div>
     </div>
     
-    <button id="paypal-fixed-button" class="fixed bottom-0 right-0 z-50 p-1 mr-4 mb-4 flex justify-center items-center bg-gray-900/90 hover:bg-gray-800/95 transition shadow-lg cursor-pointer border-t-2 border-yellow-500/50 rounded-lg" style="height: 35px; width: 120px;">
-        <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="Donar" class="w-full h-full object-contain" />
-    </button>
-    
-	
-	<!--
-	https://peliculasperoiz.github.io/data.js
-	https://linksterabox.github.io
-	-->
-	
-	
-	<!--
-	const allData= {
-	
-	     'pelic': {
-	     
-	          title: 'Videos', carousels: [ 
-	               {
-	                    id: 'Películas1', data: [ 
-	                         {
-	                         }
-	                    ] // peliculas1: data
-	               }
-	          ] //Videos: carousels
-	     } // pelic
-	} // allData
-	   		
-	-->
-	
-	<script>
-		const allData= {
-			'pelíc': { 
-				title: 'Videos', carousels: [ { 
-						id: 'Películas1', data: [ {
-								id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'f-V6dYUkneU', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (E1-24) (2011)', buscar: 'P3L02' }, {
+    <script>
+    const allData = {
+    	'pelíc': {
+    		title: 'SERIES Y PELICULAS', carousels: [ {
+    				    id: 'Películas1', data: [ {
+    						    id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'f-V6dYUkneU', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (E1-24) (2011)', subtitle2: '', buscar: 'P3L02' }, {
 								id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'f-V6dYUkneU', buttonId: '1NMnadZbXj1VY-mo-t29mKA', title: '2 BROKE GIRLS (T2)', subtitle: '2 Chicas Quebradas (E25-48) (2012)', buscar: 'P3L02' }, {
 								id: '1PBkqE-Ep65ZFTKtg99BIu1XamhxtvHUi', youtubeId: 'hcZKctOWsgI', buttonId: '1nqfcrwkASrg9WL5P6lwE9Q', title: '2 HEARTS', subtitle: '2 Corazones', buscar: 'BUSCAR' }, {
 								id: '1PGedNQMvDyaT92Eq6HKBWRW7qc5gfv9p', youtubeId: 'heOcee5ZB9c', buttonId: '1sa2uaoP8BBVf45XYfkokIA', title: '3 METROS SOBRE EL CIELO', subtitle: '3 Metros Sobre El Cielo', buscar: 'BUSCAR' }, {
@@ -248,13 +206,13 @@
 								id: '13bycu1Nlyn8Lj-lZaFJjlssQEayVj48N', youtubeId: 'AX7eViA0v8Q', buttonId: '1NCgAVNDYYBopvdjvbVu2vQ', title: '1942 UNKNOWN BATTLE', subtitle: '1942 La Gran Ofensiva (2019)', buscar: 'P3L01' }, {
 								id: '1VEJX-IhzD0DWLFP-bKdPqzOELHLVFkF8', youtubeId: 'UrPizm6tbak', buttonId: '14y9zlgRjtcQyIaXzXOHrfQ', title: '1898 LOS ULTIMOS DE FILIPINAS', subtitle: '1898 Los Ultimos De Filipinas (2016) (Esp)', buscar: 'P3L01' }, {
 								id: '1VcfHjD8Z6bjZk0B8SHCQ2lLRwR5VDHOj', youtubeId: 'jhVq-hmY48Q', buttonId: '12BLE-RmNlsW-oz8f2OGr7w', title: '10000 B. C.', subtitle: '10000 A. C. (2008)', buscar: 'P3L01' },
-						] }, {
+						] }, { 
 						
 						
 						
 						
 						
-						id: 'PelículasA', data: [ {
+						id: 'PelículasA', data: [ { 
 								id: '1n0etZggDl2UbLdNZRCLvT9to70Dh_6J0', youtubeId: '6MzJkz7lzg8', buttonId: '1qiik6TSH3IhOBZ-J4AqXJA', title: 'A BOY NAMED CHARLIE BROWN', subtitle: 'Un Niño Llamado Charlie Brown (1969)', buscar: 'Peanuts, Snoopy, P3L01' }, {
 								id: '1Vka1IkkeHE2vvdS8Gj9qnzA6X0zSOI_c', youtubeId: 'v3TCRX9TDXE', buttonId: '1ZnOviSPaNhZ_rziOC_13Zg', title: 'A CURE FOR WELLNESS', subtitle: 'La Cura Siniestra (2016)', buscar: 'P3L01G' }, {
 								id: '1W5Svmmp7SURqhwkapP6oHieE84WL5Gsq', youtubeId: '1pKdCHvH310', buttonId: '1GH4J9O81WIcw-AHWOg813g', title: 'A DOG\'S WAY HOME', subtitle: 'Mis Huellas a Casa (2019)', buscar: 'P3L01' }, {
@@ -384,14 +342,14 @@
 								id: '1ZnYguh4Pf7tvuM4lAYClN4xHSRgTg6Qn', youtubeId: 'ByAn8DF8Ykk', buttonId: '1HZFWdAq1BTjFx_bIxaTF0g', title: 'AVATAR THE LAST AIRBENDER', subtitle: 'Avatar La leyenda de Aang (2024) (1T8E)', buscar: 'P3L01G' }, {
 								id: '1Lje4Z8XWkeQBJZuqBI0JZRSbYR3K2emh', youtubeId: 'DMFBm_lp4rU', buttonId: '1LQcdXKz_WBBYD7e-gBhcog', title: 'AVENGERS AGE OF ULTRON', subtitle: 'Vengadores La Era De Ultrón (2015)', buscar: 'The Avengers, Los Vengadores, P3L01' }, {
 								id: '1Z5lIcnqNypHTSa00kOET7z-aoLZypOC8', youtubeId: 'TcMBFSGVi1c', buttonId: '16KcHET5-POpS3oRCBrLvTA', title: 'AVENGERS END GAME', subtitle: 'Vengadores Endgame (2019)', buscar: 'The Avengers, Los Vengadores, P3L01' }, {
-								id: '12OhWXrTHWUCTnZh72vJ1F2JFfOEuZJ3P', youtubeId: '6ZfuNTqbHE8', buttonId: '1_FD81UIiIz4wUoq-LH0C2Q', title: 'AVENGERS INFINITY WAR', subtitle: 'Vengadores Infinity War (2018)', buscar: 'The Avengers, Los Vengadores, P3L01' }, 
+								id: '12OhWXrTHWUCTnZh72vJ1F2JFfOEuZJ3P', youtubeId: '6ZfuNTqbHE8', buttonId: '1_FD81UIiIz4wUoq-LH0C2Q', title: 'AVENGERS INFINITY WAR', subtitle: 'Vengadores Infinity War (2018)', buscar: 'The Avengers, Los Vengadores, P3L01' },
 						] }, {
 						
 						
 						
 						
 						
-						id: 'PelículasB', data: [ {
+						id: 'PelículasB', data: [ { 
 								id: '1Dhhw1jKaRL_67BeuUhSHl77j3Hkfm4Vo', youtubeId: 'OPfPI2m4gWk', buttonId: '1jA7bMwHXU20h-VsOGVgftg', title: 'BACK AT THE BARNYARD (S)', subtitle: 'La Granja (2007-09)', buscar: 'S3R01' }, {
 								id: '1gsZRi70P4S1hgehroMAoa3XBfD6d8-0z', youtubeId: 'qvsgGtivCgs', buttonId: '1pDkwDT6Wr1ewKPPjKIOzag', title: 'BACK TO THE FUTURE', subtitle: 'Volver Al Futuro (1985)', buscar: 'P3L01' }, {
 								id: '19PklLBmjqw2cmjrqGDGx9XPjnhIwUV-l', youtubeId: 'MdENmefJRpw', buttonId: '1di3lnBEXH1THPCRU1dsSrw', title: 'BACK TO THE FUTURE PART II', subtitle: 'Volver Al Futuro 2 (1989)', buscar: 'P3L01' }, {
@@ -676,14 +634,13 @@
 							    id: '1JazbWoPV6MmFDmj6VYKb4VN22CkzwLaf', youtubeId: 'Hi7NrTs0Wg8', buttonId: '1DRoVqdcr3DysJnJSXmnpSg', title: 'EYESHIELD 21 (T2)', subtitle: 'Eyeshield 21 (E52-100) (2006)', buscar: 'S3R01' }, {
 							    id: '1JazbWoPV6MmFDmj6VYKb4VN22CkzwLaf', youtubeId: 'Hi7NrTs0Wg8', buttonId: '1IYx3HU6y6_9ijK2fzYQ_ug', title: 'EYESHIELD 21 (T3)', subtitle: 'Eyeshield 21 (E101-145) (2007)', buscar: 'S3R01' }, {
 							    id: '1-2C3Wpsy0ICjjPsCFcb1rvAd8X7BnhZf', youtubeId: 'Hi7NrTs0Wg8', buttonId: '1yJsskrgoyQZPeYymgHaRZA', title: 'EYESHIELD 21 (OVAS)', subtitle: 'Eyeshield 21 (OVAS)', buscar: 'S3R01' },
-					    ] }, {
-					
-					
-					
-
-				
-						id: 'PelículasF', data: [ {
-							    id: '18Gf8k_w-sVkjwicyK6LicpArpTTaobqv', youtubeId: '32RAq6JzY-w', buttonId: '1AAZ-bkAMx4jrxqV1TuxsyA', title: 'FAST X', subtitle: 'Rápidos y Furiosos X (2023)', buscar: 'Estados Unidos) Vin Diesel, Jason Momoa, Michelle Rodriguez, Tyrese Gibson, Ludacris, Nathalie Emmanuel, Jordana Brewster, John Cena, Jason Statham, Charlize Theron, Brie Larson, Helen Mirren, Rita Moreno, Sung Kang, Scott Eastwood, Leo Abelo Perry, Daniela Melchior, Alan Ritchson, P3L01, Películas' }, {
+						] }, {
+						
+						
+						
+						
+						id: 'PelículasF', data: [ { 
+								id: '18Gf8k_w-sVkjwicyK6LicpArpTTaobqv', youtubeId: '32RAq6JzY-w', buttonId: '1AAZ-bkAMx4jrxqV1TuxsyA', title: 'FAST X', subtitle: 'Rápidos y Furiosos X (2023)', buscar: 'Estados Unidos) Vin Diesel, Jason Momoa, Michelle Rodriguez, Tyrese Gibson, Ludacris, Nathalie Emmanuel, Jordana Brewster, John Cena, Jason Statham, Charlize Theron, Brie Larson, Helen Mirren, Rita Moreno, Sung Kang, Scott Eastwood, Leo Abelo Perry, Daniela Melchior, Alan Ritchson, P3L01, Películas' }, {
                                 id: '18Sj17k3o2JAsEgVcbsOixzfHTAwLMt4r', youtubeId: '8OYHyMa-oF0', buttonId: '1P8NcxGGCZJurRlVq-Kh9Aw', title: 'FATHER OF THE BRIDE', subtitle: 'El Padre De La Novia (1991)', buscar: 'Steve Martin, Diane Keaton, Kimberly Williams Paisley, Martin Short, George Newbern, Kieran Culkin, B.D. Wong, Richard Portnow, David Pasquesi, P3L02' }, {
                                 id: '18Ttfx0o8kk_Qu5I8l1HEpICgC1vs_UwO', youtubeId: 'BbvnDlu_Zjc', buttonId: '1qeOhl38mhRXSk_JhVxgF-w', title: 'FATHER OF THE BRIDE PART II', subtitle: 'El Padre De La Novia 2 (1995)', buscar: 'Steve Martin, Diane Keaton, Martin Short, Kimberly Williams Paisley, George Newbern, Kieran Culkin, B.D. Wong, Jane Adams, Eugene Levy, Rebecca Gayheart, Peter Michael Goetz, Kate McGregor Stewart, pel2' },{
                                 id: '1jqxjkQQ0zVDrkdJ9gtEZKhrKoKgU_VfO', youtubeId: 'fNkZjTXeaf4', buttonId: '103jTANdfLIx8Clm8MMEgrg', title: 'FEAR THE NIGHT', subtitle: 'Teme a La Noche (2023)', buscar: 'Maggie Q, Kat Foster, Travis Hammer, Highdee Kuan, Gia Crovatin, Keishi, Brendan Fehr, Jason Caracappa, Scott Mosenson, Anaís Almonte, Roxy Wood, Josh St. Angelo, Brett Hinchliffe, Will Haden, David Fernandez Jr., Kevin Ragsdale, Roberto Sanz Sanchez, Jason Saucier, Jessica Meza, pel2' }, {
@@ -785,14 +742,14 @@
                                 id: '1xNEcuRT6kNueoqx9h2zb6U14fg8irGQv', youtubeId: 'u3V5KDHRQvk', buttonId: '1N3oRhrkkAdgInUxDaLMUAw', title: 'GUARDIANS OF THE GALAXY VOL. 3', subtitle: 'Guardianes De La Galaxia Vol. 3 (2023)', buscar: 'Chris Pratt, Zoe Saldaña, Dave Bautista, Karen Gillan, Pom Klementieff, Vin Diesel, Bradley Cooper, Sean Gunn, Chukwudi Iwuji, Will Poulter, Elizabeth Debicki, Sylvester Stallone, Bradley Cooper, Vin Diesel, Maria Bakalova, Ricardo Tejedo, Arturo Mercado Jr., Jessica Ángeles, P3L02' }, {
 						    	id: '1Jbic7gIdUnV4slpD8jhVIIHp6h4h7Iyo', youtubeId: '5ZCUMJK_HKI', buttonId: '1UHUwYIy4uAuOOROHdlOpcQ', title: 'GUESS WHO', subtitle: 'Conquistando a Mi Suegro (2005)', buscar: 'Estados Unidos, Bernie Mac, Ashton Kutcher, Zoe Saldaña, Judith Scott, Hal Williams, Robert Curtis Brown, Kellee Stewart, Paula Newsome, Sherri Shepherd, Niecy Nash, Mike Epps, Jessica Cauffiel, S3R01, Películas' }, {
                                 id: '1VdsIEpF92Ig3tv3ifh66JK8kMP__OTfG', youtubeId: 'ZOFatKD0Vzo', buttonId: '143UcFRBu34YjVZwzSnSbMA', title: 'GUNS AKIMBO', subtitle: 'El Doble Del Mal (2019)', buscar: 'Daniel Radcliffe, Samara Weaving, Ned Dennehy, Natasha Liu Bordizzo, Rhys Darby, Mark Rowley, Hanako Footman, Milo Cawthorne, Richard Knowles, Edwin Wright, Kenjiro Tsuda, P3L02' },
-					    ] }, {
-					
-					
-					
-					
-					
-						id: 'PelículasH', data: [ {
-						    	id: '1MEV9QgUKu-42VbQdcfmXGD0K1YzRc6Ly', youtubeId: 's2-1hz1juBI', buttonId: '1fRz6D7ZKffbZEV8eES7oNg', title: 'HACKSAW RIDGE', subtitle: 'Hasta El Ultimo Hombre (2016)', buscar: 'Estados Unidos y Australia, Andrew Garfield, Vince Vaughn, Teresa Palmer, Sam Worthington, Luke Bracey, Hugo Weaving, Rachel Griffiths, Richard Roxburgh, Luke Pegler, Milo Gibson, P3L01, Películas' }, {
+						] }, {
+						
+						
+						
+						
+						
+						id: 'PelículasH', data: [ { 
+								id: '1MEV9QgUKu-42VbQdcfmXGD0K1YzRc6Ly', youtubeId: 's2-1hz1juBI', buttonId: '1fRz6D7ZKffbZEV8eES7oNg', title: 'HACKSAW RIDGE', subtitle: 'Hasta El Ultimo Hombre (2016)', buscar: 'Estados Unidos y Australia, Andrew Garfield, Vince Vaughn, Teresa Palmer, Sam Worthington, Luke Bracey, Hugo Weaving, Rachel Griffiths, Richard Roxburgh, Luke Pegler, Milo Gibson, P3L01, Películas' }, {
 						    	id: '1FVIneeIf_L0pNkpVrcKXI7pTWw2R80P4', youtubeId: '-LD0SUdJfeU', buttonId: '1I6b4s9ydXrNJqjh5Qt9ZWQ', title: 'HAJIME NO IPPO (T1) THE FIGHTING!', subtitle: 'Hajime no Ippo (C1-75) El Primer Paso (2000)', buscar: 'Japón, Kōki Miyata, Rikiya Koyama, Masaya Onosaka, Eiji Hanawa, Keiji Fujiwara, Kenji Utsumi, Sanae Kobayashi, Jirō Saitō, Kenjirō Tsuda, Yūji Ueda, Enzo Fortuny, Octavio Rojas, Roberto Castañeda, José Luis Orozco, Raúl Anaya, Ricardo Tejedo, Arturo Mercado Jr., Susana Moreno, S3R01, Series Animadas, Animes' }, {
 						    	id: '1FVIneeIf_L0pNkpVrcKXI7pTWw2R80P4', youtubeId: '-LD0SUdJfeU', buttonId: '1G1Z5Yea_-okwfbdKDA4xWw', title: 'HAJIME NO IPPO (T2) THE CHALLENGER', subtitle: 'Hajime no Ippo (C76-101) The Challenger (2009)', buscar: 'Japón, Kōki Miyata, Rikiya Koyama, Masaya Onosaka, Eiji Hanawa, Keiji Fujiwara, Kenji Utsumi, Sanae Kobayashi, Jirō Saitō, Kenjirō Tsuda, Yūji Ueda, Enzo Fortuny, Octavio Rojas, Roberto Castañeda, José Luis Orozco, Raúl Anaya, Ricardo Tejedo, Arturo Mercado Jr., Susana Moreno, S3R01, Series Animadas, Animes' }, {
 						    	id: '1FVIneeIf_L0pNkpVrcKXI7pTWw2R80P4', youtubeId: '-LD0SUdJfeU', buttonId: '1mTWoxB2R0j6gNBjDx11VMg', title: 'HAJIME NO IPPO (T3) RISING!', subtitle: 'Hajime no Ippo (C102-126) Rising (2000)', buscar: 'Japón, Kōki Miyata, Rikiya Koyama, Masaya Onosaka, Eiji Hanawa, Keiji Fujiwara, Kenji Utsumi, Sanae Kobayashi, Jirō Saitō, Kenjirō Tsuda, Yūji Ueda, Enzo Fortuny, Octavio Rojas, Roberto Castañeda, José Luis Orozco, Raúl Anaya, Ricardo Tejedo, Arturo Mercado Jr., Susana Moreno, S3R01, Series Animadas, Animes' }, {
@@ -859,75 +816,75 @@
 						    	id: '1KF3zo-w8MtA6qaHEImnWrT2cd_7hnCgR', youtubeId: 'E_McVHY-o2A', buttonId: '1I2WWaewM5vU4Of3oZaP0PA', title: 'I SPIT ON YOUR GRAVE 2', subtitle: 'Escipiré Sobre Tu Tumba 2 (2013)', buscar: 'Estados Unidos, Jemma Dallender, Joe Absolom, Yavor Baharov, Aleksandar Aleksiev, Mary Stockley, Valentin Ganev, Michael Dixon, Peter Silverleaf, P3L01, Películas' }, {
 						    	id: '1wlxfpUJ02us8i1crQWh2cwe_mOnX-fXi', youtubeId: 'rKfwJtXXMkM', buttonId: '16Lrlpuo9kpYu2SxOnE0prA', title: 'I SPIT ON YOUR GRAVE VENGEANCE IS MINE', subtitle: 'Escupiré Sobre Tu Tumba 3 (2015)', buscar: 'Estados Unidos, Sarah Butler, Michelle Hurd, Jennifer Landon, Doug McKeon, Gabriel Hogan, Harley Jane Kozak, Christopher Hoffman, Megan Vincent, P3L01, Películas' }, {
 						    	id: '1C092DIaM6xpLJdqmDbVZEERLrKC8VWMm', youtubeId: '70axpLckd7M', buttonId: '16zZe1PqP5Kj1Fa_rfZBdMA', title: 'I SPIT ON YOUR GRAVE DEJA VU', subtitle: 'Escupiré Sobre Tu Tumba Deja Vu (2019) [Ing T+Esp-Ing]', buscar: 'Estados Unidos, Camille Keaton, Jim Tavare, Jamie Bernadette, Maria Olsen, Jonathan Peacy, Holgie Forrester, Jeremy Ferdman, Chris Hahn, P3L01, Películas' }, {
-							id: '1MxxudmAS_o5gRmNKNfE4L-aL0Xuy_Ar2', youtubeId: 'Tp3IjHsqrgM', buttonId: '1QMbVV7Qf9FniQvTnBTmXMw', title: 'I WANT A DOG FOR CHRISTMAS CHARLIE BROWN', subtitle: 'Quiero Un Perro Para Navidad, Charlie Brown (2003)', buscar: 'Estados Unidos, Bill Melendez, Corey Padnos, Nick Price, Hannah Koslosky, Ashleigh Ball, Michelle Creber, Laura Torres, Arturo Mercado Jr., Alan Fernando Velázquez, Mónica Estrada Peanuts, Snoppy P3L01, Peliculas Animadas, Animes' }, {
-							id: '1cjabAe93K_H3VaV1KWA0NSyRx_WRcoF2', youtubeId: 'i4noiCRJRoE', buttonId: '1-kRIR3XC-LCr0im0I_D0DQ', title: 'ICE AGE', subtitle: 'La Era De Hielo (2002)', buscar: 'Estados Unidos, Jack Black, Denis Leary, Ray Romano, John Leguizamo, Goran Visnjic, Alan Tudyk, Diedrich Bader, Chris Wedge, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, Luis Daniel Ramírez, César Árias, P3L02, Peliculas Animadas, Animes' }, {
-							id: '1MKFTUkWp05A9-rh4VGtrEdp7Sd7Z4p4t', youtubeId: 'G_ZANrhGbmI', buttonId: '1iapAQCWJO-YYPaI6VIW9WQ', title: 'ICE AGE A MAMMOTH CHRISTMAS', subtitle: 'La Era De Hielo Una Navidad Prehistórica (2011)', buscar: 'Estados Unidos, Queen Latifah, Ray Romano, Denis Leary, John Leguizamo, T.J. Miller, Seann William Scott, Josh Peck, Judah Friedlander, Billy Gardell, Ciara Bravo, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
-							id: '18qJzA3hS-UmWh7RrZXyd4EqDvOhtd14u', youtubeId: 'ko3k1YYxPuU', buttonId: '1OqjK5XHehWy0QlTB2Shkfw', title: 'ICE AGE COLLISION COURSE', subtitle: 'La Era De Hielo Choque De Mundos (2016)', buscar: 'Estados Unidos, Queen Latifah, Nick Offerman, Jesse Tyler Ferguson, Adam Devine, Wanda Sykes, Simon Pegg, Ray Romano, Denis Leary, John Leguizamo, Max Greenfield, Seann William Scott, Josh Peck, Chris Wedge, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Miri Higareda, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Series Animadas, Animes' }, {
-							id: '1xO3e8p2wbk8EzCXndt2RifJwKoq1O10z', youtubeId: 'xz-KgMtU_BM', buttonId: '1QfiA6L9koCb-Wm3In4PcSQ', title: 'ICE AGE CONTINENTAL DRIFT', subtitle: 'La Era De Hielo 4 (2012)', buscar: 'Estados Unidos, Peter Dinklage, Jennifer Lopez, Queen Latifah, Nicki Minaj, Ray Romano, Denis Leary, John Leguizamo, Nick Frost, Simon Pegg, Seann William Scott, Josh Peck, Chris Wedge, Alan Tudyk, Martha Higareda, Erik Rubín, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
-							id: '1HMjUnHEi4FUIuvgG4h94Qha6oPZApO3k', youtubeId: 'MnAi5u-k9NY', buttonId: '1kRcfpfw_sNebyx_a0HFTOA', title: 'ICE AGE DAWN OF THE DINOSAURS', subtitle: 'La Era De Hielo 3 (2009)', buscar: 'Estados Unidos, Queen Latifah, Simon Pegg, Bill Hader, Kristen Wiig, Ray Romano, Denis Leary, John Leguizamo, Seann William Scott, Josh Peck, Chris Wedge, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
-							id: '1f9rzImioWoIEl9oH5T7E_w1STQgM5_g9', youtubeId: 'pfESEXIZ_lw', buttonId: '1Ok5CoWZH7NxKb4rhTSsylA', title: 'ICE AGE THE MELTDOWN', subtitle: 'La Era De Hielo 2 (2006)', buscar: 'Estados Unidos, Queen Latifah, Jay Leno, Ray Romano, Denis Leary, John Leguizamo, Seann William Scott, Josh Peck, Will Arnett, Chris Wedge, Carlos Saldanha, Angélica Vale, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' },
-							{ id: '1DC5QEDw3ij1a2Rl-0v906TPOAItQ7cQy', youtubeId: '74tcmiPJt_o', buttonId: '1O7sB_QerPktOYc39sG92ag', title: 'ICE AGE THE GREAT EGG SCAPADE', subtitle: 'La era de hielo La Gran Búsqueda Del Huevo De Pascua (2016)', buscar: 'Estados Unidos, Taraji P. Henson, Queen Latifah, Seth Green, Ray Romano, Denis Leary, John Leguizamo, Keke Palmer, Seann William Scott, Josh Peck, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Alfonso Obregón, Gerardo Reyero, Idzi Dutkiewicz, César Árias' }, {
-							id: '1YaZYTsOeM9h1f7-pjgDPQQyjBNVgX2MK', youtubeId: 'suxpHwb9A3c', buttonId: '1G3e21b8qZWo6tmzUYlnaLg', title: 'IF', subtitle: 'Amigos Imaginarios (2024)', buscar: 'Estados Unidos, Ryan Reynolds, John Krasinski, Cailey Fleming, Fiona Shaw, Alan Kim, Bobby Moynihan, Steve Carell, Phoebe Waller Bridge, Louis Gossett Jr., Emily Blunt, Maya Rudolph, Vince Vaughn, Sam Rockwell, Awkwafina, Sebastian Maniscalco, Christopher Meloni, Blake Lively, Matt Damon, Amy Schumer, George Clooney, Bill Hader, Jon Stewart, José Antonio Macías, Sofía Zúñiga, Carlos Díaz, Ricardo Tejedo, Leyla Rangel, Armando Réndiz, Romina Marroquín, Mario Castañeda, Héctor Garay, P3L01G, Peliculas Animadas, Animes' }, {
-							id: '1m8TftJmMoeVQvF2H3yxu11BxdiRG3qLW', youtubeId: 'zzOd-nLDrDk', buttonId: '1Eyp70rFfVxgNKW3xKTR3sA', title: 'IF ONLY', subtitle: 'Al Final Del Dia (2004)', buscar: 'Estados Unidos, Reino Unido, Jennifer Love Hewitt, Tom Wilkinson, Paul Nicholls, Lucy Davenport, Diana Hardcastle, Kevin Chapman, Robert Ziegler, Neville Phillips, Lee Holmes, P3L01, Películas' }, {
-							id: '1ESzeRLgi2GlgmRC5PVoeAb33fP38bHnK', youtubeId: 'XY7falovJiI', buttonId: '1yRpYE8xe6EUGK9EUz5eBhQ', title: 'IMPETIGORE', subtitle: 'Herencia Maldita (2019)', buscar: 'Indonesia, Corea del Sur, Tara Basro, Marissa Anita, Christine Hakim, Ario Bayu, Asmara Abigail, Faradina Mufti, Zidni Hakim, Kiki Narendra, Muzakki Ramdhan, Muhammad Abe, Aura Amalia, Erdi Sutrisno, P3L01G, Películas' },
-							{ id: '1VRlVr1TRqsPStrFeRSNduB-cjgyDhJc3', youtubeId: '1tZGktlpvgE', buttonId: '1eSqItPzaJggyBpbGXQJwcA', title: 'IN HELL', subtitle: 'En El Infierno (2003) (Esp)', buscar: 'Jean Claude Van Damme, Lawrence Taylor, Marnie Alton, Malakai Davidson, Billy Rieck, Jorge Luis Villacorta Santamaria, Carlos Gómez' }, {
-							id: '1Smb-gwWvm5S0036XWnmyDqSb7sxSGpwj', youtubeId: 'klqZn-HC0Cg', buttonId: '1sXm7xoH3AM7RrgR8GfkOVw', title: 'INCOMING', subtitle: 'Impacto Letal (2018)', buscar: 'Serbia, Estados Unidos, Reino Unido, Scott Adkins, Aaron McCusker, Alaa Safi, Vlado Mihailov, Dominic Power, Leon Finnan, James Townsend, P3L01, Películas' }, {
-							id: '1xbWdFSpFlzyHy6h84vjEzQCvCwTA3DdU', youtubeId: 'B1E7h3SeMDk', buttonId: '1w-ggM1GFfirYAF7I4Kdi9A', title: 'INDEPENDENCE DAY', subtitle: 'Dia De La Independencia (1996)', buscar: 'Estados Unidos, Will Smith, Jeff Goldblum, Bill Pullman, Mary McDonnell, Judd Hirsch, Robert Loggia, Randy Quaid, Adam Baldwin, Harvey Fierstein, James Rebhorn, P3L01, Películas' }, {
-							id: '11D5_-UWvsjYyFq9Oa-NKXUO41uIcahtE', youtubeId: 'XiKcVfYwImE', buttonId: '1EVCsgY37sVAmF8usmESsoQ', title: 'INDEPENDENCE DAY RESURGENCE', subtitle: 'Dia De La Independencia Contraataque (2016)', buscar: 'Estados Unidos, Jeff Goldblum, Liam Hemsworth, Bill Pullman, Judd Hirsch, William Fichtner, Charlotte Gainsbourg, Maika Monroe, Joey King, Vivica A. Fox, Brent Spiner, Sela Ward, P3L01, Películas' }, {
-							id: '1JlD-irTqZKiH1UsYBK1EE7lVinjYC3f_', youtubeId: 'xheJ1TTkUx0', buttonId: '1htrkgk7egUj46cdXYAJEmA', title: 'INQUILINOS', subtitle: 'Inquilinos (2018)', buscar: 'México, Erick Elías, Danny Perea, Gustavo Sánchez Parra, Evangelina Martínez, Luis Arrieta, Gabriela Roel, Noé Hernández, P3L01, Películas' }, {
-							id: '15oEhZCm_PkXckQM4DhZT4LAMREOrBQHk', youtubeId: '1HFv47QHWJU', buttonId: '1c0WZSuVbIEzGfXZiLbaABg', title: 'INSIDE OUT', subtitle: 'Intensa Mente (2015)', buscar: 'Estados Unidos, Amy Poehler, Bill Hader, Mindy Kaling, Lewis Black, Richard Kind, Phyllis Smith, Diane Lane, Kyle MacLachlan, Kaitlyn Dias, Rashida Jones, Luis Gerardo Méndez, Ricardo Tejedo, Cristina Hernández, Karla Falcón, Moisés Iván Mora, Erika Hinojosa, Maggie Vera, Juan Carlos Tinoco, P3L02, Peliculas Animadas, Animes' },
-							{ id: '1WWEQkPpUyOxKW2-x8dZeKcsILf_7jzu0', youtubeId: 'LEjhY15eCx0', buttonId: '1Y3UTen8JRzWKKZzz14vrQQ', title: 'INSIDE OUT 2', subtitle: 'Intensa Mente 2 (2024)', buscar: 'Amy Poehler, Maya Hawke, Ayo Edebiri, Lewis Black, Tony Hale, Liza Lapira, Phyllis Smith, Adèle Exarchopoulos, Paul Walter Hauser, Kensington Tallman, Lilimar Hernandez, John Ratzenberger, Flea, Frank Oz, Manuel Valdés, El Loco Valdés, Erika Hinojosa, Moisés Iván Mora, Ricardo Tejedo, Karla Falcón, Nycolle González, Gaby Cárdenas, Monserrat Marañón, ' }, {
-							id: '1Ok7kYLq6d0titmlVwvLllnW2BUTm856n', youtubeId: '3HxEXnVSr1w', buttonId: '13u7bzlgDpi8T2VuhS7yGOQ', title: 'INSIDIOUS CHAPTER 3', subtitle: 'La Noche Del Demonio Capítulo 3 (2015)', buscar: 'Estados Unidos, Canadá, Reino Unido, Dermot Mulroney, Lin Shaye, Angus Sampson, Leigh Whannell, Stefanie Scott, Hayley Kiyoko, Michael Reid MacKay, Steve Coulter, P3L01, Películas' }, {
-							id: '1oS8GcK1PoBd89Q-VlSPe1Deee9xBabjp', youtubeId: 'acQyrwQyCOk', buttonId: '1NYx10tiyYi3miwrnLD5Ivw', title: 'INSIDIOUS THE LAST KEY', subtitle: 'La Noche Del Demonio La Ultima Llave (2018)', buscar: 'Estados Unidos, Lin Shaye, Josh Stewart, Angus Sampson, Leigh Whannell, Kirk Acevedo, Javier Botet, Spencer Locke, Caitlin Gerard, P3L01, Películas' }, {
-							id: '1BqZC23ruhRWxZbtqH8uZWlNbKEUZ38Hy', youtubeId: 'emIHzg4VH8A', buttonId: '1zBipMrPHB1Mq1ExoiLG9ww', title: 'INSOMNIA', subtitle: 'Insomnia (2002)', buscar: 'Estados Unidos, Robin Williams, Al Pacino, Hilary Swank, Maura Tierney, Martin Donovan, Nicky Katt, Paul Dooley, Jonathan Jackson, Katharine Isabelle, Larry Holden, P3L01, Películas' }, {
-							id: '1ul2xJ53md-0CPWov3O5a3VTbaTyW8qyk', youtubeId: 'GAtL3A33n4c', buttonId: '11tX_T_JA_dxkvFp_xNM_mg', title: 'INVASION', subtitle: 'Invasion (2021-23) (2T20E) [Ale-Ing T+Esp]', buscar: 'P3L01G' }, {
-							id: '1cc4bYHG6DhtViIpEkl9zRkFG_0zOgxa-', youtubeId: 'yso_HjKXZ_M', buttonId: '1FAX3TYRupXrn-fG5-XB5dg', title: 'IO', subtitle: 'IO Sola En La Tierra (2019)', buscar: 'Estados Unidos, Margaret Qualley, Anthony Mackie, Danny Huston, Tom Payne, P3L01, Películas' }, {
-							id: '1z3E9EcSWdXghE-_lR90iW1BCOdtxywB-', youtubeId: '8ugaeA-nMTc', buttonId: '1E97oyyfk9YGSLBio51WZaw', title: 'IRON-MAN', subtitle: 'Iron Man (2008)', buscar: 'Estados Unidos, Robert Downey Jr., Gwyneth Paltrow, Terrence Howard, Jeff Bridges, Shaun Toub, Faran Tahir, Leslie Bibb, Clark Gregg, Jon Favreau, Paul Bettany, IronMan, P3L01, Películas' }, {
-							id: '1ju9x8rEyq7FOj-8HiVE47bm-LN9WRZa9', youtubeId: 'BoohRoVA9WQ', buttonId: '1nkKLSAPBEabyv6nwnL_0Gg', title: 'IRON-MAN 2', subtitle: 'Iron Man 2 (2010)', buscar: 'Estados Unidos, Robert Downey Jr., Gwyneth Paltrow, Scarlett Johansson, Don Cheadle, Mickey Rourke, Sam Rockwell, Samuel L. Jackson, Garry Shandling, John Slattery, Jon Favreau, Paul Bettany, IronMan, P3L01, Películas' }, {
-							id: '1bHfV_jeCpkIj62M8QTNv-r6P3Xyno3dc', youtubeId: 'MPwsK6CI4dQ', buttonId: '1UAl1ho08EiVxe-SXPJJfgw', title: 'IRON-MAN 3', subtitle: 'Iron Man 3 (2013)', buscar: 'Estados Unidos, Robert Downey Jr., Gwyneth Paltrow, Don Cheadle, Guy Pearce, Ben Kingsley, Rebecca Hall, Jon Favreau, James Badge Dale, Ty Simpkins, William Sadler, Paul Bettany, IronMan, P3L01, Películas' }, {
-							id: '1Ji5FgAEQyC3cYUMUjczW_4w3yxzUHEhB', youtubeId: 'dt__kig8PVU', buttonId: '1uFHhxma3xgRqkIrT7RpPHQ', title: 'ISLE OF DOGS', subtitle: 'Isla De Perros (2018)', buscar: 'Estados Unidos, Alemania, Scarlett Johansson, Bryan Cranston, Bill Murray, Edward Norton, Jeff Goldblum, Frances McDormand, Tilda Swinton, Greta Gerwig, Liev Schreiber, Harvey Keitel, Ken Watanabe, Bob Balaban, Kunichi Nomura, Mario Castañeda, Héctor Bonilla, Ricardo Tejedo, Sergio Bonilla, Gerardo Reyero, Gabriel Pingarrón, P3L01, Peliculas Animadas, Animes' }, {
-							id: '1EnPhBBVSfQaMUNHrNPsvZMimp361ckkk', youtubeId: 'k1eB8DMnkqQ', buttonId: '1J5-_384-yC15pwVETe3sww', title: 'ISN\'T IT ROMANTIC', subtitle: 'No Es Romántico? (2019)', buscar: 'Estados Unidos, Australia, Rebel Wilson, Liam Hemsworth, Adam Devine, Priyanka Chopra Jonas, Betty Gilpin, Brandon Scott Jones, Tom Ellis, P3L01, Películas' }, {
-							id: '1bHAtTW_6RV3KN6xPr6Lja1HwHmJUD0-8', youtubeId: 'FrPYOf5RmYI', buttonId: '1m1Yf71S5PlLVdpagB3_QQQ', title: 'IT LIVES INSIDE', subtitle: 'No Lo Abras (2023) [Ing T+Esp-Ing]', buscar: 'Estados Unidos, Megan Suri, Neeru Bajwa, Mohana Krishnan, Vik Sahay, Gage Marsh, Beatrice Kitsos, Betty Gabriel, P3L01, Películas' },
-					] }, {
+						    	id: '1MxxudmAS_o5gRmNKNfE4L-aL0Xuy_Ar2', youtubeId: 'Tp3IjHsqrgM', buttonId: '1QMbVV7Qf9FniQvTnBTmXMw', title: 'I WANT A DOG FOR CHRISTMAS CHARLIE BROWN', subtitle: 'Quiero Un Perro Para Navidad, Charlie Brown (2003)', buscar: 'Estados Unidos, Bill Melendez, Corey Padnos, Nick Price, Hannah Koslosky, Ashleigh Ball, Michelle Creber, Laura Torres, Arturo Mercado Jr., Alan Fernando Velázquez, Mónica Estrada Peanuts, Snoppy P3L01, Peliculas Animadas, Animes' }, {
+						    	id: '1cjabAe93K_H3VaV1KWA0NSyRx_WRcoF2', youtubeId: 'i4noiCRJRoE', buttonId: '1-kRIR3XC-LCr0im0I_D0DQ', title: 'ICE AGE', subtitle: 'La Era De Hielo (2002)', buscar: 'Estados Unidos, Jack Black, Denis Leary, Ray Romano, John Leguizamo, Goran Visnjic, Alan Tudyk, Diedrich Bader, Chris Wedge, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, Luis Daniel Ramírez, César Árias, P3L02, Peliculas Animadas, Animes' }, {
+						    	id: '1MKFTUkWp05A9-rh4VGtrEdp7Sd7Z4p4t', youtubeId: 'G_ZANrhGbmI', buttonId: '1iapAQCWJO-YYPaI6VIW9WQ', title: 'ICE AGE A MAMMOTH CHRISTMAS', subtitle: 'La Era De Hielo Una Navidad Prehistórica (2011)', buscar: 'Estados Unidos, Queen Latifah, Ray Romano, Denis Leary, John Leguizamo, T.J. Miller, Seann William Scott, Josh Peck, Judah Friedlander, Billy Gardell, Ciara Bravo, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
+						    	id: '18qJzA3hS-UmWh7RrZXyd4EqDvOhtd14u', youtubeId: 'ko3k1YYxPuU', buttonId: '1OqjK5XHehWy0QlTB2Shkfw', title: 'ICE AGE COLLISION COURSE', subtitle: 'La Era De Hielo Choque De Mundos (2016)', buscar: 'Estados Unidos, Queen Latifah, Nick Offerman, Jesse Tyler Ferguson, Adam Devine, Wanda Sykes, Simon Pegg, Ray Romano, Denis Leary, John Leguizamo, Max Greenfield, Seann William Scott, Josh Peck, Chris Wedge, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Miri Higareda, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Series Animadas, Animes' }, {
+						    	id: '1xO3e8p2wbk8EzCXndt2RifJwKoq1O10z', youtubeId: 'xz-KgMtU_BM', buttonId: '1QfiA6L9koCb-Wm3In4PcSQ', title: 'ICE AGE CONTINENTAL DRIFT', subtitle: 'La Era De Hielo 4 (2012)', buscar: 'Estados Unidos, Peter Dinklage, Jennifer Lopez, Queen Latifah, Nicki Minaj, Ray Romano, Denis Leary, John Leguizamo, Nick Frost, Simon Pegg, Seann William Scott, Josh Peck, Chris Wedge, Alan Tudyk, Martha Higareda, Erik Rubín, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
+						    	id: '1HMjUnHEi4FUIuvgG4h94Qha6oPZApO3k', youtubeId: 'MnAi5u-k9NY', buttonId: '1kRcfpfw_sNebyx_a0HFTOA', title: 'ICE AGE DAWN OF THE DINOSAURS', subtitle: 'La Era De Hielo 3 (2009)', buscar: 'Estados Unidos, Queen Latifah, Simon Pegg, Bill Hader, Kristen Wiig, Ray Romano, Denis Leary, John Leguizamo, Seann William Scott, Josh Peck, Chris Wedge, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
+						    	id: '1f9rzImioWoIEl9oH5T7E_w1STQgM5_g9', youtubeId: 'pfESEXIZ_lw', buttonId: '1Ok5CoWZH7NxKb4rhTSsylA', title: 'ICE AGE THE MELTDOWN', subtitle: 'La Era De Hielo 2 (2006)', buscar: 'Estados Unidos, Queen Latifah, Jay Leno, Ray Romano, Denis Leary, John Leguizamo, Seann William Scott, Josh Peck, Will Arnett, Chris Wedge, Carlos Saldanha, Angélica Vale, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Gerardo Reyero, Idzi Dutkiewicz, César Árias, P3L02, Peliculas Animadas, Animes' }, {
+                                id: '1DC5QEDw3ij1a2Rl-0v906TPOAItQ7cQy', youtubeId: '74tcmiPJt_o', buttonId: '1O7sB_QerPktOYc39sG92ag', title: 'ICE AGE THE GREAT EGG SCAPADE', subtitle: 'La era de hielo La Gran Búsqueda Del Huevo De Pascua (2016)', buscar: 'Estados Unidos, Taraji P. Henson, Queen Latifah, Seth Green, Ray Romano, Denis Leary, John Leguizamo, Keke Palmer, Seann William Scott, Josh Peck, Angélica Vale, Raúl Araiza, Jesús Ochoa, Carlos Espejel, Sergio Sendel, Alfonso Obregón, Gerardo Reyero, Idzi Dutkiewicz, César Árias' }, {
+						    	id: '1YaZYTsOeM9h1f7-pjgDPQQyjBNVgX2MK', youtubeId: 'suxpHwb9A3c', buttonId: '1G3e21b8qZWo6tmzUYlnaLg', title: 'IF', subtitle: 'Amigos Imaginarios (2024)', buscar: 'Estados Unidos, Ryan Reynolds, John Krasinski, Cailey Fleming, Fiona Shaw, Alan Kim, Bobby Moynihan, Steve Carell, Phoebe Waller Bridge, Louis Gossett Jr., Emily Blunt, Maya Rudolph, Vince Vaughn, Sam Rockwell, Awkwafina, Sebastian Maniscalco, Christopher Meloni, Blake Lively, Matt Damon, Amy Schumer, George Clooney, Bill Hader, Jon Stewart, José Antonio Macías, Sofía Zúñiga, Carlos Díaz, Ricardo Tejedo, Leyla Rangel, Armando Réndiz, Romina Marroquín, Mario Castañeda, Héctor Garay, P3L01G, Peliculas Animadas, Animes' }, {
+						    	id: '1m8TftJmMoeVQvF2H3yxu11BxdiRG3qLW', youtubeId: 'zzOd-nLDrDk', buttonId: '1Eyp70rFfVxgNKW3xKTR3sA', title: 'IF ONLY', subtitle: 'Al Final Del Dia (2004)', buscar: 'Estados Unidos, Reino Unido, Jennifer Love Hewitt, Tom Wilkinson, Paul Nicholls, Lucy Davenport, Diana Hardcastle, Kevin Chapman, Robert Ziegler, Neville Phillips, Lee Holmes, P3L01, Películas' }, {
+						    	id: '1ESzeRLgi2GlgmRC5PVoeAb33fP38bHnK', youtubeId: 'XY7falovJiI', buttonId: '1yRpYE8xe6EUGK9EUz5eBhQ', title: 'IMPETIGORE', subtitle: 'Herencia Maldita (2019)', buscar: 'Indonesia, Corea del Sur, Tara Basro, Marissa Anita, Christine Hakim, Ario Bayu, Asmara Abigail, Faradina Mufti, Zidni Hakim, Kiki Narendra, Muzakki Ramdhan, Muhammad Abe, Aura Amalia, Erdi Sutrisno, P3L01G, Películas' }, {
+                                id: '1VRlVr1TRqsPStrFeRSNduB-cjgyDhJc3', youtubeId: '1tZGktlpvgE', buttonId: '1eSqItPzaJggyBpbGXQJwcA', title: 'IN HELL', subtitle: 'En El Infierno (2003) (Esp)', buscar: 'Jean Claude Van Damme, Lawrence Taylor, Marnie Alton, Malakai Davidson, Billy Rieck, Jorge Luis Villacorta Santamaria, Carlos Gómez' }, {
+						    	id: '1Smb-gwWvm5S0036XWnmyDqSb7sxSGpwj', youtubeId: 'klqZn-HC0Cg', buttonId: '1sXm7xoH3AM7RrgR8GfkOVw', title: 'INCOMING', subtitle: 'Impacto Letal (2018)', buscar: 'Serbia, Estados Unidos, Reino Unido, Scott Adkins, Aaron McCusker, Alaa Safi, Vlado Mihailov, Dominic Power, Leon Finnan, James Townsend, P3L01, Películas' }, {
+						    	id: '1xbWdFSpFlzyHy6h84vjEzQCvCwTA3DdU', youtubeId: 'B1E7h3SeMDk', buttonId: '1w-ggM1GFfirYAF7I4Kdi9A', title: 'INDEPENDENCE DAY', subtitle: 'Dia De La Independencia (1996)', buscar: 'Estados Unidos, Will Smith, Jeff Goldblum, Bill Pullman, Mary McDonnell, Judd Hirsch, Robert Loggia, Randy Quaid, Adam Baldwin, Harvey Fierstein, James Rebhorn, P3L01, Películas' }, {
+						    	id: '11D5_-UWvsjYyFq9Oa-NKXUO41uIcahtE', youtubeId: 'XiKcVfYwImE', buttonId: '1EVCsgY37sVAmF8usmESsoQ', title: 'INDEPENDENCE DAY RESURGENCE', subtitle: 'Dia De La Independencia Contraataque (2016)', buscar: 'Estados Unidos, Jeff Goldblum, Liam Hemsworth, Bill Pullman, Judd Hirsch, William Fichtner, Charlotte Gainsbourg, Maika Monroe, Joey King, Vivica A. Fox, Brent Spiner, Sela Ward, P3L01, Películas' }, {
+						    	id: '1JlD-irTqZKiH1UsYBK1EE7lVinjYC3f_', youtubeId: 'xheJ1TTkUx0', buttonId: '1htrkgk7egUj46cdXYAJEmA', title: 'INQUILINOS', subtitle: 'Inquilinos (2018)', buscar: 'México, Erick Elías, Danny Perea, Gustavo Sánchez Parra, Evangelina Martínez, Luis Arrieta, Gabriela Roel, Noé Hernández, P3L01, Películas' }, {
+						    	id: '15oEhZCm_PkXckQM4DhZT4LAMREOrBQHk', youtubeId: '1HFv47QHWJU', buttonId: '1c0WZSuVbIEzGfXZiLbaABg', title: 'INSIDE OUT', subtitle: 'Intensa Mente (2015)', buscar: 'Estados Unidos, Amy Poehler, Bill Hader, Mindy Kaling, Lewis Black, Richard Kind, Phyllis Smith, Diane Lane, Kyle MacLachlan, Kaitlyn Dias, Rashida Jones, Luis Gerardo Méndez, Ricardo Tejedo, Cristina Hernández, Karla Falcón, Moisés Iván Mora, Erika Hinojosa, Maggie Vera, Juan Carlos Tinoco, P3L02, Peliculas Animadas, Animes' }, {
+                                id: '1WWEQkPpUyOxKW2-x8dZeKcsILf_7jzu0', youtubeId: 'LEjhY15eCx0', buttonId: '1Y3UTen8JRzWKKZzz14vrQQ', title: 'INSIDE OUT 2', subtitle: 'Intensa Mente 2 (2024)', buscar: 'Amy Poehler, Maya Hawke, Ayo Edebiri, Lewis Black, Tony Hale, Liza Lapira, Phyllis Smith, Adèle Exarchopoulos, Paul Walter Hauser, Kensington Tallman, Lilimar Hernandez, John Ratzenberger, Flea, Frank Oz, Manuel Valdés, El Loco Valdés, Erika Hinojosa, Moisés Iván Mora, Ricardo Tejedo, Karla Falcón, Nycolle González, Gaby Cárdenas, Monserrat Marañón, ' }, {
+						    	id: '1Ok7kYLq6d0titmlVwvLllnW2BUTm856n', youtubeId: '3HxEXnVSr1w', buttonId: '13u7bzlgDpi8T2VuhS7yGOQ', title: 'INSIDIOUS CHAPTER 3', subtitle: 'La Noche Del Demonio Capítulo 3 (2015)', buscar: 'Estados Unidos, Canadá, Reino Unido, Dermot Mulroney, Lin Shaye, Angus Sampson, Leigh Whannell, Stefanie Scott, Hayley Kiyoko, Michael Reid MacKay, Steve Coulter, P3L01, Películas' }, {
+						    	id: '1oS8GcK1PoBd89Q-VlSPe1Deee9xBabjp', youtubeId: 'acQyrwQyCOk', buttonId: '1NYx10tiyYi3miwrnLD5Ivw', title: 'INSIDIOUS THE LAST KEY', subtitle: 'La Noche Del Demonio La Ultima Llave (2018)', buscar: 'Estados Unidos, Lin Shaye, Josh Stewart, Angus Sampson, Leigh Whannell, Kirk Acevedo, Javier Botet, Spencer Locke, Caitlin Gerard, P3L01, Películas' }, {
+						    	id: '1BqZC23ruhRWxZbtqH8uZWlNbKEUZ38Hy', youtubeId: 'emIHzg4VH8A', buttonId: '1zBipMrPHB1Mq1ExoiLG9ww', title: 'INSOMNIA', subtitle: 'Insomnia (2002)', buscar: 'Estados Unidos, Robin Williams, Al Pacino, Hilary Swank, Maura Tierney, Martin Donovan, Nicky Katt, Paul Dooley, Jonathan Jackson, Katharine Isabelle, Larry Holden, P3L01, Películas' }, {
+						    	id: '1ul2xJ53md-0CPWov3O5a3VTbaTyW8qyk', youtubeId: 'GAtL3A33n4c', buttonId: '11tX_T_JA_dxkvFp_xNM_mg', title: 'INVASION', subtitle: 'Invasion (2021-23) (2T20E) [Ale-Ing T+Esp]', buscar: 'P3L01G' }, {
+						    	id: '1cc4bYHG6DhtViIpEkl9zRkFG_0zOgxa-', youtubeId: 'yso_HjKXZ_M', buttonId: '1FAX3TYRupXrn-fG5-XB5dg', title: 'IO', subtitle: 'IO Sola En La Tierra (2019)', buscar: 'Estados Unidos, Margaret Qualley, Anthony Mackie, Danny Huston, Tom Payne, P3L01, Películas' }, {
+						    	id: '1z3E9EcSWdXghE-_lR90iW1BCOdtxywB-', youtubeId: '8ugaeA-nMTc', buttonId: '1E97oyyfk9YGSLBio51WZaw', title: 'IRON-MAN', subtitle: 'Iron Man (2008)', buscar: 'Estados Unidos, Robert Downey Jr., Gwyneth Paltrow, Terrence Howard, Jeff Bridges, Shaun Toub, Faran Tahir, Leslie Bibb, Clark Gregg, Jon Favreau, Paul Bettany, IronMan, P3L01, Películas' }, {
+						    	id: '1ju9x8rEyq7FOj-8HiVE47bm-LN9WRZa9', youtubeId: 'BoohRoVA9WQ', buttonId: '1nkKLSAPBEabyv6nwnL_0Gg', title: 'IRON-MAN 2', subtitle: 'Iron Man 2 (2010)', buscar: 'Estados Unidos, Robert Downey Jr., Gwyneth Paltrow, Scarlett Johansson, Don Cheadle, Mickey Rourke, Sam Rockwell, Samuel L. Jackson, Garry Shandling, John Slattery, Jon Favreau, Paul Bettany, IronMan, P3L01, Películas' }, {
+						    	id: '1bHfV_jeCpkIj62M8QTNv-r6P3Xyno3dc', youtubeId: 'MPwsK6CI4dQ', buttonId: '1UAl1ho08EiVxe-SXPJJfgw', title: 'IRON-MAN 3', subtitle: 'Iron Man 3 (2013)', buscar: 'Estados Unidos, Robert Downey Jr., Gwyneth Paltrow, Don Cheadle, Guy Pearce, Ben Kingsley, Rebecca Hall, Jon Favreau, James Badge Dale, Ty Simpkins, William Sadler, Paul Bettany, IronMan, P3L01, Películas' }, {
+						    	id: '1Ji5FgAEQyC3cYUMUjczW_4w3yxzUHEhB', youtubeId: 'dt__kig8PVU', buttonId: '1uFHhxma3xgRqkIrT7RpPHQ', title: 'ISLE OF DOGS', subtitle: 'Isla De Perros (2018)', buscar: 'Estados Unidos, Alemania, Scarlett Johansson, Bryan Cranston, Bill Murray, Edward Norton, Jeff Goldblum, Frances McDormand, Tilda Swinton, Greta Gerwig, Liev Schreiber, Harvey Keitel, Ken Watanabe, Bob Balaban, Kunichi Nomura, Mario Castañeda, Héctor Bonilla, Ricardo Tejedo, Sergio Bonilla, Gerardo Reyero, Gabriel Pingarrón, P3L01, Peliculas Animadas, Animes' }, {
+						    	id: '1EnPhBBVSfQaMUNHrNPsvZMimp361ckkk', youtubeId: 'k1eB8DMnkqQ', buttonId: '1J5-_384-yC15pwVETe3sww', title: 'ISN\'T IT ROMANTIC', subtitle: 'No Es Romántico? (2019)', buscar: 'Estados Unidos, Australia, Rebel Wilson, Liam Hemsworth, Adam Devine, Priyanka Chopra Jonas, Betty Gilpin, Brandon Scott Jones, Tom Ellis, P3L01, Películas' }, {
+						    	id: '1bHAtTW_6RV3KN6xPr6Lja1HwHmJUD0-8', youtubeId: 'FrPYOf5RmYI', buttonId: '1m1Yf71S5PlLVdpagB3_QQQ', title: 'IT LIVES INSIDE', subtitle: 'No Lo Abras (2023) [Ing T+Esp-Ing]', buscar: 'Estados Unidos, Megan Suri, Neeru Bajwa, Mohana Krishnan, Vik Sahay, Gage Marsh, Beatrice Kitsos, Betty Gabriel, P3L01, Películas' },
+					    ] }, {
 						
 						
 						
 						
 						
 						id: 'PelículasJ', data: [ {
-						 id: '1iiZzTUitWAJV96z9iKhvJYHWMfVQuT20', youtubeId: 'oJVv3PBoPMc', buttonId: '1UaAIDLlz6g8pSuiOXRHnbg', title: 'JACK AND JILL', subtitle: 'Jack And Jill (2011)', buscar: 'Estados Unidos, Al Pacino, Adam Sandler, Eugenio Derbez, Katie Holmes, David Spade, Nick Swardson, Tim Meadows, Allen Covert, Dana Carvey, P3L01, Películas' }, {
-						 id: '1VJUtQOboCfE_tdPStXEjeicdfNZir7wC', youtubeId: '3lM2_KX2MYY', buttonId: '1usgwSQ-vXdzY64OYF-caLQ', title: 'JASON GOES TO HELL THE FINAL FRIDAY', subtitle: 'Jason Va Al Infierno (1993)', buscar: 'Estados Unidos, John D. LeMay, Kari Keegan, Allison Smith, Steven Williams, Erin Gray, Kane Hodder, Rusty Schwimmer, Billy Green Bush, Leslie Jordan, Michael B. Silver, Julie Michaels, Michelle Clunie, P3L01, Películas' }, {
-						 id: '1X_FoHVlJ1wMWpdGmJcCZVDcrrcjZ2r6T', youtubeId: 'XuMNAt7xQa8', buttonId: '1wNzikUjm7KgBx-FaJejrVQ', title: 'JASON X', subtitle: 'Jason X (2001)', buscar: 'Estados Unidos, Lexa Doig, Chuck Campbell, Lisa Ryder, Jonathan Potts, Melyssa Ade, Kane Hodder, Peter Mensah, Philip Williams, Derwin Jordan, Boyd Banks, P3L01, Películas' }, {
-						 id: '1hTBjp1adx6TTW8KoKG2yK37dUEYVapcQ', youtubeId: 'C8azftM5puI', buttonId: '1q6jLqUeGZGeyyBSIiStYRw', title: 'JENNIFER\'S BODY', subtitle: 'Diabólica Tentación (2009)', buscar: 'Estados Unidos, Megan Fox, Amanda Seyfried, Johnny Simmons, Adam Brody, J.K. Simmons, Kyle Gallner, Amy Sedaris, Chris Pratt, Cynthia Stevenson, Juno Rinaldi, Juan Riedinger, Valerie Tian, Sal Cortez, Nicole Leduc, Kacey Rohl, Diablo Cody, P3L01G, Películas' }, {
-						 id: '1JbuXWEB-sl0HSTHk7SIn9I8FH3f9w7ex', youtubeId: 'yx7LAjJymAw', buttonId: '1DYtvk0IRaF7FXVc1Pa1v0g', title: 'JESUS', subtitle: 'Jesús (1979)', buscar: 'Estados Unidos, Brian Deacon, Rivka Neumann, Alexander Scourby, Niko Nitai, Joseph Shiloach, Richard Kiley, Ori Levy, Peter Frye, Eli Cohen, Mosko Alkalai, P3L01, Películas' }, {
-						 id: '1aYZYrj0AftwRixWqo7mFkOdb3kfoZE9F', youtubeId: 'C0BMx-qxsP4', buttonId: '1JPA8UWQ8GaVqUmTxQTThVg', title: 'JOHN WICK', subtitle: 'John Wick Otro Día Para Matar (2014)', buscar: 'Estados Unidos, Keanu Reeves, Michael Nyqvist, Alfie Allen, Willem Dafoe, Dean Winters, Adrianne Palicki, Omer Barnea, Bridget Moynahan, Ian McShane, Lance Reddick, John Leguizamo, P3L01, Películas' }, {
-						 id: '1I-HbsnwIq8z5PFcBQ3ckdyT6-qPcoN81', youtubeId: 'ChpLV9AMqm4', buttonId: '1LadQDGP2P6ZxqOUKoNSh3Q', title: 'JOHN WICK CHAPTER 2', subtitle: 'John Wick Capítulo 2 (2017)', buscar: 'Estados Unidos, Keanu Reeves, Common, Laurence Fishburne, Riccardo Scamarcio, Ruby Rose, John Leguizamo, Ian McShane, Lance Reddick, Peter Stormare, Franco Nero, P3L01, Películas' }, {
-						 id: '1R5mhiOP9SPbrTo9bPiZkUUVSSdutfPNM', youtubeId: 'uYRElA_ieiw', buttonId: '1nkKgc0dPmxhjsvODyEPlcA', title: 'JOHN WICK CHAPTER 3 PARABELLUM', subtitle: 'John Wick Capítulo 3 Parabellum (2019)', buscar: 'Estados Unidos, Keanu Reeves, Halle Berry, Ian McShane, Laurence Fishburne, Lance Reddick, Anjelica Huston, Asia Kate Dillon, Mark Dacascos, Jerome Flynn, Boban Marjanović, P3L01, Películas' }, {
-						 id: '1j8gxncK5n_hvR7O9QzfObAuCQu-aCDxA', youtubeId: 'qEVUtrk8_B4', buttonId: '18__nqCGcspn6TUMvjywvHA', title: 'JOHN WICK CHAPTER 4', subtitle: 'John Wick Capítulo 4 (2023)', buscar: 'Estados Unidos, Alemania, Keanu Reeves, Donnie Yen, Laurence Fishburne, Bill Skarsgård, Ian McShane, Hiroyuki Sanada, Scott Adkins, Lance Reddick, Rina Sawayama, Shamier Anderson, P3L01, Películas' }, {
-						 id: '1dmvUR0zZ9ppXOy2T0FfFmQai32yYvn1U', youtubeId: '-Qv6p6pTz5I', buttonId: '1n8MZvDv9qPgV0MIs_khwgw', title: 'JOHNNY ENGLISH STRIKES AGAIN', subtitle: 'Johnny English De Nuevo En Acción (2018)', buscar: 'Reino Unido, Francia, Estados Unidos, Rowan Atkinson, Ben Miller, Olga Kurylenko, Jake Lacy, Emma Thompson, Adam James, Matthew Beard, Miranda Hennessy, Pippa Haywood, Amit Shah, P3L01, Películas' }, {
-						 id: '1zTbyeAe9MfZoadgYpA7ba1BalRrtr8ye', youtubeId: 'jPh0NZKQadw', buttonId: '1NwuzwH7b2pOOvt0eH__l-w', title: 'JOJO RABBIT', subtitle: 'Jojo Rabbit (2019)', buscar: 'Estados Unidos, Nueva Zelanda, República Checa, Roman Griffin Davis, Thomasin McKenzie, Scarlett Johansson, Taika Waititi, Sam Rockwell, Rebel Wilson, Stephen Merchant, Alfie Allen, Archie Yates, Luke Brandon Field, Gabriel Andrews, Brian Caspe, Stanislav Callas, Christian Howarth, Billy Rayner, P3L01G, Películas' }, {
-						 id: '1NN5p0LThTAfxHjHkpzHs7JmqKk7tmM-a', youtubeId: 'uY6YkhRtNlE', buttonId: '1Q6IATnsHt1yWsAibtC2IUg', title: 'JUAN LUIS GUERRA Y SU 4.40', subtitle: 'Entre Mar y Palmeras (2021)', buscar: 'República Dominicana, Juan Luis Guerra, Juan Rizek, Ricardo Rojas, Janina Rosado, Junior Lora, Roger Zayas-Bazán, Juan Luis Guerra Seijas, P3L01, Conciertos' }, {
-						 id: '1nyNO-zD5KVKn2gR5e1vvwVke3w1Tnrdh', youtubeId: '_jKEqDKpJLw', buttonId: '1kra14RlyqFIstc_naRiyhw', title: 'JURASSIC PARK', subtitle: 'Parque Jurásico (1993)', buscar: 'Estados Unidos, Sam Neill, Laura Dern, Jeff Goldblum, Richard Attenborough, Joseph Mazzello, Ariana Richards, Samuel L. Jackson, B.D. Wong, Bob Peck, Martin Ferrero, Wayne Knight, P3L01, Películas' },
-					] }, {
+						        id: '1iiZzTUitWAJV96z9iKhvJYHWMfVQuT20', youtubeId: 'oJVv3PBoPMc', buttonId: '1UaAIDLlz6g8pSuiOXRHnbg', title: 'JACK AND JILL', subtitle: 'Jack And Jill (2011)', buscar: 'Estados Unidos, Al Pacino, Adam Sandler, Eugenio Derbez, Katie Holmes, David Spade, Nick Swardson, Tim Meadows, Allen Covert, Dana Carvey, P3L01, Películas' }, {
+					       	 id: '1VJUtQOboCfE_tdPStXEjeicdfNZir7wC', youtubeId: '3lM2_KX2MYY', buttonId: '1usgwSQ-vXdzY64OYF-caLQ', title: 'JASON GOES TO HELL THE FINAL FRIDAY', subtitle: 'Jason Va Al Infierno (1993)', buscar: 'Estados Unidos, John D. LeMay, Kari Keegan, Allison Smith, Steven Williams, Erin Gray, Kane Hodder, Rusty Schwimmer, Billy Green Bush, Leslie Jordan, Michael B. Silver, Julie Michaels, Michelle Clunie, P3L01, Películas' }, {
+					       	 id: '1X_FoHVlJ1wMWpdGmJcCZVDcrrcjZ2r6T', youtubeId: 'XuMNAt7xQa8', buttonId: '1wNzikUjm7KgBx-FaJejrVQ', title: 'JASON X', subtitle: 'Jason X (2001)', buscar: 'Estados Unidos, Lexa Doig, Chuck Campbell, Lisa Ryder, Jonathan Potts, Melyssa Ade, Kane Hodder, Peter Mensah, Philip Williams, Derwin Jordan, Boyd Banks, P3L01, Películas' }, {
+						        id: '1hTBjp1adx6TTW8KoKG2yK37dUEYVapcQ', youtubeId: 'C8azftM5puI', buttonId: '1q6jLqUeGZGeyyBSIiStYRw', title: 'JENNIFER\'S BODY', subtitle: 'Diabólica Tentación (2009)', buscar: 'Estados Unidos, Megan Fox, Amanda Seyfried, Johnny Simmons, Adam Brody, J.K. Simmons, Kyle Gallner, Amy Sedaris, Chris Pratt, Cynthia Stevenson, Juno Rinaldi, Juan Riedinger, Valerie Tian, Sal Cortez, Nicole Leduc, Kacey Rohl, Diablo Cody, P3L01G, Películas' }, {
+					       	 id: '1JbuXWEB-sl0HSTHk7SIn9I8FH3f9w7ex', youtubeId: 'yx7LAjJymAw', buttonId: '1DYtvk0IRaF7FXVc1Pa1v0g', title: 'JESUS', subtitle: 'Jesús (1979)', buscar: 'Estados Unidos, Brian Deacon, Rivka Neumann, Alexander Scourby, Niko Nitai, Joseph Shiloach, Richard Kiley, Ori Levy, Peter Frye, Eli Cohen, Mosko Alkalai, P3L01, Películas' }, {
+					       	 id: '1aYZYrj0AftwRixWqo7mFkOdb3kfoZE9F', youtubeId: 'C0BMx-qxsP4', buttonId: '1JPA8UWQ8GaVqUmTxQTThVg', title: 'JOHN WICK', subtitle: 'John Wick Otro Día Para Matar (2014)', buscar: 'Estados Unidos, Keanu Reeves, Michael Nyqvist, Alfie Allen, Willem Dafoe, Dean Winters, Adrianne Palicki, Omer Barnea, Bridget Moynahan, Ian McShane, Lance Reddick, John Leguizamo, P3L01, Películas' }, {
+					       	 id: '1I-HbsnwIq8z5PFcBQ3ckdyT6-qPcoN81', youtubeId: 'ChpLV9AMqm4', buttonId: '1LadQDGP2P6ZxqOUKoNSh3Q', title: 'JOHN WICK CHAPTER 2', subtitle: 'John Wick Capítulo 2 (2017)', buscar: 'Estados Unidos, Keanu Reeves, Common, Laurence Fishburne, Riccardo Scamarcio, Ruby Rose, John Leguizamo, Ian McShane, Lance Reddick, Peter Stormare, Franco Nero, P3L01, Películas' }, {
+					       	 id: '1R5mhiOP9SPbrTo9bPiZkUUVSSdutfPNM', youtubeId: 'uYRElA_ieiw', buttonId: '1nkKgc0dPmxhjsvODyEPlcA', title: 'JOHN WICK CHAPTER 3 PARABELLUM', subtitle: 'John Wick Capítulo 3 Parabellum (2019)', buscar: 'Estados Unidos, Keanu Reeves, Halle Berry, Ian McShane, Laurence Fishburne, Lance Reddick, Anjelica Huston, Asia Kate Dillon, Mark Dacascos, Jerome Flynn, Boban Marjanović, P3L01, Películas' }, {
+					       	 id: '1j8gxncK5n_hvR7O9QzfObAuCQu-aCDxA', youtubeId: 'qEVUtrk8_B4', buttonId: '18__nqCGcspn6TUMvjywvHA', title: 'JOHN WICK CHAPTER 4', subtitle: 'John Wick Capítulo 4 (2023)', buscar: 'Estados Unidos, Alemania, Keanu Reeves, Donnie Yen, Laurence Fishburne, Bill Skarsgård, Ian McShane, Hiroyuki Sanada, Scott Adkins, Lance Reddick, Rina Sawayama, Shamier Anderson, P3L01, Películas' }, {
+					       	 id: '1dmvUR0zZ9ppXOy2T0FfFmQai32yYvn1U', youtubeId: '-Qv6p6pTz5I', buttonId: '1n8MZvDv9qPgV0MIs_khwgw', title: 'JOHNNY ENGLISH STRIKES AGAIN', subtitle: 'Johnny English De Nuevo En Acción (2018)', buscar: 'Reino Unido, Francia, Estados Unidos, Rowan Atkinson, Ben Miller, Olga Kurylenko, Jake Lacy, Emma Thompson, Adam James, Matthew Beard, Miranda Hennessy, Pippa Haywood, Amit Shah, P3L01, Películas' }, {
+					       	 id: '1zTbyeAe9MfZoadgYpA7ba1BalRrtr8ye', youtubeId: 'jPh0NZKQadw', buttonId: '1NwuzwH7b2pOOvt0eH__l-w', title: 'JOJO RABBIT', subtitle: 'Jojo Rabbit (2019)', buscar: 'Estados Unidos, Nueva Zelanda, República Checa, Roman Griffin Davis, Thomasin McKenzie, Scarlett Johansson, Taika Waititi, Sam Rockwell, Rebel Wilson, Stephen Merchant, Alfie Allen, Archie Yates, Luke Brandon Field, Gabriel Andrews, Brian Caspe, Stanislav Callas, Christian Howarth, Billy Rayner, P3L01G, Películas' }, {
+					       	 id: '1NN5p0LThTAfxHjHkpzHs7JmqKk7tmM-a', youtubeId: 'uY6YkhRtNlE', buttonId: '1Q6IATnsHt1yWsAibtC2IUg', title: 'JUAN LUIS GUERRA Y SU 4.40', subtitle: 'Entre Mar y Palmeras (2021)', buscar: 'República Dominicana, Juan Luis Guerra, Juan Rizek, Ricardo Rojas, Janina Rosado, Junior Lora, Roger Zayas-Bazán, Juan Luis Guerra Seijas, P3L01, Conciertos' }, {
+					       	 id: '1nyNO-zD5KVKn2gR5e1vvwVke3w1Tnrdh', youtubeId: '_jKEqDKpJLw', buttonId: '1kra14RlyqFIstc_naRiyhw', title: 'JURASSIC PARK', subtitle: 'Parque Jurásico (1993)', buscar: 'Estados Unidos, Sam Neill, Laura Dern, Jeff Goldblum, Richard Attenborough, Joseph Mazzello, Ariana Richards, Samuel L. Jackson, B.D. Wong, Bob Peck, Martin Ferrero, Wayne Knight, P3L01, Películas' },
+						] }, {
 						
 						
 						
 						
 						
-						id: 'PelículasK', data: [ {
-							id: '1VqcUciytuXOuo2MHC7Cq3DRtfyo_V46I', youtubeId: '-d299rICUzU', buttonId: '1FBa9tOxu5PS8WFpkNBZH5A', title: 'KAPPA MIKEY (T1)', subtitle: 'Kappa Mikey (C1-26) (2006)', buscar: 'Estados Unidos, Japón, Michael Sinterniklaas, Kether Donohue, Carrie Keranen, Sean Schemmel, Gary Mack, Stephen Moverley, Jesse Adams, Dan Green, Alejandro Graue, Natalia Rosminati, Sol Nieto, Hernán Bravo, Hernán Palma, Omar Aranda, Rubén León, Moisés Iván Mora, S3R01, Series Animadas, Animes' }, {
-							id: '1C5WAz2CDDCTu-sPjeRrHjD6rEgbkSPRy', youtubeId: 'k4lH9mHXhpM', buttonId: '1qrBLL7kIhM4bJ3dF2EQxNA', title: 'KENICHI THE MIGHTIEST DISCIPLE (T1)', subtitle: 'Kenichi, El Discípulo Más Fuerte (C1-50) (2006)', buscar: 'Japón, Tomoko Kawakami, Tomokazu Seki, Keiichirō Satomi, Rina Satō, Yūji Ueda, Issei Futamata, Daisuke Namikawa, Jōji Nakata, Minoru Shiraishi, Akemi Okamura, Daisuke Ono, Gabriel Ramos, Irwin Daayán, Leyla Rangel, Humberto Vélez Jr., Mireya Mendoza, Héctor Emmanuel Gómez, Óscar Flores, Ricardo Tejedo, S3R01, Series Animadas, Animes' }, {
-							id: '1RVFwcAlvwc4y8KTFbUzOBGTYxbGBoKBy', youtubeId: 'Ac5wrM2uYbk', buttonId: '1nWTRouU9zhHXo2IeB_QVQA', title: 'KIN', subtitle: 'Kin El Código Genético (2018)', buscar: 'Estados Unidos, Canadá, Sudáfrica, James Franco, Michael B. Jordan, Zoë Kravitz, Dennis Quaid, Carrie Coon, Jack Reynor, Myles Truitt, Gavin Fox, Ian Matthews, Mark O\'Brien, P3L01, Películas' }, {
-							id: '1nKvsM4577QDvp58Db4an48ZJvgI10xIE', youtubeId: 'NGOL2_mI9Hw', buttonId: '1AmJJ61IcV1j2-SdXB2Dnxw', title: 'KINDS OF KINDNESS', subtitle: 'Tipos de Gentileza (2024)', buscar: 'Reino Unido, Irlanda, Estados Unidos, Emma Stone, Jesse Plemons, Willem Dafoe, Margaret Qualley, Hong Chau, Joe Alwyn, Mamoudou Athie, Hunter Schafer, Merah Benoit, Julianne Binard, P3L01G, Películas' }, {
-							id: '1h2vw8IsN4hhA3el1Q9ybglk9uQTzmRLx', youtubeId: '_VkewMaTgR0', buttonId: '1EL800yaYMUfNvovkYOItdg', title: 'KNIGHTS OF THE ZODIAC', subtitle: 'Los Caballeros del Zodiaco Saint Seiya El Inicio (2023)', buscar: 'Japón, Estados Unidos, Mackenyu, Famke Janssen, Sean Bean, Madison Iseman, Mark Dacascos, Nick Stahl, Diego Tinoco, David Torok, P3L01, Películas' }, {
-							id: '154bGVmzhNFSWlVE2W7v8dEtSSXpCmcKA', youtubeId: 'h6cVyoMH4QE', buttonId: '130zxWTTrNdA7nTiVzUXgTg', title: 'KRAMPUS', subtitle: 'Krampus El Terror De La Navidad (2015)', buscar: 'Estados Unidos, Toni Collette, Adam Scott, David Koechner, Allison Tolman, Emjay Anthony, Conchata Ferrell, Stefania LaVie Owen, Krista Stadler, P3L01, Películas' }, {
-							id: '14oMqtCb70AwCmlgLSX_V2b4nez8usNjP', youtubeId: 'xBaJCac2q08', buttonId: '1P0dNuSG53tw37KobxghjRw', title: 'KRUTY 1918', subtitle: 'La Batalla De Kruty (2019)', buscar: 'Ucrania, Yevhen Lamakh, Andrii Fedinchyk, Oleksiy Trytenko, Natalka Denisenko, Vladyslav Nikitiuk, Maksym Donets, Evgeny Zhuravkin, P3L01, Películas' }, {
-							id: '19GRrwaHIjlSPy-r_bMhiW_SH39XmRg6L', youtubeId: 'ykD2W8U6wH4', buttonId: '1lXFCvFrfxvWXUfSeOjPENA', title: 'KUBO AND THE TWO STRINGS', subtitle: 'Kubo y La Búsqueda Del Samurái 2016', buscar: 'Estados Unidos, Charlize Theron, Matthew McConaughey, Ralph Fiennes, Rooney Mara, George Takei, Art Parkinson, Brenda Vaccaro, Martha Higareda, Luis Gerardo Méndez, Mauricio Castillo, Luis Daniel Ramírez, Arturo Mercado, Carlos Segundo, Laura Torres, P3L01, Peliculas Animadas, Animes' }, {
-							id: '1rv3gz8e4ICB8OUOtDXxnm-Zopo4ei-Xe', youtubeId: 'FtE9-o6dBEI', buttonId: '1mH3psm7P0bRkClQHrv5xNA', title: 'KUNG FU HUSTLE', subtitle: 'Kung Fu Sion (2004)', buscar: 'Hong Kong, China, Stephen Chow, Yuen Wah, Yuen Qiu, Danny Chan, Leung Siu lung, Lam Chi chung, Tin Kai man, Xing Yu P3L01, Películas' }, {
-							id: '13YAEhIwhAXgB3-nGiMXpWqy5Jy76oEhl', youtubeId: 'NRc-ze7Wrxw', buttonId: '1hreNYnhKl33ZOuHVKnNKPw', title: 'KUNG FU PANDA', subtitle: 'Kung Fu Panda (2008)', buscar: 'Estados Unidos, Angelina Jolie, Jack Black, Jackie Chan, Dustin Hoffman, Ian McShane, Seth Rogen, Lucy Liu, David Cross, James Hong, Michael Clarke Duncan, Dan Fogler, Kyle Gass, Omar Chaparro, Pedro Armendáriz Jr., Sergio Corona, Alfonso Obregón, Herman López, Ricardo Tejedo, Érica Edwards, P3L01, Peliculas Animadas, Animes' }, {
-							id: '1zEZHTsS39qn79p5OUETeYNA5nPuvUxOq', youtubeId: 'YCBxlwmUhmQ', buttonId: '15VxYOls-HeyLY0AHtPWVNQ', title: 'KUNG FU PANDA 2', subtitle: 'Kung Fu Panda 2 (2011)', buscar: 'Estados Unidos, Angelina Jolie, Jack Black, Gary Oldman, Jackie Chan, Dustin Hoffman, Seth Rogen, Jean Claude Van Damme, Lucy Liu, David Cross, Michelle Yeoh, Danny McBride, Omar Chaparro, Verónica Jaspeado, Édgar Vivar, Herman López, Ricardo Tejedo, Arturo Mercado, Raúl Anaya, Sergio Corona, Idzi Dutkiewicz, Moisés Iván Mora, Héctor Lee, P3L01, Peliculas Animadas, Animes' }, {
-							id: '1hwRNRGEFEE9mm1IXSOrxfpJxxfGNgjHl', youtubeId: '10r9ozshGVE', buttonId: '1abn0lNht0avI_M2ia_-U7g', title: 'KUNG FU PANDA 3', subtitle: 'Kung Fu Panda 3 (2016)', buscar: 'Estados Unidos, China, Angelina Jolie, Jack Black, Bryan Cranston, Jackie Chan, Dustin Hoffman, J.K. Simmons, Kate Hudson, Seth Rogen, Lucy Liu, David Cross, James Hong, Jean Claude Van Damme, Danny McBride, Wayne Knight, Héctor Bonilla, Omar Chaparro, Manuel Valdés, El Loco Valdés, Sergio Corona, Verónica Jaspeado, Moisés Iván Mora, Ricardo Tejedo, Gerardo Reyero, Arturo Mercado, P3L01, Peliculas Animadas, Animes' },
-					] }, {
+						id: 'PelículasK', data: [ { 
+								id: '1VqcUciytuXOuo2MHC7Cq3DRtfyo_V46I', youtubeId: '-d299rICUzU', buttonId: '1FBa9tOxu5PS8WFpkNBZH5A', title: 'KAPPA MIKEY (T1)', subtitle: 'Kappa Mikey (C1-26) (2006)', buscar: 'Estados Unidos, Japón, Michael Sinterniklaas, Kether Donohue, Carrie Keranen, Sean Schemmel, Gary Mack, Stephen Moverley, Jesse Adams, Dan Green, Alejandro Graue, Natalia Rosminati, Sol Nieto, Hernán Bravo, Hernán Palma, Omar Aranda, Rubén León, Moisés Iván Mora, S3R01, Series Animadas, Animes' }, {
+						    	id: '1C5WAz2CDDCTu-sPjeRrHjD6rEgbkSPRy', youtubeId: 'k4lH9mHXhpM', buttonId: '1qrBLL7kIhM4bJ3dF2EQxNA', title: 'KENICHI THE MIGHTIEST DISCIPLE (T1)', subtitle: 'Kenichi, El Discípulo Más Fuerte (C1-50) (2006)', buscar: 'Japón, Tomoko Kawakami, Tomokazu Seki, Keiichirō Satomi, Rina Satō, Yūji Ueda, Issei Futamata, Daisuke Namikawa, Jōji Nakata, Minoru Shiraishi, Akemi Okamura, Daisuke Ono, Gabriel Ramos, Irwin Daayán, Leyla Rangel, Humberto Vélez Jr., Mireya Mendoza, Héctor Emmanuel Gómez, Óscar Flores, Ricardo Tejedo, S3R01, Series Animadas, Animes' }, {
+						    	id: '1RVFwcAlvwc4y8KTFbUzOBGTYxbGBoKBy', youtubeId: 'Ac5wrM2uYbk', buttonId: '1nWTRouU9zhHXo2IeB_QVQA', title: 'KIN', subtitle: 'Kin El Código Genético (2018)', buscar: 'Estados Unidos, Canadá, Sudáfrica, James Franco, Michael B. Jordan, Zoë Kravitz, Dennis Quaid, Carrie Coon, Jack Reynor, Myles Truitt, Gavin Fox, Ian Matthews, Mark O\'Brien, P3L01, Películas' }, {
+						    	id: '1nKvsM4577QDvp58Db4an48ZJvgI10xIE', youtubeId: 'NGOL2_mI9Hw', buttonId: '1AmJJ61IcV1j2-SdXB2Dnxw', title: 'KINDS OF KINDNESS', subtitle: 'Tipos de Gentileza (2024)', buscar: 'Reino Unido, Irlanda, Estados Unidos, Emma Stone, Jesse Plemons, Willem Dafoe, Margaret Qualley, Hong Chau, Joe Alwyn, Mamoudou Athie, Hunter Schafer, Merah Benoit, Julianne Binard, P3L01G, Películas' }, {
+						    	id: '1h2vw8IsN4hhA3el1Q9ybglk9uQTzmRLx', youtubeId: '_VkewMaTgR0', buttonId: '1EL800yaYMUfNvovkYOItdg', title: 'KNIGHTS OF THE ZODIAC', subtitle: 'Los Caballeros del Zodiaco Saint Seiya El Inicio (2023)', buscar: 'Japón, Estados Unidos, Mackenyu, Famke Janssen, Sean Bean, Madison Iseman, Mark Dacascos, Nick Stahl, Diego Tinoco, David Torok, P3L01, Películas' }, {
+						    	id: '154bGVmzhNFSWlVE2W7v8dEtSSXpCmcKA', youtubeId: 'h6cVyoMH4QE', buttonId: '130zxWTTrNdA7nTiVzUXgTg', title: 'KRAMPUS', subtitle: 'Krampus El Terror De La Navidad (2015)', buscar: 'Estados Unidos, Toni Collette, Adam Scott, David Koechner, Allison Tolman, Emjay Anthony, Conchata Ferrell, Stefania LaVie Owen, Krista Stadler, P3L01, Películas' }, {
+						    	id: '14oMqtCb70AwCmlgLSX_V2b4nez8usNjP', youtubeId: 'xBaJCac2q08', buttonId: '1P0dNuSG53tw37KobxghjRw', title: 'KRUTY 1918', subtitle: 'La Batalla De Kruty (2019)', buscar: 'Ucrania, Yevhen Lamakh, Andrii Fedinchyk, Oleksiy Trytenko, Natalka Denisenko, Vladyslav Nikitiuk, Maksym Donets, Evgeny Zhuravkin, P3L01, Películas' }, {
+						    	id: '19GRrwaHIjlSPy-r_bMhiW_SH39XmRg6L', youtubeId: 'ykD2W8U6wH4', buttonId: '1lXFCvFrfxvWXUfSeOjPENA', title: 'KUBO AND THE TWO STRINGS', subtitle: 'Kubo y La Búsqueda Del Samurái 2016', buscar: 'Estados Unidos, Charlize Theron, Matthew McConaughey, Ralph Fiennes, Rooney Mara, George Takei, Art Parkinson, Brenda Vaccaro, Martha Higareda, Luis Gerardo Méndez, Mauricio Castillo, Luis Daniel Ramírez, Arturo Mercado, Carlos Segundo, Laura Torres, P3L01, Peliculas Animadas, Animes' }, {
+						    	id: '1rv3gz8e4ICB8OUOtDXxnm-Zopo4ei-Xe', youtubeId: 'FtE9-o6dBEI', buttonId: '1mH3psm7P0bRkClQHrv5xNA', title: 'KUNG FU HUSTLE', subtitle: 'Kung Fu Sion (2004)', buscar: 'Hong Kong, China, Stephen Chow, Yuen Wah, Yuen Qiu, Danny Chan, Leung Siu lung, Lam Chi chung, Tin Kai man, Xing Yu P3L01, Películas' }, {
+						    	id: '13YAEhIwhAXgB3-nGiMXpWqy5Jy76oEhl', youtubeId: 'NRc-ze7Wrxw', buttonId: '1hreNYnhKl33ZOuHVKnNKPw', title: 'KUNG FU PANDA', subtitle: 'Kung Fu Panda (2008)', buscar: 'Estados Unidos, Angelina Jolie, Jack Black, Jackie Chan, Dustin Hoffman, Ian McShane, Seth Rogen, Lucy Liu, David Cross, James Hong, Michael Clarke Duncan, Dan Fogler, Kyle Gass, Omar Chaparro, Pedro Armendáriz Jr., Sergio Corona, Alfonso Obregón, Herman López, Ricardo Tejedo, Érica Edwards, P3L01, Peliculas Animadas, Animes' }, {
+						    	id: '1zEZHTsS39qn79p5OUETeYNA5nPuvUxOq', youtubeId: 'YCBxlwmUhmQ', buttonId: '15VxYOls-HeyLY0AHtPWVNQ', title: 'KUNG FU PANDA 2', subtitle: 'Kung Fu Panda 2 (2011)', buscar: 'Estados Unidos, Angelina Jolie, Jack Black, Gary Oldman, Jackie Chan, Dustin Hoffman, Seth Rogen, Jean Claude Van Damme, Lucy Liu, David Cross, Michelle Yeoh, Danny McBride, Omar Chaparro, Verónica Jaspeado, Édgar Vivar, Herman López, Ricardo Tejedo, Arturo Mercado, Raúl Anaya, Sergio Corona, Idzi Dutkiewicz, Moisés Iván Mora, Héctor Lee, P3L01, Peliculas Animadas, Animes' }, {
+						    	id: '1hwRNRGEFEE9mm1IXSOrxfpJxxfGNgjHl', youtubeId: '10r9ozshGVE', buttonId: '1abn0lNht0avI_M2ia_-U7g', title: 'KUNG FU PANDA 3', subtitle: 'Kung Fu Panda 3 (2016)', buscar: 'Estados Unidos, China, Angelina Jolie, Jack Black, Bryan Cranston, Jackie Chan, Dustin Hoffman, J.K. Simmons, Kate Hudson, Seth Rogen, Lucy Liu, David Cross, James Hong, Jean Claude Van Damme, Danny McBride, Wayne Knight, Héctor Bonilla, Omar Chaparro, Manuel Valdés, El Loco Valdés, Sergio Corona, Verónica Jaspeado, Moisés Iván Mora, Ricardo Tejedo, Gerardo Reyero, Arturo Mercado, P3L01, Peliculas Animadas, Animes' },
+    					] }, {
 						
 						
 						
@@ -937,14 +894,14 @@
 								id: '1q5JwH9LhZvW-quTWFiwcSmBHUqod20M6', youtubeId: 'hAbogzTZUIU', buttonId: '1NQHZ9VaWGIFqTlvyHA7xdw', title: 'LADY GAGA', subtitle: 'ArtRave The Artpop Ball Live from Paris (2014)', buscar: 'Estados Unidos Francia, Lady Gaga, Michael Bearden, Brockett Parsons, Tim Stewart, Ricky Tillo, Lanar Brantley, (Kern), George McCurdy, (Spanky), Asiel Hardison, Graham Breitenstein, Montana Efaw, Sloan Taylor Rabinor, Kevin Frey, Ian McKenzie, Victor Rojas, S3R01, Concierto' }, {
 								id: '19gJJJMfULG9B5JXURaoMGsbAeF5yAn6n', youtubeId: 'IW6LngKk9f4', buttonId: '1wnsRpvxKwqi2EhALYfPLxw', title: 'LADY GAGA', subtitle: 'Gaga Chromatica Ball (2024)', buscar: 'Estados Unidos, Lady Gaga, Madison Alvarado, Morgan Geraghty, Jake Gonzales, Trinity Inay, Christopher Jensen, Alaïa Kutyrey, Grayson McGuire, Ian McKenzie, Michael Pesko, Kyle Ponte, Victor Rojas, Jazz Smith, Joseph Szekula, Lindsay Taylor, China Taylor, Aisha Yamamoto, Michael Bearden, S3R01, Películas' }, {
 								id: '1LLPVm8UBnssxfR84ZPja_mTfKXBH-U_1', youtubeId: 'S_sy4RzdqE0', buttonId: '15LIHcUd3rQ_-1wL097D63w', title: 'LADY GAGA THE MONSTER BALL TOUR AT MADISON SQUARE GARDEN', subtitle: 'The Monster Ball Tour At Madison Square Garden (2011)', buscar: 'Estados Unidos, Lady Gaga, Laurieann Gibson, Michael Bearden, Brockett Parsons, Tim Stewart, Ricky Tillo, Lanar Brantley, (Kern), George McCurdy, (Spanky), Asiel Hardison, Graham Breitenstein, Montana Efaw, Sloan Taylor Rabinor, Kevin Frey, Ian McKenzie, Victor Rojas, S3R01, Conciertos' }, {
-							id: '1qy6rO6yTDcxaECXCiMyLfOZGlRbrQfrC', youtubeId: 'YSkr2dyTDmo', buttonId: '13hE6zUNZPeZkEfkMkEqwIw', title: 'LA FAMILIA PEREZ', subtitle: 'La Familia Pérez (1949)', buscar: 'México, Joaquín Pardavé, Sara García, Carmen Montejo, Prudencia Griffel, Carlos Orellana, Julio Villarreal, Florencio Castelló, Roberto Cañedo, Luis Aguilar, P3L01, Películas' }, {
-							id: '1MC31Ihfp5roN6AH2j3rWrXbr6gCrVWw6', youtubeId: 'O5AKZEwBHAo', buttonId: '1QYsl_dCM10SkbP3anjE-SA', title: 'LA MARCA DEL ZORRILLO', subtitle: 'La Marca Del Zorrillo (1952)', buscar: 'México, Germán Valdés, (Tin Tan), Silvia Pinal, Joaquín Pardavé, Óscar Pulido, Marcelo Chávez, Juan García, Eulalio González, (Piporro), Tito Novaro, Famie Kaufman, (Vitola), Wolf Ruvinskis, José Jasso, P3L01, Películas' }, {
-							id: '1LVVXK1wK0bxRowMqw2mDsH_KZkA5SCiD', youtubeId: 'AoTpRAMazXU', buttonId: '1At1-X7xkZ9c2Yp4zlhogrg', title: 'LARVA PENDANT', subtitle: 'Larva Pendiente (2022)', buscar: 'Corea del Sur, Hong Bum ki, Kang Si hyun, Ahn Young mi, Kim Ji hoon, Lee Seon ju, P3L01, Peliculas Animadas, Animes' }, {
-							id: '1Lod15SUSUAzpzWUeDfhPYxkpunyApkfC', youtubeId: 'AivrQ39fd9U', buttonId: '1M-M5-BvYJTXuX_61SJmm8Q', title: 'LAS AVENTURAS DE PITO PEREZ', subtitle: 'Las Aventuras De Pito Pérez (1957)', buscar: 'Germán Valdés, (Tin Tan), Evangelina Elizondo, Ana Luisa Peluffo, Andrés Soler, Marcelo Chávez, Fanny Schiller, Joaquín García Vargas, Lidia Maldonado, P3L01, Películas' }, {
-							id: '1Dkyxp62ik4-i0H-B2CQP7YJy-2PoekUC', youtubeId: 'p5yCB8JS__U', buttonId: '13PnrTd51FNZsdVkUWYNWvw', title: 'LAS LOCURAS DE TIN TAN', subtitle: 'Las Locuras De Tin Tan (1952)', buscar: 'México, Germán Valdés, (Tin Tan), Juan García, Famie Kaufman, (Vitola), Oscar Pulido, Lilia del Valle, Joaquín García Vargas, Marcelo Chávez, Wolf Ruvinskis, José Jasso, P3L01, Películas' }, {
-							id: '19KmS7sbIsvONMLlOxrDkJtBbhs6N04LS', youtubeId: '7-WUfQwodE8', buttonId: '1TcDXC-LE0G_FPWzf2n-Cbw', title: 'LAST LOOKS', subtitle: 'La Ultima Mirada (2022)', buscar: 'Estados Unidos, Reino Unido, Mel Gibson, Charlie Hunnam, Morena Baccarin, Rupert Friend, Dominic Monaghan, Clancy Brown, Paul Ben Victor, Jacob Scipio, Method Man, Lucy Fry, P3L01, Películas' }, {
-							id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'gDIGpVm-5S0', buttonId: '1FaHh6hGZWlIArEziTSy2zA', title: 'LEAVING NEVERLAND PART 1', subtitle: 'Leaving Neverland (2019)', buscar: 'Reino Unido, Estados Unidos, Wade Robson, James Safechuck, Joy Robson, Dan Reed, Chantal Robson, Stephanie Safechuck, P3L01, Documentales' }, {
-							id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'wl_crHywKgA', buttonId: '1XiLuUq7g1ypLIQer6O08cw', title: 'LEAVING NEVERLAND PART 2', subtitle: 'Leaving Neverland 2 (2019)', buscar: 'Reino Unido, Estados Unidos, Wade Robson, James Safechuck, Joy Robson, Dan Reed, Chantal Robson, Stephanie Safechuck, P3L01, Documentales' }, {
+						    	id: '1qy6rO6yTDcxaECXCiMyLfOZGlRbrQfrC', youtubeId: 'YSkr2dyTDmo', buttonId: '13hE6zUNZPeZkEfkMkEqwIw', title: 'LA FAMILIA PEREZ', subtitle: 'La Familia Pérez (1949)', buscar: 'México, Joaquín Pardavé, Sara García, Carmen Montejo, Prudencia Griffel, Carlos Orellana, Julio Villarreal, Florencio Castelló, Roberto Cañedo, Luis Aguilar, P3L01, Películas' }, {
+						    	id: '1MC31Ihfp5roN6AH2j3rWrXbr6gCrVWw6', youtubeId: 'O5AKZEwBHAo', buttonId: '1QYsl_dCM10SkbP3anjE-SA', title: 'LA MARCA DEL ZORRILLO', subtitle: 'La Marca Del Zorrillo (1952)', buscar: 'México, Germán Valdés, (Tin Tan), Silvia Pinal, Joaquín Pardavé, Óscar Pulido, Marcelo Chávez, Juan García, Eulalio González, (Piporro), Tito Novaro, Famie Kaufman, (Vitola), Wolf Ruvinskis, José Jasso, P3L01, Películas' }, {
+						    	id: '1LVVXK1wK0bxRowMqw2mDsH_KZkA5SCiD', youtubeId: 'AoTpRAMazXU', buttonId: '1At1-X7xkZ9c2Yp4zlhogrg', title: 'LARVA PENDANT', subtitle: 'Larva Pendiente (2022)', buscar: 'Corea del Sur, Hong Bum ki, Kang Si hyun, Ahn Young mi, Kim Ji hoon, Lee Seon ju, P3L01, Peliculas Animadas, Animes' }, {
+						    	id: '1Lod15SUSUAzpzWUeDfhPYxkpunyApkfC', youtubeId: 'AivrQ39fd9U', buttonId: '1M-M5-BvYJTXuX_61SJmm8Q', title: 'LAS AVENTURAS DE PITO PEREZ', subtitle: 'Las Aventuras De Pito Pérez (1957)', buscar: 'Germán Valdés, (Tin Tan), Evangelina Elizondo, Ana Luisa Peluffo, Andrés Soler, Marcelo Chávez, Fanny Schiller, Joaquín García Vargas, Lidia Maldonado, P3L01, Películas' }, {
+						    	id: '1Dkyxp62ik4-i0H-B2CQP7YJy-2PoekUC', youtubeId: 'p5yCB8JS__U', buttonId: '13PnrTd51FNZsdVkUWYNWvw', title: 'LAS LOCURAS DE TIN TAN', subtitle: 'Las Locuras De Tin Tan (1952)', buscar: 'México, Germán Valdés, (Tin Tan), Juan García, Famie Kaufman, (Vitola), Oscar Pulido, Lilia del Valle, Joaquín García Vargas, Marcelo Chávez, Wolf Ruvinskis, José Jasso, P3L01, Películas' }, {
+						    	id: '19KmS7sbIsvONMLlOxrDkJtBbhs6N04LS', youtubeId: '7-WUfQwodE8', buttonId: '1TcDXC-LE0G_FPWzf2n-Cbw', title: 'LAST LOOKS', subtitle: 'La Ultima Mirada (2022)', buscar: 'Estados Unidos, Reino Unido, Mel Gibson, Charlie Hunnam, Morena Baccarin, Rupert Friend, Dominic Monaghan, Clancy Brown, Paul Ben Victor, Jacob Scipio, Method Man, Lucy Fry, P3L01, Películas' }, {
+						    	id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'gDIGpVm-5S0', buttonId: '1FaHh6hGZWlIArEziTSy2zA', title: 'LEAVING NEVERLAND PART 1', subtitle: 'Leaving Neverland (2019)', buscar: 'Reino Unido, Estados Unidos, Wade Robson, James Safechuck, Joy Robson, Dan Reed, Chantal Robson, Stephanie Safechuck, P3L01, Documentales' }, {
+						    	id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'wl_crHywKgA', buttonId: '1XiLuUq7g1ypLIQer6O08cw', title: 'LEAVING NEVERLAND PART 2', subtitle: 'Leaving Neverland 2 (2019)', buscar: 'Reino Unido, Estados Unidos, Wade Robson, James Safechuck, Joy Robson, Dan Reed, Chantal Robson, Stephanie Safechuck, P3L01, Documentales' }, {
 							id: '1xT52afYLkBL64offinisf8zCjtWPhQ5I', youtubeId: 'l5Tl6IUfIUQ', buttonId: '1I4r69iCHS0IHZdAvJ0QSPA', title: 'LEGO DISNEY PRINCESS THE CASTLE QUEST', subtitle: 'LEGO Disney Princess Misión En El Castillo (2023)', buscar: 'Estados Unidos, Jodi Benson, Auli\'i Cravalho, Mandy Moore, Annelise Baker, Katie Von Till, Richard White, Nallely Solís, Carmen Sarahí, Ana Cecilia Anzaldúa, Leyla Rangel, Idzi Dutkiewicz, Yotzín Pardo, Arturo Mercado Jr., P3L01, Peliculas Animadas, Animes' }, {
 							id: '1kUeVgMiV7JnNqPHXig0arA0DDr50NyjQ', youtubeId: 'o8yzcW11X0g', buttonId: '1NRvOXU3tWCdVoYs6nuSwQQ', title: 'LEO', subtitle: 'Leo (2023)', buscar: 'Estados Unidos, Adam Sandler, Bill Burr, Cecily Strong, Jason Alexander, Rob Schneider, Allison Strong, Jo Koy, Sadie Sandler, Sunny Sandler, Jackie Sandler, Rubén Cerda, Óscar Flores, Ricardo Tejedo, Carla Castañeda, José Antonio Macías, Yamil Atala, Héctor Lee, Moisés Iván Mora, P3L01, Peliculas Animadas, Animes' }, {
 							id: '1iz0hVAArvioIHCTOFq4n_ATT60T_qAfy', youtubeId: 'e0jYh-uhNvg', buttonId: '15oifq8oBkwkNpgK27V3jqw', title: 'LET IT BE', subtitle: 'Los Beatles Que Así Sea (1970) [Ing T+Esp]', buscar: 'Reino Unido, John Lennon, Paul McCartney, George Harrison, Ringo Starr, Yoko Ono, Billy Preston, Linda McCartney, George Martin, Glyn Johns, Mal Evans, The Beatles, P3L01G, Documentales' }, {
@@ -1033,14 +990,14 @@
 							id: '1mfVkQrEo_InQj60WKd1A1Bf_3cWsWR4J', youtubeId: 'tg1EWlm0YWs', buttonId: '1jFWp4vdYkrlElVUrawpT8A', title: 'NO WAY UP', subtitle: 'Atrapados En Lo Profundo (2024)', buscar: 'Reino Unido, Sophie McIntosh, Will Attenborough, Jeremias Amoore, Manuel Cauchi, Phyllis Logan, Colm Meaney P3L01, Películas' }, {
 							id: '1zTDx8cHmOc3GSQttmM76v4RYM27GPnVJ', youtubeId: 'jJCIloASiok', buttonId: '1N6Lnrb7YEZS7Tz3NPAXu8A', title: 'NOTHING TO LOSE', subtitle: 'Nada Que Perder (1997)', buscar: 'Estados Unidos, Martin Lawrence, Tim Robbins, John C. McGinley, Giancarlo Esposito, Kelly Preston, Michael McKean, Rebecca Gayheart, Susan Barnes, Samaria Graham, Kim Chan, Irma P. Hall, Marcus T. Paulk, Steve Oedekerk, Penny Bae Bridges, P3L01G, Películas' }, {
 							id: '1cElauy2kyi17qqYTT3S9mc8j8pFYwZ00', youtubeId: '2dGUyKN1Zxk', buttonId: '18svKllUUJF8zG0WNt7EcGA', title: 'NOW YOU SEE ME NOW YOU DON\'T', subtitle: 'Los Ilusionistas 3 (2025)', buscar: 'Estados Unidos, Jesse Eisenberg, Woody Harrelson, Dave Franco, Isla Fisher, Mark Ruffalo, Morgan Freeman, Rosamund Pike, Justice Smith, Dominic Sessa, Ariana Greenblatt, Lizzy Caplan, Daniel Radcliffe, Thabang Molaba, Richard Coyle, Danielle Macdonald, Alexandra Shipp, S3R01, Películas' },
-					] }, {
+						] }, {
 						
 						
 						
 						
 						
-						id: 'PelículasO', data: [ {
-							id: '1gXPYwGpu8OtNkmAcPq4F8gf2cxhhuuYN', youtubeId: 'J84YC-PIb28', buttonId: '1lruD0tKiJRge1AkE9I_Lvw', title: 'OBAN STAR RACERS (T1)', subtitle: 'Corredores Estelares De Oban (C1-26) (2006)', buscar: 'Francia, Japón, Chiara Zanni, Samuel Vincent, Ron Halder, Kirby Morrow, Matt Hill, Michael Dobson, Paul Dobson, Brian Drummond, Cathy Weseluck, Jillian Michaels, Alondra Hidalgo, José Gilberto Vilchis, Octavio Rojas, Roberto Gutiérrez, Arturo Mercado Jr., Alfonso Obregón, Gabriel Basurto, Patricia Azan, S3R01, Series Animadas, Animes' }, {
+						id: 'PelículasO', data: [ { 
+								id: '1gXPYwGpu8OtNkmAcPq4F8gf2cxhhuuYN', youtubeId: 'J84YC-PIb28', buttonId: '1lruD0tKiJRge1AkE9I_Lvw', title: 'OBAN STAR RACERS (T1)', subtitle: 'Corredores Estelares De Oban (C1-26) (2006)', buscar: 'Francia, Japón, Chiara Zanni, Samuel Vincent, Ron Halder, Kirby Morrow, Matt Hill, Michael Dobson, Paul Dobson, Brian Drummond, Cathy Weseluck, Jillian Michaels, Alondra Hidalgo, José Gilberto Vilchis, Octavio Rojas, Roberto Gutiérrez, Arturo Mercado Jr., Alfonso Obregón, Gabriel Basurto, Patricia Azan, S3R01, Series Animadas, Animes' }, {
 							id: '1QH_0PkbmVKl_XGW2_F3Lskok6sEghMIm', youtubeId: 'wQYLp_iftiI', buttonId: '1eGODJFKS86xql-v50dGHqQ', title: 'OH RAMONA', subtitle: 'Oh, Ramona! (2019)', buscar: 'Rumania, Bogdan Iancu, Aggy K. Adams, Holly Horne, Basil Eidenbenz, Andrei Ciobanu, Smiley, Laura Giurcanu, P3L01, Películas' }, {
 							id: '1rpBd7Thbf956qUU53hF1u81zIXuRlj-D', youtubeId: 'WoiZD_KxLvk', buttonId: '1xQhTzHE8-XF4OC41ZDil7w', title: 'OMEN III THE FINAL CONFLICT', subtitle: 'La Profecía 3 El Conflicto Final (1981)', buscar: 'Reino Unido, Estados Unidos, Sam Neill, Rossano Brazzi, Lisa Harrow, Don Gordon, Barnard Archard, Leueen Willoughby, Marc Boyle, Tommy Duggan, Kay Anderson, Richard Oldfield, P3L01G, Películas' }, {
 							id: '1Uou0XjS8FikEAa4Ldb463L54duxsFoXV', youtubeId: 'PCf03KXyzIg', buttonId: '19GTM21kAPPDtCTQtF0F0UA', title: 'ONCE UPON A DEADPOOL', subtitle: 'Había Una Vez Un Deadpool (2018)', buscar: 'Estados Unidos, Ryan Reynolds, Fred Savage, Josh Brolin, Morena Baccarin, Julian Dennison, Zazie Beetz, T.J. Miller, Leslie Uggams, Karan Soni, Brianna Hildebrand, P3L01, Películas' }, {
@@ -1156,14 +1113,14 @@
 							id: '1TbngwafsFR2I9A6eIs2UgIow-Lr-UNdG', youtubeId: 'JMiFsFQcFLE', buttonId: '1Z9hwk7CV58QTrKCeiTuS4Q', title: 'RUSH HOUR', subtitle: 'Una Pareja Explosiva (1998)', buscar: 'Estados Unidos, Jackie Chan, Chris Tucker, Tom Wilkinson, Philip Baker Hall, Mark Rolston, Tzi Ma, Rex Linn, Ken Leung, Chris Penn, Elizabeth Peña, Clifton Powell, Julia Hsu, Barry Shabaka Henley, P3L01, Películas' }, {
 							id: '1u3VmAtv70yS7wONFZkH56c1VH7gw5mSv', youtubeId: 'SCTzYY95Aw4', buttonId: '1FOqD4iLSi-EmStNnCd8-sg', title: 'RUSH HOUR 2', subtitle: 'Una Pareja Explosiva 2 (2001)', buscar: 'Estados Unidos, Jackie Chan, Chris Tucker, Zhang Ziyi, Roselyn Sánchez, John Lone, Alan King, Harris Yulin, Kenneth Tsang, Don Cheadle, Jeremy Piven, P3L01, Películas' }, {
 							id: '1L53hxR6t1bqa-5Q_6q4pAO1mpVaC_Egm', youtubeId: 'FRDRWXfQyJE', buttonId: '1Lm_1yJ1LCoAT8ny08KoGoQ', title: 'RUSH HOUR 3', subtitle: 'Una Pareja Explosiva 3 (2007)', buscar: 'Estados Unidos, Jackie Chan, Chris Tucker, Hiroyuki Sanada, Yvan Attal, Noémie Lenoir, Max von Sydow, Tzi Ma, Zhang Jingchu, Youki Kudoh, Henry O, Philip Baker Hall, Sun Ming Ming, Dana Ivey, P3L01, Películas' },
-					] }, { 
+						] }, {
 						
 						
 						
 						
 						
-						id: 'PelículasS', data: [ {
-							id: '1vRpfJYNDs-tdcaqKlo5jvPFbeOu3LdSe', youtubeId: 'uzZ-TAyHxLo', buttonId: '1toS_kNUkZQ-eUuoenTJOJw', title: 'SAIKANO SHE THE ULTIMATE WEAPON (OVAS)', subtitle: 'Saikano: Mi Novia, el Arma Definitiva (OVAS)', buscar: 'Japón, S3R01, Peliculas Animadas, Animes' }, {
+						id: 'PelículasS', data: [ { 
+								id: '1vRpfJYNDs-tdcaqKlo5jvPFbeOu3LdSe', youtubeId: 'uzZ-TAyHxLo', buttonId: '1toS_kNUkZQ-eUuoenTJOJw', title: 'SAIKANO SHE THE ULTIMATE WEAPON (OVAS)', subtitle: 'Saikano: Mi Novia, el Arma Definitiva (OVAS)', buscar: 'Japón, S3R01, Peliculas Animadas, Animes' }, {
 							id: '1m6eNFmXXQFtLDVMivdoD3MXzY836auOv', youtubeId: '2p790KjDWes', buttonId: '1R5m09gHxfhUYGdeC1CAhyA', title: 'SAIKANO SHE THE ULTIMATE WEAPON (T1)', subtitle: 'Saikano: Mi Novia, el Arma Definitiva (C1-13) (2002)', buscar: 'Japón, S3R01, Series Animadas, Animes' }, {
 							id: '1dKwtzk_SQol9ocnpkUGvYths3bQRvuMd', youtubeId: 'ZU2pGCkdFXs', buttonId: '1LlA1OKYBrs1SxlQuv4nfNw', title: 'SAINT SEIYA EVIL GODDESS ERIS', subtitle: 'Los Caballeros Del Zodiaco La Reencarnación De Eris (1987)', buscar: 'Japón, P3L01, Peliculas Animadas, Animes' }, {
 							id: '13jN91_3ygB8GyLAKA8DlDO6jXrd9TABo', youtubeId: 'wvgh8KB8xCs', buttonId: '1WEka5uwi2GcPBPNFOc_cvg', title: 'SAINT SEIYA SAINTIA SHO (T1)', subtitle: 'Los Caballeros del Zodiaco: Saintia Shō (C1-10) (2018)', buscar: 'Japón, S3R01, Series Animadas, Animes' }, {
@@ -1579,198 +1536,188 @@
 					
 						id: 'PelículasZ', data: [ {
 							id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' },
-					] }, {
-					
-					
-					
-					
-					
-					
-					
-				id: 'PelículasNEW', data: [ {
-							id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' }, {
-							id: '1WONs90wzZyzgtXiWCSw99Dh7havHdsDj', youtubeId: 'R87R7HA4zNc', buttonId: '1tns4NV6qqqkjaYzReAL88w', title: 'YA VEREMOS', subtitle: 'Ya Veremos (2018)', buscar: 'México, Mauricio Ochmann, Fernanda Castillo, Emiliano Aramayo, Erik Hayser, Rodrigo Cachero, Ariel Levy, Paco Rueda, Katsuhiro Honda, Estefanía Ahumada, Ignacio López Tarso, Isela Vega, Lupita Sandoval, Lorena Velázquez, Martín Altomaro, Arturo Barba, P3L01, Películas' }, {
-							id: '1vm-Z65jtoTdz1tv-NnqxBxjBOGu6Pimo', youtubeId: 'ucmnTmYpGhI', buttonId: '1hjwcoKc3OHkVkxwGsGXUJQ', title: 'YOU DON\'T MESS WITH THE ZOHAN', subtitle: 'No Te Metas Con Zohan (2008)', buscar: 'Estados Unidos, Adam Sandler, John Turturro, Emmanuelle Chriqui, Nick Swardson, Lainie Kazan, Ido Mosseri, Rob Schneider, Michael Buffer, Mariah Carey, John Paul DeJoria, Dave Matthews, Shelley Berman, Chris Rock, Kevin Nealon, Henry Winkler, Charlotte Rae, Alec Mapa, Barry Livingston, Sayed Badreya, Daoud Heidami, Michael Leland, Rick Gifford, Daniel Zausmer, P3L01, Películas' }, {
-							id: '1_yE7hVLqoHzqDgarNLtLxaCn1B85pjmJ', youtubeId: 'rR1SzALB8IU', buttonId: '1Koqs_H1WYvt_KEfkV2bF0Q', title: 'YOU, ME AND DUPREE', subtitle: 'Tú, Yo y Ahora Dupree (2006)', buscar: 'Estados Unidos, Owen Wilson, Kate Hudson, Matt Dillon, Michael Douglas, Seth Rogen, Amanda Detmer, Ralph Ting, Todd Stashwick, Bill Hader, Lance Armstrong, Jason Winer, Sidney S. Liufau, S3R01, Películas' }, {
-							id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' }, {
-							id: '1rTAl_poAbKMI4luIquq3wwJbaj4kus-O', youtubeId: 'kDruG4M5R2A', buttonId: '11WmZEnddfYcY7gGeHH3Fuw', title: 'YUYU HAKUSHO (T1)', subtitle: 'YuYu Hakusho (C1-5) (2023)', buscar: 'Japón, Takumi Kitamura, Jun Shison, Kanata Hongo, Shuhei Uesugi, Sei Shiraisi, Keita Machida, Meiko Kaji, Kenichi Takito, Goro Inagaki, Ayumi Ito, Kotone Furukawa, Go Ayano, Hiroya Shimizu, S3R01, Series' }, {
-							id: '1XNsjGaz99I-CdSrGtaoINVsoru8b3CPx', youtubeId: 'swH_nJUC5bo', buttonId: '1Mqg8zoJASdZA5FaSL6RNKw', title: 'YUYU HAKUSHO GHOST FILES (T1)', subtitle: 'Yu Yu Hakusho Los Guerreros Del Más Allá (C1-26) (1985)', buscar: 'Japón, S3R01, Series Animadas, Animes' }, {
-							id: '1XNsjGaz99I-CdSrGtaoINVsoru8b3CPx', youtubeId: 'swH_nJUC5bo', buttonId: '1uj92cp3edtiDG0jiMKBLIw', title: 'YUYU HAKUSHO GHOST FILES (T2)', subtitle: 'Yu Yu Hakusho Los Guerreros Del Más Allá (C27-66) (1985)', buscar: 'Japón, S3R01, Series Animadas, Animes' }, {
-							id: '1XNsjGaz99I-CdSrGtaoINVsoru8b3CPx', youtubeId: 'swH_nJUC5bo', buttonId: '11AB5etpXyyWZF-dqNMuAkQ', title: 'YUYU HAKUSHO GHOST FILES (T3)', subtitle: 'Yu Yu Hakusho Los Guerreros Del Más Allá (C67-95) (1985)', buscar: 'Japón, S3R01, Series Animadas, Animes' }, 
-					] },	
-					
-					
-					
-				] }, // Fin de todos los Videos
-
-
-
-
-
-			
-				
-				
-				
-			
-				
-				
-				
-			
-				
-				
-				
-			
-			
-				
-				
-				
-			
-			};
-			
-        const allImages = Object.values(allData).flatMap(category =>
-            category.carousels.flatMap(carousel => carousel.data)
-        );
-
-        const youtubePlayer = document.getElementById('youtube-player');
-        const imageSearchInput = document.getElementById('image-search-input');
-        const originalCarouselsSection = document.getElementById('original-carousels-section');
-        const searchResultsSection = document.getElementById('search-results-section');
-        const searchResultsCarousel = document.getElementById('search-results-carousel');
-        const actionButton = document.getElementById('action-button');
-        const newsModal = document.getElementById('news-modal');
-        const newsList = document.getElementById('news-list');
-        let currentButtonRedirectUrl = 'https://www.terabox.com/';
-
-        function loadYouTubeVideo(videoId) {
-            if (videoId) {
-                youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&showinfo=0&rel=0`;
+						] }, 
+                    
+                    
+                    
+                    
+                ] },
+            
+            
+            
+            
+            
+            
+            
+            
+            'estrenos': {
+                title: 'MAS RECIENTE',
+                carousels: [
+                    {
+                        id: 'NovedadesZ',
+                        data: [
+                            { id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', subtitle2: 'Nicholas Rowe, Alan Cox', buscar: 'Misterio' },
+                            { id: '1rl1Bfa1p7E0kn6b_F4rWn5WGCj561PfB', youtubeId: 'DehZCccV1GM', buttonId: '1tiG-Go7Vz-lkcvtD8ilKJg', title: 'WOLF\'S RAIN', subtitle: 'Wolf\'s Rain (2003)', subtitle2: '26 Episodios - Animación', buscar: 'Anime' },
+                            { id: '1Za_Wv8_hY_3BkHk7qfI56tlCuZUO9Czk', youtubeId: 'VNxwlx6etXI', buttonId: '1m7sgF2clbvOOCnCTbj7Wog', title: 'X-MEN', subtitle: 'X-Men (2000)', subtitle2: 'Hugh Jackman, Patrick Stewart', buscar: 'Marvel' }
+                        ]
+                    }
+                ]
             }
-        }
-
-        function selectItem(imageData) {
-            loadYouTubeVideo(imageData.youtubeId);
-            currentButtonRedirectUrl = imageData.buttonId ? `https://1024terabox.com/s/${imageData.buttonId}` : (imageData.buttonUrl || 'https://www.terabox.com/');
-            closeNewsModal();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function closeNewsModal() {
-            newsModal.classList.remove('active');
-        }
-
-        function showRecentAdds() {
-            // Obtenemos los carruseles de la categoría 'pelíc'
-            const carousels = allData['pelíc'].carousels;
-            // El último carrusel de la lista
-            const lastCarousel = carousels[carousels.length - 1];
-            const recentItems = lastCarousel.data;
-            
-            newsList.innerHTML = '';
-            
-            recentItems.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "flex items-center gap-3 bg-gray-800 p-3 rounded-xl border border-gray-700 hover:border-blue-500 transition cursor-pointer group";
-                div.onclick = () => selectItem(item);
-                div.innerHTML = `
-                    <img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-20 h-12 object-cover rounded-lg shadow-lg group-hover:scale-105 transition" />
-                    <div class="flex-1 min-w-0">
-                        <p class="text-white text-sm font-bold truncate">${item.title}</p>
-                        <p class="text-gray-400 text-xs truncate">${item.subtitle || ''}</p>
-                    </div>
-                    <span class="bg-blue-600/20 text-blue-400 text-[10px] font-bold px-2 py-1 rounded border border-blue-600/30">VER AHORA</span>
-                `;
-                newsList.appendChild(div);
-            });
-            
-            newsModal.classList.add('active');
-        }
-
-        function initializeCarousel(carouselElement, images, imageClassName) {
-            carouselElement.innerHTML = '';
-            images.forEach((imageData) => {
-                const imgContainer = document.createElement('div');
-                imgContainer.className = 'w-full flex-shrink-0 flex flex-col items-center flex-grow';
-                imgContainer.onclick = () => selectItem(imageData);
-                
-                const img = document.createElement('img');
-                img.src = imageData.id ? `https://drive.google.com/thumbnail?id=${imageData.id}` : imageData.src;
-                img.className = imageClassName;
-                img.loading = "lazy";
-                
-                const titleP = document.createElement('p');
-                titleP.className = 'titulo text-center text-sm font-medium text-gray-200 mt-1';
-                titleP.innerHTML = `<span>${imageData.title || ''}</span>`;
-                
-                imgContainer.appendChild(img);
-                imgContainer.appendChild(titleP);
-                carouselElement.appendChild(imgContainer);
-            });
-            activarMarquee();
-        }
-
-        function filterImages(query) {
-            const normalizedQuery = query.toLowerCase().trim();
-            if (normalizedQuery.length > 0) {
-                const filtered = allImages.filter(img => 
-                    (img.title || '').toLowerCase().includes(normalizedQuery) || 
-                    (img.subtitle || '').toLowerCase().includes(normalizedQuery) ||
-                    (img.buscar || '').toLowerCase().includes(normalizedQuery)
-                );
-                searchResultsSection.classList.remove('hidden');
-                initializeCarousel(searchResultsCarousel, filtered, 'carousel-image');
-            } else {
-                searchResultsSection.classList.add('hidden');
-            }
-        }
-
-        imageSearchInput.addEventListener('keyup', () => filterImages(imageSearchInput.value));
-        document.getElementById('clear-search').onclick = () => {
-            imageSearchInput.value = '';
-            filterImages('');
         };
 
-        actionButton.onclick = () => window.open(currentButtonRedirectUrl, '_blank');
+        const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
+        const youtubePlayer = document.getElementById('youtube-player');
+        const searchInput = document.getElementById('image-search-input');
+        const actionButton = document.getElementById('action-button');
+        let currentUrl = 'https://www.terabox.com/';
 
-        function activarMarquee() {
-            document.querySelectorAll('.titulo').forEach(el => {
-                const span = el.querySelector('span');
-                if (span && span.scrollWidth > el.clientWidth) el.classList.add('marquee');
-            });
+        function cleanText(text) {
+            if (!text) return "";
+            return text.toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") 
+                .replace(/['"“”‘’„'´`.,:;¡!¿?()\[\]{}\-_=+\\\/|]/g, "") 
+                .replace(/\s+/g, "") 
+                .trim();
         }
 
-        const carouselKeys = Object.keys(allData);
-        let loadedCount = 0;
-        function loadNext() {
-            if (loadedCount >= carouselKeys.length) return;
-            const key = carouselKeys[loadedCount];
-            const cat = allData[key];
-            const div = document.createElement('div');
-            div.className = 'mb-4';
-            if (cat.title) div.innerHTML = `<h2 class="text-xl font-semibold mb-2 text-white px-2">${cat.title}</h2>`;
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => filterData(e.target.value), 300);
+        });
+
+        function filterData(query) {
+            const q = cleanText(query);
+            const searchModal = document.getElementById('search-modal');
+            const resultsGrid = document.getElementById('search-results-grid');
+            const emptyMsg = document.getElementById('search-empty');
             
-            cat.carousels.forEach(c => {
-                const wrap = document.createElement('div');
-                wrap.className = 'carousel-wrapper';
-                div.appendChild(wrap);
-                initializeCarousel(wrap, c.data, 'carousel-image');
-            });
-            originalCarouselsSection.appendChild(div);
-            loadedCount++;
-            if (loadedCount < carouselKeys.length) {
-                new IntersectionObserver((e, o) => {
-                    if (e[0].isIntersecting) { loadNext(); o.disconnect(); }
-                }).observe(div);
+            if (q.length > 0) {
+                const results = allImages.filter(i => 
+                    cleanText(i.title).includes(q) || 
+                    cleanText(i.buscar).includes(q) || 
+                    cleanText(i.subtitle).includes(q) ||
+                    (i.subtitle2 && cleanText(i.subtitle2).includes(q))
+                );
+                
+                searchModal.classList.add('active');
+                resultsGrid.innerHTML = '';
+                
+                if (results.length > 0) {
+                    emptyMsg.classList.add('hidden');
+                    results.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'cursor-pointer group flex flex-col gap-1.5';
+                        div.onclick = () => selectMedia(item);
+                        div.innerHTML = `
+                            <div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video">
+                                <img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/>
+                            </div>
+                            <div class="min-w-0">
+                                <h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4>
+                                <p class="text-[8px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p>
+                            </div>
+                        `;
+                        resultsGrid.appendChild(div);
+                    });
+                } else {
+                    emptyMsg.classList.remove('hidden');
+                }
+            } else {
+                closeSearchModal();
             }
         }
 
+        function selectMedia(item) {
+            youtubePlayer.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0`;
+            currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
+            localStorage.setItem('lastViewed', JSON.stringify(item));
+            closeNewsModal();
+            closeSearchModal();
+            // Eliminado: window.scrollTo para evitar que la pantalla suba al hacer clic
+        }
+
+        // Nueva función centralizada para limpiar el input
+        function clearSearchInput() {
+            searchInput.value = '';
+        }
+
+        function closeSearchModal() { 
+            document.getElementById('search-modal').classList.remove('active');
+            clearSearchInput(); // Limpia la barra al cerrar con la X o seleccionar algo
+        }
+
+        function renderCarousel(container, data) {
+            container.innerHTML = '';
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'carousel-item group cursor-pointer';
+                div.onclick = () => selectMedia(item);
+                div.innerHTML = `
+                    <div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video">
+                        <div class="skeleton absolute inset-0"></div>
+                        <img src="https://drive.google.com/thumbnail?id=${item.id}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/>
+                    </div>
+                    <div class="mt-1.5 px-0.5 min-w-0">
+                        <h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4>
+                        <p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p>
+                        <p class="text-[8px] text-gray-600 truncate leading-tight mt-0.5 italic">${item.subtitle2 || ''}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showNews() {
+            const estrenos = allData.estrenos.carousels[0].data;
+            const list = document.getElementById('news-list');
+            list.innerHTML = '';
+            estrenos.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition";
+                div.onclick = () => selectMedia(item);
+                div.innerHTML = `
+                    <img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-12 h-8 object-cover rounded shadow" />
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white text-[10px] font-black truncate uppercase leading-tight">${item.title}</p>
+                        <p class="text-gray-400 text-[8px] truncate mt-0.5">${item.subtitle}</p>
+                        <p class="text-gray-600 text-[7px] truncate mt-0.5 italic">${item.subtitle2 || ''}</p>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+            document.getElementById('news-modal').classList.add('active');
+        }
+
+        function closeNewsModal() { document.getElementById('news-modal').classList.remove('active'); }
+
         document.addEventListener('DOMContentLoaded', () => {
-            loadNext();
-            if (allImages.length > 0) selectItem(allImages[0]);
-            // Mostrar modal de novedades después de 1.5 segundos
-            setTimeout(showRecentAdds, 1500);
+            const section = document.getElementById('original-carousels-section');
+            Object.values(allData).forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'mb-5';
+                div.innerHTML = `<h2 class="text-xs font-black mb-1.5 px-2 text-gray-400 border-l-2 border-blue-600 ml-1 uppercase tracking-tight">&nbsp;${cat.title}</h2>`;
+                cat.carousels.forEach(c => {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'carousel-wrapper';
+                    renderCarousel(wrap, c.data);
+                    div.appendChild(wrap);
+                });
+                section.appendChild(div);
+            });
+            const saved = localStorage.getItem('lastViewed');
+            if (saved) {
+                const item = JSON.parse(saved);
+                youtubePlayer.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=0&rel=0`;
+                currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
+            } else if (allImages.length > 0) {
+                selectMedia(allImages[0]);
+            }
+            setTimeout(showNews, 1500);
         });
 
-        document.getElementById('paypal-fixed-button').onclick = () => window.open('https://paypal.me/marzam', '_blank');
+        actionButton.onclick = () => window.open(currentUrl, '_blank');
     </script>
 </body>
 </html>
