@@ -79,11 +79,15 @@
 
         .carousel-item {
             flex: 0 0 75%;
+            width: 75%;
             scroll-snap-align: center;
         }
 
         @media (min-width: 640px) {
-            .carousel-item { flex: 0 0 35%; }
+            .carousel-item { 
+                flex: 0 0 35%; 
+                width: 35%;
+            }
         }
 
         .modal-overlay {
@@ -95,8 +99,8 @@
             backdrop-filter: blur(12px);
         }
         .modal-overlay.active { 
-        			display: flex; 
-        	}
+            display: flex; 
+        }
     </style>
 </head>
 
@@ -132,9 +136,9 @@
     <div id="search-modal" class="modal-overlay items-center justify-center p-4">
         <div class="glass w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
             <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
-                <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-5 bg-blue-600 rounded-full"></span>
-                    <h3 class="text-sm font-black text-white uppercase tracking-widest">Resultados</h3>
+                <div class="flex items-center gap-2 overflow-hidden">
+                    <span class="w-1.5 h-5 bg-blue-600 rounded-full flex-shrink-0"></span>
+                    <h3 id="search-modal-title" class="text-sm font-black text-white uppercase tracking-widest truncate">Resultados</h3>
                 </div>
                 <button onclick="closeSearchModal()" class="p-2 hover:bg-white/10 rounded-full transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
@@ -157,9 +161,14 @@
             </div>
             
             <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
+                <!-- BOTÓN PANTALLA COMPLETA -->
+                <button onclick="toggleFullScreen()" class="p-1.5 text-blue-400 hover:text-white transition-colors" title="Pantalla Completa">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+
                 <div class="relative flex-grow">
                     <input type="text" id="image-search-input" placeholder="Buscar..." class="w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
-                    <button id="clear-search" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5">
+                    <button id="clear-search" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5" onclick="closeSearchModal()">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="3"/></svg>
                     </button>
                 </div>
@@ -175,16 +184,32 @@
         <div id="original-carousels-section" class="space-y-6"></div>
     </div>
     
+    <!-- PAYPAL BOTÓN FIJO -->
+    <button onclick="window.open('https://paypal.me/marzam', '_blank')" class="fixed bottom-6 right-6 z-50 glass p-1 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl">
+        <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="PayPal" class="h-8 w-auto" />
+    </button>
+    
     <script>
+    // FUNCIÓN PANTALLA COMPLETA
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.warn(`No se pudo activar pantalla completa: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
     const allData = {
     	'pelíc': {
     		title: 'SERIES Y PELICULAS', carousels: [ {
     				    id: 'Películas1', data: [ {
-    						    id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'f-V6dYUkneU', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (E1-24) (2011)', subtitle2: '', buscar: 'P3L02' }, {
-								id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'f-V6dYUkneU', buttonId: '1NMnadZbXj1VY-mo-t29mKA', title: '2 BROKE GIRLS (T2)', subtitle: '2 Chicas Quebradas (E25-48) (2012)', buscar: 'P3L02' }, {
-								id: '1PBkqE-Ep65ZFTKtg99BIu1XamhxtvHUi', youtubeId: 'hcZKctOWsgI', buttonId: '1nqfcrwkASrg9WL5P6lwE9Q', title: '2 HEARTS', subtitle: '2 Corazones', buscar: 'BUSCAR' }, {
-								id: '1PGedNQMvDyaT92Eq6HKBWRW7qc5gfv9p', youtubeId: 'heOcee5ZB9c', buttonId: '1sa2uaoP8BBVf45XYfkokIA', title: '3 METROS SOBRE EL CIELO', subtitle: '3 Metros Sobre El Cielo', buscar: 'BUSCAR' }, {
-								id: '1PLaHz9wNJnzyiUvogP6BTvHDL2B1hpas', youtubeId: 'XV3sbY51Xcc', buttonId: '1dGe9ocJmxjmJXMAi-MB5UQ', title: '5 DAYS OF WAR', subtitle: '5 Días De Guerra (2011)', buscar: 'P3L01' }, {
+    						    id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'f-V6dYUkneU', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (2011-16)', subtitle2: 'T6E138', buscar: 'P3L02' }, {
+    						    id: '1r2ppXqrB2LELgK6aGbOuwbFCywdzkfL-', youtubeId: 'hcZKctOWsgI', buttonId: '1nqfcrwkASrg9WL5P6lwE9Q', title: '2 HEARTS', subtitle: '2 Corazones (2020)', buscar: 'BUSCAR' }, {
+								id: '1YHx1xAuPOkPIX4T_lrwlJyFc4mkF-CSS', youtubeId: 'heOcee5ZB9c', buttonId: '1sa2uaoP8BBVf45XYfkokIA', title: '3 METROS SOBRE EL CIELO', subtitle: '3 Metros Sobre El Cielo', buscar: 'BUSCAR' }, {
+								id: '1AnU5oOEuF3veMdxO7PkbBfZI7nAzkewe', youtubeId: 'XV3sbY51Xcc', buttonId: '1dGe9ocJmxjmJXMAi-MB5UQ', title: '5 DAYS OF WAR', subtitle: '5 Días De Guerra (2011)', buscar: 'P3L01' }, {
 								id: '1PmtwCUg1XBUblAYT1n7wNFv9BPC5i9H8', youtubeId: 'eBvrywQtNUg', buttonId: '1xnKcrNhE-sKYSXnURcaghQ', title: '9', subtitle: 'Numero 9 (2009)', buscar: 'P3L02' }, {
 								id: '1Q3X6RMmBm_ZRhhGU0Ed4d2St79E1AADo', youtubeId: '3ZaMk8t98H8', buttonId: '1e4csR_FUe1QUpFK0OHn7lA', title: '10x10', subtitle: 'Una Verdad Inquietante (2018)', buscar: 'P3L01' }, {
 								id: '1R-bjO0YF6Y5KrR_OmwY-SZAu4eL1-KWt', youtubeId: '9PoWpBQq2PY', buttonId: '15q7LzWGZSMmxW8OUaAFSmQ', title: '12 ROUNDS 2 RELOADED', subtitle: '12 Asaltos 2 Recargado (2013)', buscar: 'P3L01' }, {
@@ -221,8 +246,8 @@
 								id: '1kcUiu07F0RsUnH5BQSZj6zXl4zwQcBH5', youtubeId: 'aJzcWbh-Awo', buttonId: '1T6HDOa6IfxlNdxin0P2kMg', title: 'A MILLION WAYS TO DIE IN THE WEST', subtitle: 'Mil Maneras De Morder El Polvo (2014)', buscar: 'S3R01' }, {
 								id: '1X4IdFyoB0p1lFojGSgKkx_iZ221iGryi', youtubeId: 'Xzwt7do8Mpk', buttonId: '1h-Hcx6W2lDDpvL3f30OHsw', title: 'A NIGHTMARE ON ELM STREET', subtitle: 'Pesadilla En La Calle Del Infierno', buscar: 'S3R03G' }, {
 								id: '1ZHWU_z9WBw3eN-J2xnRDwIFomjphUdHX', youtubeId: 'ZuYoEtEI_go', buttonId: '1xvK2BUvITVlUs9l2eegksg', title: 'A NIGHTMARE ON ELM STREET', subtitle: 'Pesadilla En La Calle Elm', buscar: 'S3R03G' }, {
-								id: '1XLDEsVe4QV5rpHpzgc9jAFnDN3P9eHCe', youtubeId: 'oy-hgBu1h0w', buttonId: '1tR9UlOXQS8dWNIFsokIipQ', title: 'A NIGHTMARE ON ELM STREET DREAM WARRIORS', subtitle: 'Pesadilla En La Calle Del Infierno Guerreros del Sueño', buscar: 'S3R03G' }, {
-								id: '1YZIy9MFnZl1oSmCOg2_P94keB37XDUvA', youtubeId: 'Vm5PYf1WqMQ', buttonId: '1dSSsNZWNn9c3PeXv-IPiVA', title: 'A NIGHTMARE ON ELM STREET FREDDY\'S DEAD THE FINAL NIGHTMARE', subtitle: 'Pesadilla En La Calle Del Infierno Freddy Ha Muerto', buscar: 'S3R03G' }, {
+								id: '1XLDEsVe4QV5rpHpzgc9jAFnDN3P9eHCe', youtubeId: 'oy-hgBu1h0w', buttonId: '1tR9UlOXQS8dWNIFsokIipQ', title: 'A NIGHTMARE ON ELM STREET: DREAM WARRIORS', subtitle: 'Pesadilla En La Calle Del Infierno: Guerreros del Sueño', buscar: 'S3R03G' }, {
+								id: '1q09qV-q7zVdcqztZWgOLYqDXIXHdod1Z', youtubeId: 'Vm5PYf1WqMQ', buttonId: '1dSSsNZWNn9c3PeXv-IPiVA', title: 'A NIGHTMARE ON ELM STREET: FREDDY\'S DEAD, THE FINAL NIGHTMARE', subtitle: 'Pesadilla En La Calle Del Infierno: Freddy Ha Muerto', buscar: 'S3R03G' }, {
 								id: '1X8xvuoTuKfG8T1xs-s0IgSDSuHkqtW8n', youtubeId: 'Vt6ktXKie7M', buttonId: '1ZI5qX7xS9dwpo8MIm4pMaQ', title: 'A NIGHTMARE ON ELM STREET FREDDY\'S REVENGE', subtitle: 'Pesadilla En La Calle Del Infierno La Venganza De Freddy', buscar: 'SER03G' }, {
 								id: '1YNj89NzbDKy6lbaJ1Sk0BV4RUNy29B5R', youtubeId: 'jSj7LPQ8U1A', buttonId: '1S8-WNI8TLA4h8waPzoaWeQ', title: 'A NIGHTMARE ON ELM STREET THE DREAM CHILD', subtitle: 'Pesadilla En La Calle Del Infierno El Niño De Los Sueños', buscar: 'S3R03G' }, {
 								id: '1yupG_5fGOCcdhw5V-cSdSdA7_6B4CLVN', youtubeId: '2m1a2Pt8Vjw', buttonId: '1j21O9aqAeIpTiQSNoPht0A', title: 'A NIGHTMARE ON ELM STREET THE DREAM MASTER', subtitle: 'Pesadilla En La Calle Del Infierno El Amo del Sueño', buscar: 'S3R03G' }, {
@@ -1565,10 +1590,15 @@
             }
         };
 
+
+
+
+
         const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
         const youtubePlayer = document.getElementById('youtube-player');
         const searchInput = document.getElementById('image-search-input');
         const actionButton = document.getElementById('action-button');
+        const searchModalTitle = document.getElementById('search-modal-title');
         let currentUrl = 'https://www.terabox.com/';
 
         function cleanText(text) {
@@ -1576,15 +1606,16 @@
             return text.toLowerCase()
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "") 
-                .replace(/['"“”‘’„'´`.,:;¡!¿?()\[\]{}\-_=+\\\/|]/g, "") 
-                .replace(/\s+/g, "") 
+                .replace(/[^a-z0-9]/g, "") 
                 .trim();
         }
 
         let searchTimeout;
         searchInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            searchModalTitle.textContent = val.toUpperCase() || "RESULTADOS";
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => filterData(e.target.value), 300);
+            searchTimeout = setTimeout(() => filterData(val), 300);
         });
 
         function filterData(query) {
@@ -1635,17 +1666,15 @@
             localStorage.setItem('lastViewed', JSON.stringify(item));
             closeNewsModal();
             closeSearchModal();
-            // Eliminado: window.scrollTo para evitar que la pantalla suba al hacer clic
         }
 
-        // Nueva función centralizada para limpiar el input
         function clearSearchInput() {
             searchInput.value = '';
         }
 
         function closeSearchModal() { 
             document.getElementById('search-modal').classList.remove('active');
-            clearSearchInput(); // Limpia la barra al cerrar con la X o seleccionar algo
+            clearSearchInput(); 
         }
 
         function renderCarousel(container, data) {
@@ -1662,7 +1691,7 @@
                     <div class="mt-1.5 px-0.5 min-w-0">
                         <h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4>
                         <p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p>
-                        <p class="text-[8px] text-gray-600 truncate leading-tight mt-0.5 italic">${item.subtitle2 || ''}</p>
+                        <p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5 italic">${item.subtitle2 || ''}</p>
                     </div>
                 `;
                 container.appendChild(div);
@@ -1682,7 +1711,6 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-white text-[10px] font-black truncate uppercase leading-tight">${item.title}</p>
                         <p class="text-gray-400 text-[8px] truncate mt-0.5">${item.subtitle}</p>
-                        <p class="text-gray-600 text-[7px] truncate mt-0.5 italic">${item.subtitle2 || ''}</p>
                     </div>
                 `;
                 list.appendChild(div);
