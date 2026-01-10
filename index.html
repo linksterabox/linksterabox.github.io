@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang= "es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERABOX LINKS | PREMIUM</title>
+    <meta charset= "UTF-8">
+    <meta name= "viewport" content= "width= device-width, initial-scale= 1.0">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href= "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta http-equiv= "Content-Security-Policy" content= "upgrade-insecure-requests">
+    
+    
+    <title>
+    	TERABOX LINKS | PREMIUM
+    </title>
+    
+    <script src= "https://cdn.tailwindcss.com">
+    </script>
+    
+    <link href= "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel= "stylesheet">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -14,10 +22,10 @@
             --primary: #2563eb;
             --bg-dark: #0a0a0c;
             --card-bg: rgba(20, 20, 25, 0.95);
-            --whatsapp-green: #25d366;
-            --whatsapp-dark: #075e54;
+            --wa-color: #25d366;
+            --wa-dark: #128c7e;
+            --wa-bg-chat: #e5ddd5;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
@@ -112,141 +120,278 @@
         
         
         
-        /* Botón Flotante */
-        .whatsapp-launcher {
-            position: fixed;
-            bottom: 30px;
-            left: 20px;
-            background-color: var(--whatsapp-green);
-            color: black;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transition: transform 0.3s;
-        }
+       
+       
+       
+       
+       
+       
+       
+       
 
-        .whatsapp-launcher:hover { transform: scale(1.1); }
+  /* Animación de Pulso */
+  @keyframes wa-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+  }
 
-        /* Ventana de Chat */
-        .chat-card {
-            position: fixed;
-            bottom: 350px;
-            left: 25px;
-            width: 320px;
-            background: transparent;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            color: black;
-            display: none; /* Oculta al inicio */
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
+  /* Botón Lanzador */
+  .wa-launcher {
+    position: fixed;
+    bottom: 25px;
+    left: 20px;
+    background-color: var(--wa-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 10000;
+    animation: wa-pulse 2s infinite;
+    transition: transform 0.3s ease;
+  }
+  .wa-launcher:active { transform: scale(0.9); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  /* Globo de Notificación (Opcion 2) */
+  .wa-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #ff0000;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+  }
 
-        .chat-header {
-            background-color: var(--whatsapp-dark);
-            color: black;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+  /* Ventana de Chat */
+  .wa-card {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    display: none;
+    flex-direction: column;
+    z-index: 10001;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    transition: bottom 0.3s ease;
+  }
 
-        .chat-header img { width: 40px; border-radius: 50%; }
+  /* Cabecera */
+  .wa-header {
+    background: var(--wa-dark);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wa-header-info b { display: block; font-size: 15px; }
+  .wa-header-info span { font-size: 12px; opacity: 0.9; }
+  .wa-close { cursor: pointer; font-size: 24px; line-height: 1; }
 
-        .chat-body {
-            padding: 20px;
-            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); /* Fondo oficial WS */
-            background-color: #e5ddd5;
-        }
+  /* Cuerpo del Chat */
+  .wa-body {
+    padding: 15px;
+    background: var(--wa-bg-chat);
+    max-height: 250px;
+    min-height: 100px;
+    overflow-y: auto;
+  }
+  .wa-bubble {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+    border-top-left-radius: 0;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .typing { font-style: italic; color: #777; font-size: 13px; display: none; }
 
-        .bubble {
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            color: black;
-            position: relative;
-            max-width: 80%;
-        }
+  /* Footer e Input */
+  .wa-footer {
+    padding: 10px;
+    background: #f0f0f0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .wa-input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 10px 15px;
+    outline: none;
+    font-size: 16px; /* Evita zoom en iOS */
+    color: black;
+  }
+  .wa-send {
+    background: var(--wa-color);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .wa-send:hover { background: var(--wa-dark); }
 
-        .chat-footer {
-            padding: 10px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .chat-footer input {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            outline: none;
-        }
-
-        .btn-send {
-            background: var(--whatsapp-green);
-            border: none;
-            color: black;
-            padding: 8px 12px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
+  /* Ajustes Móviles */
+  @media (max-width: 480px) {
+    .wa-card { width: 90%; right: 5%; bottom: 85px; }
+  }
     </style>
 </head>
 
-<body class="select-none">
+<body class= "select-none">
 
-<div class="whatsapp-launcher" onclick="toggleChat()">
-    <i class="fab fa-whatsapp"></i>
+<div class= "wa-card" id= "waCard">
+  <div class= "wa-header">
+    <div class= "wa-header-info">
+      <b>Soporte en línea</b>
+      <span id= "waStatus">
+      	Cargando estado...
+      </span>
+    </div>
+    <div class= "wa-close" onclick= "toggleChat()">
+    	×
+    </div>
+  </div>
+  <div class= "wa-body">
+    <div id= "waTyping" class= "wa-bubble typing">
+    	Escribiendo...
+    </div>
+    <div id= "waMsg" class= "wa-bubble" style= "display:none;"><b><center><span id= "pageTarget">esta página
+      </span></center></b><br>Hola! 👋 Dime Que Película o Serie Quieres Ver y Muy Pronto Aquí La Podras Descargar
+    </div>
+  </div>
+  <div class="wa-footer">
+    <input type="text" id="waInput" class="wa-input" placeholder="Escribe tu mensaje ...">
+    <button class= "wa-send" onclick= "sendToWhatsapp()">
+      <svg width= "20" height= "20" viewBox= "0 0 24 24" fill= "white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
 </div>
 
-<div class="chat-card" id="chatCard">
-    <div class="chat-header">
-        <img src="https://via.placeholder.com/40" alt="Soporte">
-        <div>
-            <strong>Soporte en Línea</strong>
-            <div style="font-size: 11px;">Responde al instante</div>
-        </div>
-    </div>
-    <div class="chat-body">
-        <div class="bubble">
-            ¡Hola! 👋 ¿Que Película o Serie Quieres Descargar De TERABOX?
-        </div>
-    </div>
-    <div class="chat-footer">
-        <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
-        <button class="btn-send" onclick="sendToWhatsapp()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-    </div>
+<div class="wa-launcher" id="waLauncher" onclick="toggleChat()">
+  <div class="wa-badge" id="waBadge">1</div>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="32" alt="WhatsApp">
 </div>
 
 <script>
-    function toggleChat() {
-        const chat = document.getElementById('chatCard');
-        chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
-    }
+  // CONFIGURACIÓN
+  const MI_TELEFONO = "525621896010";
+  const HORA_INICIO = 9;  // 9 AM
+  const HORA_FIN = 18;    // 6 PM
 
-    function sendToWhatsapp() {
-        const phone = "525621896010";
-        const input = document.getElementById('userInput').value;
-        const message = encodeURIComponent(input || "Hola, necesito información");
-        
-        const url = `https://wa.me/${phone}?text=${message}`;
-        window.open(url, '_blank');
+  // Elementos
+  const card = document.getElementById('waCard');
+  const input = document.getElementById('waInput');
+  const badge = document.getElementById('waBadge');
+  const launcher = document.getElementById('waLauncher');
+
+  // 1. Verificar Horario y Página al cargar
+  window.onload = () => {
+    const hours = new Date().getHours();
+    const status = document.getElementById('waStatus');
+    document.getElementById('pageTarget').innerText = document.title;
+
+    if (hours >= HORA_INICIO && hours < HORA_FIN) {
+      status.innerText = "● En línea";
+      status.style.color = "#4ffb8a";
+    } else {
+      status.innerText = "○ Fuera de linea";
+      status.style.color = "#ffb347";
     }
+  };
+
+  // 2. Abrir/Cerrar Chat
+  function toggleChat() {
+    if (card.style.display === 'flex') {
+      card.style.display = 'none';
+      launcher.style.animation = "wa-pulse 3s infinite";
+    } else {
+      card.style.display = 'flex';
+      launcher.style.animation = "none";
+      badge.style.display = 'none';
+      
+      // Efecto "Escribiendo..."
+      const typing = document.getElementById('waTyping');
+      const msg = document.getElementById('waMsg');
+      if (msg.style.display === 'none') {
+        typing.style.display = 'block';
+        setTimeout(() => {
+          typing.style.display = 'none';
+          msg.style.display = 'block';
+        }, 1200);
+      }
+      input.focus();
+    }
+  }
+
+  // 3. ENVIAR MENSAJE (Botón y Tecla Enter)
+  function sendToWhatsapp() {
+    const text = input.value.trim();
+    if (text !== "") {
+      const contexto = `(Desde: ${document.title}) `;
+      const url = `https://wa.me/${MI_TELEFONO}?text=${encodeURIComponent(contexto + text)}`;
+      window.open(url, '_blank');
+      input.value = "";
+      toggleChat();
+    }
+  }
+
+  // Escuchar tecla Enter
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendToWhatsapp();
+  });
+
+  // 4. Corrección para teclado móvil (Visual Viewport)
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => {
+      const vh = window.visualViewport.height;
+      const windowH = window.innerHeight;
+      const keyboardHeight = windowH - vh;
+      
+      if (keyboardHeight > 50) {
+        card.style.bottom = (keyboardHeight + 10) + 'px';
+      } else {
+        card.style.bottom = '90px';
+      }
+    });
+  }
 </script>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
