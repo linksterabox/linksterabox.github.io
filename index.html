@@ -31,7 +31,6 @@
             margin: 0;
             padding: 0;
             scroll-behavior: smooth;
-            /* Evitar scroll horizontal y asegurar que ocupe todo el alto */
             overflow-x: hidden;
             min-height: 100vh;
         }
@@ -168,9 +167,10 @@
     border: 2px solid white;
   }
 
+  /* Ajuste para que el chat siempre aparezca arriba para evitar el teclado */
   .wa-card {
     position: fixed;
-    bottom: 90px;
+    top: 20px; /* Posición arriba */
     right: 20px;
     width: 320px;
     background: white;
@@ -181,7 +181,7 @@
     z-index: 10001;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     overflow: hidden;
-    transition: bottom 0.3s ease;
+    transition: top 0.3s ease;
   }
 
   .wa-header {
@@ -199,8 +199,8 @@
   .wa-body {
     padding: 15px;
     background: var(--wa-bg-chat);
-    max-height: 250px;
-    min-height: 100px;
+    max-height: 200px; /* Reducido un poco para mayor visibilidad */
+    min-height: 80px;
     overflow-y: auto;
   }
   .wa-bubble {
@@ -247,7 +247,11 @@
   .wa-send:hover { background: var(--wa-dark); }
 
   @media (max-width: 480px) {
-    .wa-card { width: 90%; right: 5%; bottom: 85px; }
+    .wa-card { 
+        width: 90%; 
+        right: 5%; 
+        top: 10px; /* Más pegado al tope en móviles */
+    }
   }
     </style>
 </head>
@@ -399,15 +403,14 @@
         }
     }
 
-    // Función para forzar pantalla completa
     function toggleFullScreen() {
         const docEl = document.documentElement;
         if (!document.fullscreenElement) {
             if (docEl.requestFullscreen) {
                 docEl.requestFullscreen().catch(e => console.warn(e));
-            } else if (docEl.webkitRequestFullscreen) { /* Safari */
+            } else if (docEl.webkitRequestFullscreen) {
                 docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) { /* IE11 */
+            } else if (docEl.msRequestFullscreen) {
                 docEl.msRequestFullscreen();
             }
         } else {
@@ -417,7 +420,6 @@
         }
     }
 
-    // Forzar pantalla completa en el primer clic del usuario
     document.body.addEventListener('click', function() {
         if (!document.fullscreenElement) {
             toggleFullScreen();
@@ -439,35 +441,14 @@
 						    	id: '1WONs90wzZyzgtXiWCSw99Dh7havHdsDj', youtubeId: 'R87R7HA4zNc', buttonId: '1tns4NV6qqqkjaYzReAL88w', title: 'YA VEREMOS', subtitle: 'Ya Veremos (2018)', buscar: 'México, Mauricio Ochmann, Fernanda Castillo, Emiliano Aramayo, Erik Hayser, Rodrigo Cachero, Ariel Levy, Paco Rueda, Katsuhiro Honda, Estefanía Ahumada, Ignacio López Tarso, Isela Vega, Lupita Sandoval, Lorena Velázquez, Martín Altomaro, Arturo Barba, P3L01, Películas' }, {
 						    	id: '1vm-Z65jtoTdz1tv-NnqxBxjBOGu6Pimo', youtubeId: 'ucmnTmYpGhI', buttonId: '1hjwcoKc3OHkVkxwGsGXUJQ', title: 'YOU DON\'T MESS WITH THE ZOHAN', subtitle: 'No Te Metas Con Zohan (2008)', buscar: 'Estados Unidos, Adam Sandler, John Turturro, Emmanuelle Chriqui, Nick Swardson, Lainie Kazan, Ido Mosseri, Rob Schneider, Michael Buffer, Mariah Carey, John Paul DeJoria, Dave Matthews, Shelley Berman, Chris Rock, Kevin Nealon, Henry Winkler, Charlotte Rae, Alec Mapa, Barry Livingston, Sayed Badreya, Daoud Heidami, Michael Leland, Rick Gifford, Daniel Zausmer, P3L01, Películas' }, {
 						    	id: '1_yE7hVLqoHzqDgarNLtLxaCn1B85pjmJ', youtubeId: 'rR1SzALB8IU', buttonId: '1Koqs_H1WYvt_KEfkV2bF0Q', title: 'YOU, ME AND DUPREE', subtitle: 'Tú, Yo y Ahora Dupree (2006)', buscar: 'Estados Unidos, Owen Wilson, Kate Hudson, Matt Dillon, Michael Douglas, Seth Rogen, Amanda Detmer, Ralph Ting, Todd Stashwick, Bill Hader, Lance Armstrong, Jason Winer, Sidney S. Liufau, S3R01, Películas' }, {
-						    	id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' }, {
-						    	id: '1rTAl_poAbKMI4luIquq3wwJbaj4kus-O', youtubeId: 'kDruG4M5R2A', buttonId: '11WmZEnddfYcY7gGeHH3Fuw', title: 'YUYU HAKUSHO', subtitle: 'YuYu Hakusho (2023)', subtitle2: '1 Temporada 5 Episodios', buscar: 'S3R01' }, {
-						    	id: '1XNsjGaz99I-CdSrGtaoINVsoru8b3CPx', youtubeId: 'swH_nJUC5bo', buttonId: '1mQ3ntU1sJfWDKyEX4AqAmA', title: 'YUYU HAKUSHO GHOST FILES', subtitle: 'Yu Yu Hakusho Los Guerreros Del Más Allá (1992-94)', subtitle2: '4 Temporadas 112 Episodios + 1 OVA', buscar: 'S3R01' }, 
-				    	] }, {
-						id: 'PelículasZ', data: [ {
-						    	id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' },
-						] } 
+						    	id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'f-V6dYUkneU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'P3L01, Películas' }, 
+				    	] }
             ] },
         'estrenos': {
             title: 'MAS RECIENTE', carousels: [ {
                         id: 'Películas2', data: [ {
                         			id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
-                        			id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
-                        			id: '19TnSPSE_CsTNaUVI-dwUr1W6gO2Fdykr', youtubeId: '8FudANSsWNQ', buttonId: '1-JqSGTx1SkG6ujEBhCC5dQ', title: 'FINAL DESTINATION: BLOODLINES', subtitle: 'Destino Final: Linajes (2025)', buscar: 'S3R01G' }, {
-                             id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, P3ROIZG' }, {
-                        	    id: '1J_EFte8kd3WB8KxXRkNgc9Ff-cD61C3O', youtubeId: '5gquha3ICHE', buttonId: '1ZEvaj9VriI5OAFDszLRSbw', title: 'SQUID GAME', subtitle: 'El Juego del Calamar (2021-25)', subtitle2: '3 Temporada 22 Episodios', buscar: 'S3R01' }, {
-                        		id: '1MZkGA1SQonGS-gmz7UOhQbdU9IejkZ_5', youtubeId: 'eotAOKm4l18', buttonId: '1zRA0mxO0XUhmOkN3iEOHQA', title: 'ALIEN: EARTH', subtitle: 'Alien: Planeta Tierra (2025)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3L00' }, {
-                        		id: '1OfVWpDfjOpvAIiiQvOSAas0MGKveZwG7', youtubeId: 'ixVlecN1Jnw', buttonId: '19XZ45pprU0WNrcDaw7kHug', title: 'SOY FRANKELDA', subtitle: 'Soy Frankelda: La Película (2025)', buscar: 'P3L00' }, {
-                        		id: '1oXevdN-mXo1yfTIdwmNJAyMFy8IrQr1c', youtubeId: 'HvTnvWjM5gY', buttonId: '1HCMxOWpc_TGa_xpIRdhdcg', title: 'APOCALYPSE: THE LANDING OF NORMANDY', subtitle: 'Apocalipsis: El desembarco de Normandía (2024)', subtitle2: '1 Temporada 2 Episodios', buscar: 'P3L01' }, {
-                        		id: '1VpcTfi7_JDHYshfA--cUFLl7RihUP2qh', youtubeId: 'YUDbl9qBihk', buttonId: '1V4XOXvy9bTMP9LYgPurF3w', title: 'DRAGON BALL DAIMA', subtitle: 'Dragon Ball Daima (2024)', subtitle2: '1 Temporada 20 Episodios', buscar: 'S3R01' }, {
-                        		id: '1GUENgqotu2IFlgoISlNF_xcw9QlHoq7N', youtubeId: 'pDgBUVuKXKk', buttonId: '13XZAbXJBVaN-Z4nmnBo0Ug', title: '200% WOLF', subtitle: '200% Lobo (2024)', buscar: '100% Wolf, 100 Wolf, S3R01' }, {
-                        		id: '1hwGT-DjHI4hYhwG_qBSta4igNRNh26Iv', youtubeId: '0JCq_hmNhJs', buttonId: '1xH-bwpuGxXhbityu2mPvtQ', title: 'SQUID GAME: THE CHALLENGE', subtitle: 'El Juego Del Calamar: El desafío (2023)', subtitle2: '1 Temporada 10 Episodios', buscar: 'S3R01' }, {
-                        		id: '1FZcdIt-xfUft_wQ8vaLpSzaermzT-YQJ', youtubeId: 'qhCOAuzcQXY', buttonId: '1LcplNXdFGragDK45_h-YKA', title: '500 DIAS DE ESCOBAR', subtitle: '500 Días De Escobar (2023)', buscar: 'P3L01' }, {
-                                id: '137YFz_v6vzB8MJuvbloiJEwUH_lIyWVW', youtubeId: 'lnewrKA6BzY', buttonId: '1GqyJeSYrLOt_8248ABwd2Q', title: 'SUPER DRAGON BALL HEROES', subtitle: 'Super Dragon Ball Heroes (2018)', subtitle2: '5 Temporads 49 Episodios', buscar: 'S3R01' }, {                         
-                                id: '1G2PCA4EyFw22UbeT-0j4xsEzuBerRfHg', youtubeId: 'IEnmRWU1A1Y', buttonId: '13pNNdoN1OwiG6udYNNRToQ', title: 'EL CAPO', subtitle: 'El Capo (2009-14)', subtitle2: '3 Temporadas 223 Episodios', buscar: 'S3R01' }, {
-                                id: '1563acEZ4GTAFo2iHI7_dMnuCY6wwR1CP', youtubeId: 'TP5Dhz1LXUg', buttonId: '1OG3dAIacyMYX4wkiRR1j5w', title: 'COMBAT!', subtitle: 'Combate! (1962)', subtitle2: '1 Temporada 31 Episodios', buscar: 'P3L01' }, {
-                                id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZ' }, {
-                                id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Addams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'P3ROIZ' }, {
-                                id: '1EJDdKM2ao6wLAfG5KXnuVQhm3Uca2v0r', youtubeId: '56601nxTJ2I', buttonId: '1tY0_cFlif5TnnwoiBTQhsA', title: 'THE GREEN HORNET', subtitle: 'El Avispón Verde (1966)', subtitle2: '1 Temporada 26 Episodios', buscar: 'P3ROIZ' },
+                        			id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' },
                         ] }
             ] }
         };
@@ -514,9 +495,7 @@
         }
 
         function selectMedia(item) {
-            // Aseguramos pantalla completa al cambiar video
             if (!document.fullscreenElement) toggleFullScreen();
-            
             if (isPlayerReady && player && player.loadVideoById) {
                 player.loadVideoById({ 'videoId': item.youtubeId });
             } else {
@@ -600,6 +579,7 @@
         if (hours >= HORA_INICIO && hours < HORA_FIN) {
             status.innerText = "● En línea"; status.style.color = "#4ffb8a";
         } else { status.innerText = "○ Fuera de linea"; status.style.color = "#ffb347"; }
+        
         function toggleChat() {
             if (waCard.style.display === 'flex') {
                 waCard.style.display = 'none';
@@ -617,6 +597,7 @@
                 waInput.focus();
             }
         }
+        
         function sendToWhatsapp() {
             const text = waInput.value.trim();
             if (text !== "") {
@@ -625,11 +606,14 @@
                 waInput.value = ""; toggleChat();
             }
         }
+        
         waInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToWhatsapp(); });
+        
+        // El ajuste visualViewport se mantiene por si el SO decide mover el viewport, 
+        // pero con top: 20px ya debería ser inmune al teclado.
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', () => {
-                const keyboardHeight = window.innerHeight - window.visualViewport.height;
-                waCard.style.bottom = keyboardHeight > 50 ? (keyboardHeight + 10) + 'px' : '90px';
+                // No necesitamos cambiar el bottom, ya que usamos 'top'
             });
         }
     </script>
