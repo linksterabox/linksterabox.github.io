@@ -61,7 +61,6 @@
             border-radius: 0 0 12px 12px;
         }
 
-        /* --- NUEVA ANIMACIÓN PARA BOTÓN TERABOX --- */
         @keyframes pulse-yellow {
             0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); transform: scale(1); }
             50% { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); transform: scale(1.05); }
@@ -70,7 +69,7 @@
 
         .btn-playing {
             animation: pulse-yellow 1.5s infinite !important;
-            background-color: #eab308 !important; /* Cambia a amarillo/oro al sonar el video */
+            background-color: #eab308 !important;
             color: black !important;
         }
 
@@ -124,14 +123,12 @@
             display: flex; 
         }
 
-  /* Animación de Pulso Chat */
   @keyframes wa-pulse {
     0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
     70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
     100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
   }
 
-  /* Botón Lanzador */
   .wa-launcher {
     position: fixed;
     bottom: 25px;
@@ -330,7 +327,7 @@
     <div class="sticky-header">
         <div class="max-w-screen-xl mx-auto">
             <div class="video-container overflow-hidden">
-                <iframe id="youtube-player" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <div id="youtube-player" class="absolute inset-0 w-full h-full"></div>
             </div>
             
             <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
@@ -361,9 +358,10 @@
     </button>
     
     <script>
-    // --- LÓGICA YOUTUBE API PARA EL BOTÓN ---
     var player;
-    // Carga la API de YouTube
+    var isPlayerReady = false;
+    var firstVideoId = '';
+
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -371,22 +369,28 @@
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('youtube-player', {
+            height: '100%',
+            width: '100%',
+            videoId: firstVideoId,
+            playerVars: { 'autoplay': 0, 'rel': 0, 'enablejsapi': 1 },
             events: {
+                'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         });
     }
 
+    function onPlayerReady(event) {
+        isPlayerReady = true;
+    }
+
     function onPlayerStateChange(event) {
         const btn = document.getElementById('action-button');
         const btnText = document.getElementById('btn-text');
-        
-        // Estado 1 es "PLAYING" (Reproduciendo)
         if (event.data == YT.PlayerState.PLAYING) {
             btn.classList.add('btn-playing');
             btnText.innerText = "DESCARGA PELICULA COMPLETA AQUI";
         } else {
-            // Si se pausa o termina, vuelve a la normalidad
             btn.classList.remove('btn-playing');
             btnText.innerText = "TERABOX";
         }
@@ -398,9 +402,7 @@
                 console.warn(`No se pudo activar pantalla completa: ${err.message}`);
             });
         } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
+            if (document.exitFullscreen) { document.exitFullscreen(); }
         }
     }
 
@@ -453,9 +455,8 @@
         };
 
         const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
-        const youtubePlayer = document.getElementById('youtube-player');
-        const searchInput = document.getElementById('image-search-input');
         const actionButton = document.getElementById('action-button');
+        const searchInput = document.getElementById('image-search-input');
         const searchModalTitle = document.getElementById('search-modal-title');
         let currentUrl = 'https://www.terabox.com/';
 
@@ -477,11 +478,8 @@
             const searchModal = document.getElementById('search-modal');
             const resultsGrid = document.getElementById('search-results-grid');
             const emptyMsg = document.getElementById('search-empty');
-            
             if (q.length > 0) {
-                const results = allImages.filter(i => 
-                    cleanText(i.title).includes(q) || cleanText(i.buscar).includes(q) || cleanText(i.subtitle).includes(q) || (i.subtitle2 && cleanText(i.subtitle2).includes(q))
-                );
+                const results = allImages.filter(i => cleanText(i.title).includes(q) || cleanText(i.buscar).includes(q) || cleanText(i.subtitle).includes(q) || (i.subtitle2 && cleanText(i.subtitle2).includes(q)));
                 searchModal.classList.add('active');
                 resultsGrid.innerHTML = '';
                 if (results.length > 0) {
@@ -498,8 +496,11 @@
         }
 
         function selectMedia(item) {
-            // SE AGREGA ?enablejsapi=1 A LA URL DEL VIDEO PARA PODER CONTROLARLO
-            youtubePlayer.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0&enablejsapi=1`;
+            if (isPlayerReady && player && player.loadVideoById) {
+                player.loadVideoById({ 'videoId': item.youtubeId });
+            } else {
+                firstVideoId = item.youtubeId;
+            }
             currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
             localStorage.setItem('lastViewed', JSON.stringify(item));
             closeNewsModal();
@@ -543,7 +544,7 @@
             Object.values(allData).forEach(cat => {
                 const div = document.createElement('div');
                 div.className = 'mb-5';
-                div.innerHTML = `<h2 class="text-xs font-black mb-1.5 px-2 text-gray-400 border-l-2 border-blue-600 ml-1 uppercase tracking-tight"> ${cat.title}</h2>`;
+                div.innerHTML = `<h2 class="text-xs font-black mb-1.5 px-2 text-gray-400 border-l-2 border-blue-600 ml-1 uppercase tracking-tight"> ${cat.title}</h2>`;
                 cat.carousels.forEach(c => {
                     const wrap = document.createElement('div');
                     wrap.className = 'carousel-wrapper';
@@ -555,17 +556,16 @@
             const saved = localStorage.getItem('lastViewed');
             if (saved) {
                 const item = JSON.parse(saved);
-                youtubePlayer.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=0&rel=0&enablejsapi=1`;
+                firstVideoId = item.youtubeId;
                 currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
             } else if (allImages.length > 0) {
-                selectMedia(allImages[0]);
+                firstVideoId = allImages[0].youtubeId;
             }
             setTimeout(showNews, 1500);
         });
 
         actionButton.onclick = () => window.open(currentUrl, '_blank');
 
-        // --- LÓGICA CHAT WHATSAPP ---
         const MI_TELEFONO = "525621896010";
         const HORA_INICIO = 9;
         const HORA_FIN = 18;
@@ -573,16 +573,12 @@
         const waInput = document.getElementById('waInput');
         const waLauncher = document.getElementById('waLauncher');
         const waBadge = document.getElementById('waBadge');
-
         const hours = new Date().getHours();
         const status = document.getElementById('waStatus');
         document.getElementById('pageTarget').innerText = document.title;
         if (hours >= HORA_INICIO && hours < HORA_FIN) {
             status.innerText = "● En línea"; status.style.color = "#4ffb8a";
-        } else {
-            status.innerText = "○ Fuera de linea"; status.style.color = "#ffb347";
-        }
-
+        } else { status.innerText = "○ Fuera de linea"; status.style.color = "#ffb347"; }
         function toggleChat() {
             if (waCard.style.display === 'flex') {
                 waCard.style.display = 'none';
@@ -600,7 +596,6 @@
                 waInput.focus();
             }
         }
-
         function sendToWhatsapp() {
             const text = waInput.value.trim();
             if (text !== "") {
@@ -609,7 +604,6 @@
                 waInput.value = ""; toggleChat();
             }
         }
-
         waInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToWhatsapp(); });
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', () => {
