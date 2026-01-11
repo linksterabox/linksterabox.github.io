@@ -31,18 +31,15 @@
             margin: 0;
             padding: 0;
             scroll-behavior: smooth;
-            /* Evitar scroll horizontal y asegurar que ocupe todo el alto */
             overflow-x: hidden;
             min-height: 100vh;
         }
-
         .glass {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
         .sticky-header {
             position: sticky;
             top: 0;
@@ -50,26 +47,30 @@
             background-color: var(--bg-dark);
             padding-bottom: 4px;
         }
-
         .video-container {
             position: relative;
             padding-bottom: 56.25%;
             background: #000;
         }
-
         .controls-bar {
             height: 44px;
             margin-top: -1px;
             border-top: none;
             border-radius: 0 0 12px 12px;
         }
-
         @keyframes pulse-yellow {
-            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); transform: scale(1); }
-            50% { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); transform: scale(1.05); }
-            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1); }
+            0% { 
+            	box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); 
+            	transform: scale(1);
+            }
+            50% {
+            	box-shadow: 0 0 0 12px rgba(234, 179, 8, 0);
+            	transform: scale(1.05);
+            }
+            100% {
+            	box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1);
+            }
         }
-
         .btn-playing {
             animation: pulse-yellow 1.5s infinite !important;
             background-color: #eab308 !important;
@@ -170,7 +171,7 @@
 
   .wa-card {
     position: fixed;
-    top: 30px;
+    top: 20px;
     right: 20px;
     width: 320px;
     background: white;
@@ -181,7 +182,7 @@
     z-index: 10001;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     overflow: hidden;
-    transition: bottom 0.3s ease;
+    transition: top 0.3s ease;
   }
 
   .wa-header {
@@ -199,8 +200,8 @@
   .wa-body {
     padding: 15px;
     background: var(--wa-bg-chat);
-    max-height: 250px;
-    min-height: 100px;
+    max-height: 200px;
+    min-height: 80px;
     overflow-y: auto;
   }
   .wa-bubble {
@@ -247,7 +248,18 @@
   .wa-send:hover { background: var(--wa-dark); }
 
   @media (max-width: 480px) {
-    .wa-card { width: 90%; right: 5%; bottom: 85px; }
+    .wa-card { 
+        width: 90%; 
+        right: 5%; 
+        top: 10px;
+    }
+  }
+
+  #modal-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.05em;
   }
     </style>
 </head>
@@ -309,12 +321,14 @@
 
     <div id="search-modal" class="modal-overlay items-center justify-center p-4">
         <div class="glass w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
-            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
-                <div class="flex items-center gap-2 overflow-hidden">
-                    <span class="w-1.5 h-5 bg-blue-600 rounded-full flex-shrink-0"></span>
-                    <h3 id="search-modal-title" class="text-sm font-black text-white uppercase tracking-widest truncate">Resultados</h3>
+            <div class="p-4 border-b border-white/10 flex items-center gap-3 bg-white/5">
+                <div class="flex items-center gap-2 flex-grow min-w-0">
+                    <span class="w-1.5 h-6 bg-blue-600 rounded-full flex-shrink-0"></span>
+                    <input type="text" id="modal-search-input" 
+                           class="w-full bg-transparent border-none text-sm font-black text-white uppercase tracking-widest outline-none placeholder:text-gray-600"
+                           placeholder="BUSCAR MÁS..." />
                 </div>
-                <button onclick="closeSearchModal()" class="p-2 hover:bg-white/10 rounded-full transition">
+                <button onclick="closeSearchModal()" class="p-2 hover:bg-white/10 rounded-full transition flex-shrink-0">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
                 </button>
             </div>
@@ -399,15 +413,14 @@
         }
     }
 
-    // Función para forzar pantalla completa
     function toggleFullScreen() {
         const docEl = document.documentElement;
         if (!document.fullscreenElement) {
             if (docEl.requestFullscreen) {
                 docEl.requestFullscreen().catch(e => console.warn(e));
-            } else if (docEl.webkitRequestFullscreen) { /* Safari */
+            } else if (docEl.webkitRequestFullscreen) {
                 docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) { /* IE11 */
+            } else if (docEl.msRequestFullscreen) {
                 docEl.msRequestFullscreen();
             }
         } else {
@@ -417,12 +430,22 @@
         }
     }
 
-    // Forzar pantalla completa en el primer clic del usuario
     document.body.addEventListener('click', function() {
         if (!document.fullscreenElement) {
             toggleFullScreen();
         }
     }, { once: false });
+
+    /**
+     * Función para obtener un valor aleatorio si el parámetro es un Array.
+     * Ejemplo de uso en data: id: ['id1', 'id2'] o youtubeId: ['yt1', 'yt2']
+     */
+    function getRandomValue(val) {
+        if (Array.isArray(val)) {
+            return val[Math.floor(Math.random() * val.length)];
+        }
+        return val;
+    }
     const allData = {
     	'pelíc': {
     		title: 'SERIES Y PELICULAS', carousels: [ {
@@ -642,7 +665,7 @@
 								id: '1GdRX63ShncvtOKE1A-Iy4bO9WhHjx3cA', youtubeId: 'dL6_G1z6ymw', buttonId: '13154PV_AyjIqX27PXrnMyg', title: 'BORAT CULTURAL LEARNINGS OF AMERICA FOR MAKE BENEFIT GLORIOUS NATION OF KAZAKHSTAN', subtitle: 'Borat El Segundo Mejor Reportero Del Glorioso País Kazajistán Viaja a América (2006)', buscar: 'S3R01' }, {
 								id: '1EMOMbnR5HkkySBXwHrfHkfCGEeqMUxWl', youtubeId: 'b4V4LjpYn38', buttonId: '1RZKWq5D1ZO1f_RGE7dVcmg', title: 'BORN ON THE FOURTH OF JULY', subtitle: 'Nacido El Cuatro De Julio (1994)', buscar: 'P3L01' }, {
 								id: '1PvjqOGDRPUahDZ1cslX2bNghS8wGamXq', youtubeId: 'f01m6yqSQ-I', buttonId: '1RZKWq5D1ZO1f_RGE7dVcmg', title: 'BOSCO', subtitle: 'Bosco', buscar: 'P3L02' }, {
-								id: '1dBloWhP6lAirfD86uzknAvK8QgMf8Vpp', youtubeId: 'RGBiwDguDY4', buttonId: '1-bOHAMqdA_uWW_2pX8_tNg', title: 'BRIDE OF CHUCKY', subtitle: 'La Novia De Chucky (1998)', buscar: 'Child\'s Play, Chucky El Muñeco Diabólico, P3L01' }, {
+								id: '1dBloWhP6lAirfD86uzknAvK8QgMf8Vpp', youtubeId: 'RGBiwDguDY4', buttonId: '1-bOHAMqdA_uWW_2pX8_tNg', title: 'BRIDE OF CHUCKY', subtitle: 'La Novia De Chucky (1998)', buscar: 'Child\'s Play, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, Chucky El Muñeco Diabólico, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
 								id: '1JcTFO7u0JMKAn0Pd1audDjVLTBqKvQ9S', youtubeId: 'BvIj2H1ne0k', buttonId: '16EZS08SD0YM33GJvyfreRw', title: 'BROTHERS', subtitle: 'Hermanos (2009)', buscar: 'P3L01' }, {
 								id: '1I8Kv377EGPvT4UUOEf1Ya_2C7atQCe5R', youtubeId: 'fe-luzrqWSk', buttonId: '1dZu15LVCKV91DVmk0MLeXA', title: 'BRUCE ALMIGHTY', subtitle: 'Todo Poderoso', buscar: 'BUSCAR' }, {
 								id: '1ux-IwaXL5yISuxJVUW8GlNZo9xKb58LR', youtubeId: 'V-daIHTY4NQ', buttonId: '1MIeVe_JmaUsZRrX-M3Y8lw', title: 'BUFFY THE VAMPIRE SLAYER', subtitle: 'Buffy La Caza Vampiros (1992)', buscar: 'P3L01G,' }, {
@@ -680,10 +703,10 @@
 								id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
 								id: '1qB7aMNPceSVqZHn3jKf2GtdFKQaa7LCo', youtubeId: 'c7ptH4YsMM4', buttonId: '1xD3JmEphGScA4mlxFtnDBw', title: 'CHICKEN LITTLE', subtitle: 'Chicken Little (2005)', buscar: 'P3L02' }, {
 								id: '19pI5vEDUZLhGTeaGe8lioTZyDNtd8A8N', youtubeId: 'AEOfT7hUcDs', buttonId: '1hXGpvdLloclofqrrP04kSA', title: 'CHICKEN RUN', subtitle: 'Pollitos En Fuga (2000)', buscar: 'P3L01' }, {
-								id: '1OHlXCWGYHybtKqtlRej55xl-qJL2kzul', youtubeId: 'qDbMsaJjp3c', buttonId: '1WaF7Wtn_oKkV2NATjQOvRA', title: 'CHILD\’S PLAY', subtitle: 'Chucky El Muñeco Diabólico (1988)', buscar: 'P3L01' }, {
-								id: '1RSyY0Geo1Ies2K47VrEmTsLOybvv5ANT', youtubeId: '1A_YOUfPJpg', buttonId: '1Tp1CpHWctzaP5h5ysK94zg', title: 'CHILD\’S PLAY', subtitle: 'Chucky El Muñeco Diabólico (2019)', buscar: 'P3L01' }, {
-								id: '1ajiYHJyyX80A5p-N5hR7qPBKQy87_HwI', youtubeId: 'QQ578YDz-sQ', buttonId: '14K6P7Sc1vLaAWOonjzoSIA', title: 'CHILD\’S PLAY 2', subtitle: 'Chucky El Muñeco Diabólico 2 (1990)', buscar: 'P3L01' }, {
-								id: '17ZSgtRnHAtEKQ6oI4yw2vZ2ydGiUZa7u', youtubeId: 'CQGEYF3XkY0', buttonId: '19mYnC9sQUWRFtJ7H7D1qMA', title: 'CHILD\’S PLAY 3', subtitle: 'Chucky El Muñeco Diabólico 3 (1991)', buscar: 'P3L01' }, {
+								id: '1OHlXCWGYHybtKqtlRej55xl-qJL2kzul', youtubeId: 'qDbMsaJjp3c', buttonId: '1WaF7Wtn_oKkV2NATjQOvRA', title: 'CHILD\’S PLAY', subtitle: 'Chucky El Muñeco Diabólico (1988)', buscar: 'Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, La novia de chucky, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
+								id: '1RSyY0Geo1Ies2K47VrEmTsLOybvv5ANT', youtubeId: '1A_YOUfPJpg', buttonId: '1Tp1CpHWctzaP5h5ysK94zg', title: 'CHILD\’S PLAY', subtitle: 'Chucky El Muñeco Diabólico (2019)', buscar: 'Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, La novia de chucky, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
+								id: '1ajiYHJyyX80A5p-N5hR7qPBKQy87_HwI', youtubeId: 'QQ578YDz-sQ', buttonId: '14K6P7Sc1vLaAWOonjzoSIA', title: 'CHILD\’S PLAY 2', subtitle: 'Chucky El Muñeco Diabólico 2 (1990)', buscar: 'Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, La novia de chucky, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
+								id: '17ZSgtRnHAtEKQ6oI4yw2vZ2ydGiUZa7u', youtubeId: 'CQGEYF3XkY0', buttonId: '19mYnC9sQUWRFtJ7H7D1qMA', title: 'CHILD\’S PLAY 3', subtitle: 'Chucky El Muñeco Diabólico 3 (1991)', buscar: 'Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, La novia de chucky, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
 								id: '1Hnv2Y6onk-w7fRrgFGFxA_tQnk3wUnte', youtubeId: 'VhZBGuh7uu4', buttonId: '1feUJHyqtn15YKHRj_NfYEQ', title: 'CHINAS', subtitle: 'Chinas (2023)', buscar: 'P3L02' }, {
 								id: '1Qro_eW2v41pcokAGx-ib61LLN6TMzy8i', youtubeId: 'IY_X9-La8CE', buttonId: '1LsJSL1MTO8zpetJDW0E5Ig', title: 'CINDERELLA', subtitle: 'La Cenicienta (2015)', buscar: 'P3L02' }, {
 								id: '1q4JXJyYxv7SM6ntCiB9wABY-SqIN5v-A', youtubeId: 'O813BSLAasQ', buttonId: '1X0BdqgN39nYi1NriyrvtMg', title: 'CINDERELLA\'S REVENGE', subtitle: 'La Venganza De Cenicienta (2024)', buscar: 'P3L01G' }, {
@@ -708,8 +731,8 @@
 								id: '13fKTeGvkSYHQIdR-YrQXSRj-MeKCan9w', youtubeId: 'S0PXMi9_yf8', buttonId: '1LGZ2vCno1mAG_hWEpFWo9Q', title: 'CRIMINAL RECORD', subtitle: 'Historial Delictivo (2024) (1T8E) [Ing T+Esp]', subtitle2: 'Serie 1 Temporada 8 Episodios', buscar: 'P3L01G' }, {
 								id: '1K1YO4aBmkmoonOLrwOCNvjhId2BVKKC1', youtubeId: 'Esjc0rPj3K4', buttonId: '1JdwcmeLsW180kDtbaIBHaw', title: 'CUBE', subtitle: 'El Cubo (1997)', buscar: 'P3L02' }, {
 								id: '1crYz1B45X9q8vRptUf3iJknMYLJwoayX', youtubeId: 'AqKpA_3KQRc', buttonId: '1ZOGIcHam7kWz2bpk-rZndw', title: 'CULT MASSACRE: ONE DAY IN JONESTOWN', subtitle: 'Jonestown: Masacre en la secta (2024)', subtitle2: '1 Temporada 3 Episodios', buscar: 'P3ROIZG' }, {
-								id: '1gschrDoEvOtJzEaNhhYiHmma8BFQCsnI', youtubeId: 'RuIlzy7QPeM', buttonId: '1AmkkeT1QhjbV6_K9nDzLpg', title: 'CULT OF CHUCKY', subtitle: 'El Culto De Chucky (2017)', buscar: 'Child\'s Play Chucky El Muñeco Diabólico, P3L01' }, {
-								id: '15AWuFzFAaf1RLultrAD-WLN_dOaGWw8O', youtubeId: 'YEBU6m7toSg', buttonId: '1yxgr3v7AEXrLkSqdfqINOA', title: 'CURSE OF CHUCKY', subtitle: 'La Maldición De Chucky (2013)', buscar: 'Child\'s Play Chucky El Muñeco Diabólico P3L01' }, {
+								id: '1gschrDoEvOtJzEaNhhYiHmma8BFQCsnI', youtubeId: 'RuIlzy7QPeM', buttonId: '1AmkkeT1QhjbV6_K9nDzLpg', title: 'CULT OF CHUCKY', subtitle: 'El Culto De Chucky (2017)', buscar: 'Child\'s Play, Bride Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, Chucky El Muñeco Diabólico, La novia de chucky, La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
+								id: '15AWuFzFAaf1RLultrAD-WLN_dOaGWw8O', youtubeId: 'YEBU6m7toSg', buttonId: '1yxgr3v7AEXrLkSqdfqINOA', title: 'CURSE OF CHUCKY', subtitle: 'La Maldición De Chucky (2013)', buscar: 'Child\'s Play, Bride Of Chucky, Cult Of Chucky, Living With Chucky, Seed Of Chuck, Chucky El Muñeco Diabólico, La novia de chucky, El Culto de chucky. Viviendo con chucky, El hijo de chucky, P3L01' }, {
 								id: '1aiamCiJgNsgaqwYlAzeGZfFcuFDo6Rr4', youtubeId: 'SW6U8D1CtbQ', buttonId: '1r4MhWM7CgSmH8AkYQRWv9g', title: 'CUT OFF', subtitle: 'Aislados (2018)', buscar: 'P3L01' }, {
 								id: '1u6hHcWs-TER2WjG7CPzCYhQz3jxkw_ft', youtubeId: 'mSLEXav6mIE', buttonId: '1CYMAJ9WWWpmu8TU5Z0HJ1w', title: 'CYBORG X', subtitle: 'Cyborg X (2016)', buscar: 'P3L01' },
 						] }, {
@@ -1112,25 +1135,25 @@
 						   		id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
 						   		id: '1LVVXK1wK0bxRowMqw2mDsH_KZkA5SCiD', youtubeId: 'AoTpRAMazXU', buttonId: '1At1-X7xkZ9c2Yp4zlhogrg', title: 'LARVA PENDANT', subtitle: 'Larva Pendiente (2022)', buscar: 'P3L01' }, {
 						   		id: '1Lod15SUSUAzpzWUeDfhPYxkpunyApkfC', youtubeId: 'AivrQ39fd9U', buttonId: '1M-M5-BvYJTXuX_61SJmm8Q', title: 'LAS AVENTURAS DE PITO PEREZ', subtitle: 'Las Aventuras De Pito Pérez (1957)', buscar: 'P3L01' }, {
-						   		id: '1Dkyxp62ik4-i0H-B2CQP7YJy-2PoekUC', youtubeId: 'p5yCB8JS__U', buttonId: '13PnrTd51FNZsdVkUWYNWvw', title: 'LAS LOCURAS DE TIN TAN', subtitle: 'Las Locuras De Tin Tan (1952)', buscar: 'México, Germán Valdés, (Tin Tan), Juan García, Famie Kaufman, (Vitola), Oscar Pulido, Lilia del Valle, Joaquín García Vargas, Marcelo Chávez, Wolf Ruvinskis, José Jasso, P3L01, Películas' }, {
-						    	id: '19KmS7sbIsvONMLlOxrDkJtBbhs6N04LS', youtubeId: '7-WUfQwodE8', buttonId: '1TcDXC-LE0G_FPWzf2n-Cbw', title: 'LAST LOOKS', subtitle: 'La Ultima Mirada (2022)', buscar: 'Estados Unidos, Reino Unido, Mel Gibson, Charlie Hunnam, Morena Baccarin, Rupert Friend, Dominic Monaghan, Clancy Brown, Paul Ben Victor, Jacob Scipio, Method Man, Lucy Fry, P3L01, Películas' }, {
-						    	id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'gDIGpVm-5S0', buttonId: '1FaHh6hGZWlIArEziTSy2zA', title: 'LEAVING NEVERLAND PART 1', subtitle: 'Leaving Neverland (2019)', buscar: 'Reino Unido, Estados Unidos, Wade Robson, James Safechuck, Joy Robson, Dan Reed, Chantal Robson, Stephanie Safechuck, P3L01, Documentales' }, {
-						    	id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'wl_crHywKgA', buttonId: '1XiLuUq7g1ypLIQer6O08cw', title: 'LEAVING NEVERLAND PART 2', subtitle: 'Leaving Neverland 2 (2019)', buscar: 'Reino Unido, Estados Unidos, Wade Robson, James Safechuck, Joy Robson, Dan Reed, Chantal Robson, Stephanie Safechuck, P3L01, Documentales' }, {
-						    	id: '1xT52afYLkBL64offinisf8zCjtWPhQ5I', youtubeId: 'l5Tl6IUfIUQ', buttonId: '1I4r69iCHS0IHZdAvJ0QSPA', title: 'LEGO DISNEY PRINCESS THE CASTLE QUEST', subtitle: 'LEGO Disney Princess Misión En El Castillo (2023)', buscar: 'Estados Unidos, Jodi Benson, Auli\'i Cravalho, Mandy Moore, Annelise Baker, Katie Von Till, Richard White, Nallely Solís, Carmen Sarahí, Ana Cecilia Anzaldúa, Leyla Rangel, Idzi Dutkiewicz, Yotzín Pardo, Arturo Mercado Jr., P3L01, Peliculas Animadas, Animes' }, {
-						    	id: '1kUeVgMiV7JnNqPHXig0arA0DDr50NyjQ', youtubeId: 'o8yzcW11X0g', buttonId: '1NRvOXU3tWCdVoYs6nuSwQQ', title: 'LEO', subtitle: 'Leo (2023)', buscar: 'Estados Unidos, Adam Sandler, Bill Burr, Cecily Strong, Jason Alexander, Rob Schneider, Allison Strong, Jo Koy, Sadie Sandler, Sunny Sandler, Jackie Sandler, Rubén Cerda, Óscar Flores, Ricardo Tejedo, Carla Castañeda, José Antonio Macías, Yamil Atala, Héctor Lee, Moisés Iván Mora, P3L01, Peliculas Animadas, Animes' }, {
-						    	id: '1iz0hVAArvioIHCTOFq4n_ATT60T_qAfy', youtubeId: 'e0jYh-uhNvg', buttonId: '15oifq8oBkwkNpgK27V3jqw', title: 'LET IT BE', subtitle: 'Los Beatles Que Así Sea (1970) [Ing T+Esp]', buscar: 'The Beatles, P3L01G' }, {
-						    	id: '1Yyjd8Bvsm8bcoovxzE1ERwZucPua0pP5', youtubeId: 'bKeW-MGu-qQ', buttonId: '1ADbWr5zefgk7bIk_kqQoVQ', title: 'LETHAL WEAPON', subtitle: 'Arma Mortal (1987)', buscar: 'P3ROIZ' }, {
-						    	id: '154q1X8_vNiqlLUnMVJkr4CR2tsF5majd', youtubeId: 'ZbFE2P3tASI', buttonId: '1O1n5RVKNd6BvhYD3IruMfg', title: 'LETHAL WEAPON 2', subtitle: 'Arma mortal 2 (1989) [Ing T+Esp]', buscar: 'P3ROIZ' }, {
-						    	id: '1-o6iH_RW-s-Jk3lgLYOXAqCNaTX71Jkf', youtubeId: 'PlJknryKpZs', buttonId: '1VHYS6p2bu-szovTluYwdWw', title: 'LETHAL WEAPON 3', subtitle: 'Arma mortal 3 (1992)', buscar: 'P3ROIZ' }, {
-						    	id: '1lmDJGWHjPE2_SvtB0ZstVqupiicTss12', youtubeId: '7cpig7OhI98', buttonId: '194dGR-0L2ZSoH3BrqsYi7w', title: 'LETHAL WEAPON 4', subtitle: 'Arma Mortal 4 (1998)', buscar: 'P3ROIZ' }, {
-						    	id: '1P3o8BmO_gkSTHPyIdmtXFOXeaBgSyY3h', youtubeId: 'wFATeqKxa1Q', buttonId: '1Er9mnvgeeaCOa97WsRYC6w', title: 'LIGHT SHOP', subtitle: '​Light Shop: Entre La Vida y La Muerte (2024)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3ROIZ' }, {
-						    	id: '17oliuHjT34Ze5kKvIuxzVma-8FHYRZpm', youtubeId: 'BwZs3H_UN3k', buttonId: '10fYugFoqRTDWoI9Uf34gdQ', title: 'LIGHTYEAR', subtitle: 'Lightyear (2022)', buscar: 'P3L01G' }, {
-						    	id: '1Nc8-Fw0q9nHCX_F4iKRxaL_TYz_n7QpU', youtubeId: '9OAC55UWAQs', buttonId: '1sn25DUam5joxRgbCDSkAAg', title: 'LILO & STITCH', subtitle: 'Lilo & Stitch (2002)', buscar: 'Estados Unidos, Daveigh Chase, Chris Sanders, Tia Carrere, David Ogden Stiers, Kevin McDonald, Ving Rhames, Kevin Michael Richardson, Zoe Caldwell, Jason Scott Lee, Miranda Paige Walls, Susan Hegarty, Vanessa Acosta, Mario Filio, Maggie Vera, Humberto Vélez, Jesús Barrero, Rubén Moya, Ángela Villanueva, Ricardo Tejedo, P3L01G, Peliculas Animadas, Animes' }, {
-						    	id: '1crjJZKUI1NefAgwL7Cnf4QU2MCaF7SyX', youtubeId: '_e3FajuSgs0', buttonId: '1dZGMoDg3MDd5w5zah9IUsg', title: 'LITTLE NICKY', subtitle: 'El Hijo Del Diablo (2000)', buscar: 'Estados Unidos, Adam Sandler, Harvey Keitel, Patricia Arquette, Rhys Ifans, Tommy Lister Jr., Tommy Tiny, Rodney Dangerfield, Allen Covert, Jonathan Loughran, Peter Dante, Kevin Nealon, Quentin Tarantino, Clint Howard, Reese Witherspoon, Dana Carvey, P3L01, Películas' }, {
-						    	id: '1DMvk6oMKlJQsv8kHAKeF9WVNAfEtGJzw', youtubeId: 'sET83nlk1NU', buttonId: 'TERABOX', title: 'LITTLE WOMAN', subtitle: 'Mujercitas (1994)', buscar: 'Estados Unidos, Winona Ryder, Susan Sarandon, Trini Alvarado, Claire Danes, Kirsten Dunst, Christian Bale, Gabriel Byrne, Samantha Mathis, Eric Stoltz, Matthew Walker, John Neville, Mary Wickes, Donal Logue, Janne Mortil, Películas' }, {
-							    id: '1BKoipoKwMFCJf0CipUFXE-kOHv8n1iqe', youtubeId: 'VaSsg5nUsmo', buttonId: '16WJGzU7R-WGTYuq2cE0iNw', title: 'LIVING WITH CHUCKY', subtitle: 'Viviendo con Chucky (2022) [Ing T+Esp]', buscar: 'Estados Unidos, Don Mancini, Brad Dourif, Jennifer Tilly, Alex Vincent, Fiona Dourif, Christine Elise, David Kirschner, Tony Gardner, Kyra Elise Gardner, James A. Janisse, Abigail Breslin, Lin Shaye, John Waters, Billy Boyd, Catherine Hicks, Hannah Spearritt, Dan Povenmire, Ronny Yu, Elle Lorraine, Marlon Wayans, Justin Whalin, Child\'s play, childs play, chucky el muñeco diabolico, P3L01G, Documentales' }, {
-                                id: '1fQSlSUt1455j_3Tyy_tOEVRUPfJmUIZv', youtubeId: 'QqPTYG2oO04', buttonId: '14frB_FeNnC9SoxtBMPccmQ', title: 'LO QUE IGNORAMOS', subtitle: 'भक्षक (Bhā-k-shak) ● Bhashak', buscar: 'India, Bhumi Pednekar, Sanjay Mishra, Aditya Srivastava, Sai Tamhankar, Surya Sharma, Chittaranjan Tripathy, Durgesh Kumar, Samta Sudiksha, Gulista Alija, Vibha Chibber, Umesh Shukla, Shakti Kumar, Danish Iqbal, Satyakam Anand, Aditya Uppal, Murari Kumar, Pravin Kumar Sisodia, Pubali Sanyal, Tanisha Mehta' }, {
-							    id: '1Ciq2itPRNyuhFs_kk1PeTiPaSwsi3-OK', youtubeId: 'LvMHX3NNn04', buttonId: '1nfK48mNzgImySfZudNJAag', title: 'LOCA POR EL TRABAJO', subtitle: 'Loca Por El Trabajo (2018)', buscar: 'México, Bárbara de Regil, Adriana Louvier, Erick Elias, Alberto Guerra, Marianna Burelli, Daniel Tovar, Darío Ripoll, Marcela Guirado, P3L01, Películas' }, {
+						   		id: '1Dkyxp62ik4-i0H-B2CQP7YJy-2PoekUC', youtubeId: 'p5yCB8JS__U', buttonId: '13PnrTd51FNZsdVkUWYNWvw', title: 'LAS LOCURAS DE TIN TAN', subtitle: 'Las Locuras De Tin Tan (1952)', buscar: 'P3L01' }, {
+						   		id: '19KmS7sbIsvONMLlOxrDkJtBbhs6N04LS', youtubeId: '7-WUfQwodE8', buttonId: '1TcDXC-LE0G_FPWzf2n-Cbw', title: 'LAST LOOKS', subtitle: 'La Ultima Mirada (2022)', buscar: 'P3L01' }, {
+						   		id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'gDIGpVm-5S0', buttonId: '1FaHh6hGZWlIArEziTSy2zA', title: 'LEAVING NEVERLAND PART 1', subtitle: 'Leaving Neverland (2019)', buscar: 'P3L01' }, {
+						   		id: '1lsqHHFLFgcBgHJJMLaPV8rysvB-z6bDd', youtubeId: 'wl_crHywKgA', buttonId: '1XiLuUq7g1ypLIQer6O08cw', title: 'LEAVING NEVERLAND PART 2', subtitle: 'Leaving Neverland 2 (2019)', buscar: 'P3L01' }, {
+						   		id: '1xT52afYLkBL64offinisf8zCjtWPhQ5I', youtubeId: 'l5Tl6IUfIUQ', buttonId: '1I4r69iCHS0IHZdAvJ0QSPA', title: 'LEGO DISNEY PRINCESS THE CASTLE QUEST', subtitle: 'LEGO Disney Princess Misión En El Castillo (2023)', buscar: 'P3L01' }, {
+						   		id: '1kUeVgMiV7JnNqPHXig0arA0DDr50NyjQ', youtubeId: 'o8yzcW11X0g', buttonId: '1NRvOXU3tWCdVoYs6nuSwQQ', title: 'LEO', subtitle: 'Leo (2023)', buscar: 'P3L01' }, {
+						   		id: '1iz0hVAArvioIHCTOFq4n_ATT60T_qAfy', youtubeId: 'e0jYh-uhNvg', buttonId: '15oifq8oBkwkNpgK27V3jqw', title: 'LET IT BE', subtitle: 'Los Beatles Que Así Sea (1970) [Ing T+Esp]', buscar: 'The Beatles, P3L01G' }, {
+						   		id: '1Yyjd8Bvsm8bcoovxzE1ERwZucPua0pP5', youtubeId: 'bKeW-MGu-qQ', buttonId: '1ADbWr5zefgk7bIk_kqQoVQ', title: 'LETHAL WEAPON', subtitle: 'Arma Mortal (1987)', buscar: 'P3ROIZ' }, {
+						   		id: '154q1X8_vNiqlLUnMVJkr4CR2tsF5majd', youtubeId: 'ZbFE2P3tASI', buttonId: '1O1n5RVKNd6BvhYD3IruMfg', title: 'LETHAL WEAPON 2', subtitle: 'Arma mortal 2 (1989) [Ing T+Esp]', buscar: 'P3ROIZ' }, {
+						   		id: '1-o6iH_RW-s-Jk3lgLYOXAqCNaTX71Jkf', youtubeId: 'PlJknryKpZs', buttonId: '1VHYS6p2bu-szovTluYwdWw', title: 'LETHAL WEAPON 3', subtitle: 'Arma mortal 3 (1992)', buscar: 'P3ROIZ' }, {
+						   		id: '1lmDJGWHjPE2_SvtB0ZstVqupiicTss12', youtubeId: '7cpig7OhI98', buttonId: '194dGR-0L2ZSoH3BrqsYi7w', title: 'LETHAL WEAPON 4', subtitle: 'Arma Mortal 4 (1998)', buscar: 'P3ROIZ' }, {
+						   		id: '1P3o8BmO_gkSTHPyIdmtXFOXeaBgSyY3h', youtubeId: 'wFATeqKxa1Q', buttonId: '1Er9mnvgeeaCOa97WsRYC6w', title: 'LIGHT SHOP', subtitle: '​Light Shop: Entre La Vida y La Muerte (2024)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3ROIZ' }, {
+						   		id: '17oliuHjT34Ze5kKvIuxzVma-8FHYRZpm', youtubeId: 'BwZs3H_UN3k', buttonId: '10fYugFoqRTDWoI9Uf34gdQ', title: 'LIGHTYEAR', subtitle: 'Lightyear (2022)', buscar: 'P3L01G' }, {
+						   		id: '1Nc8-Fw0q9nHCX_F4iKRxaL_TYz_n7QpU', youtubeId: '9OAC55UWAQs', buttonId: '1sn25DUam5joxRgbCDSkAAg', title: 'LILO & STITCH', subtitle: 'Lilo y Stitch (2002)', buscar: 'P3L01G' }, {
+						   		id: '1crjJZKUI1NefAgwL7Cnf4QU2MCaF7SyX', youtubeId: '_e3FajuSgs0', buttonId: '1dZGMoDg3MDd5w5zah9IUsg', title: 'LITTLE NICKY', subtitle: 'El Hijo Del Diablo (2000)', buscar: 'P3L01' }, {
+						    	id: '1DMvk6oMKlJQsv8kHAKeF9WVNAfEtGJzw', youtubeId: 'sET83nlk1NU', buttonId: 'TERABOX', title: 'LITTLE WOMAN', subtitle: 'Mujercitas (1994)', buscar: 'BUSCAR' }, {
+						    	id: '1BKoipoKwMFCJf0CipUFXE-kOHv8n1iqe', youtubeId: 'VaSsg5nUsmo', buttonId: '16WJGzU7R-WGTYuq2cE0iNw', title: 'LIVING WITH CHUCKY', subtitle: 'Viviendo con Chucky (2022) [Ing T+Esp]', buscar: 'Child\'s Play, Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Seed Of Chuck, Chucky El Muñeco Diabólico, La novia de chucky, El Culto de chucky. La Maldición de Chucky, El hijo de chucky, P3L01G' }, {
+						    	id: '1fQSlSUt1455j_3Tyy_tOEVRUPfJmUIZv', youtubeId: 'QqPTYG2oO04', buttonId: '14frB_FeNnC9SoxtBMPccmQ', title: 'LO QUE IGNORAMOS', subtitle: 'भक्षक (Bhā-k-shak) ● Bhashak', buscar: 'BUSCAR' }, {
+						    	id: '1Ciq2itPRNyuhFs_kk1PeTiPaSwsi3-OK', youtubeId: 'LvMHX3NNn04', buttonId: '1nfK48mNzgImySfZudNJAag', title: 'LOCA POR EL TRABAJO', subtitle: 'Loca Por El Trabajo (2018)', buscar: 'México, Bárbara de Regil, Adriana Louvier, Erick Elias, Alberto Guerra, Marianna Burelli, Daniel Tovar, Darío Ripoll, Marcela Guirado, P3L01, Películas' }, {
 						    	id: '1QpUodbqjouhkuG9QsN-cYz9GgSMb7Pnd', youtubeId: 'YGg-VJ7Zw_c', buttonId: '1TJJw1riQCNwnkEqWL0iUfg', title: 'LOS DESENFRENADOS', subtitle: 'Los desenfrenados (1960)', buscar: 'México, Gaspar Henaine, (Capulina), Marco Antonio Campos, (Viruta), Aída Araceli, Gina Romand, Magda Urvizu, María Eugenia San Martín, Alberto Marcos, Julián de Meriche, Dacia González, Guillermo Hernández, Gloria Oropeza, Francisco Fuentes, Armando Acosta, José Pardavé, Francisco Lorenzo, Tito Novaro, Jesús Gómez, Concepción Martínez, Mirta Rodríguez., S3R01, Películas' }, {
 						    	id: '14IQAawgpj9T2Ir7BD5hBcmNi1TjGf1dY', youtubeId: 'm3zbr0s78QM', buttonId: '10pgaUoDSNtQf0A81CTuJGg', title: 'LOS QUE AMAN ODIAN', subtitle: 'Los Que Aman Odian (2017)', buscar: 'Argentina, Guillermo Francella, Luisana Lopilato, Juan Minujín, Rafael Ferro, Carlos Portaluppi, Justina Bustos, Mario Alarcón, Marilú Marini, Tomás Wicz, Gonzalo Urtizberea, P3L01G, Películas' }, {
 						    	id: '1UCx5dLBw18cgIct1IvBKdZmP-lzxFSSS', youtubeId: 'o1M8vDSBLWU', buttonId: '1TcEQTklV3wuM7B1XXrxLMg', title: 'LOS TRES MOSQUETEROS', subtitle: 'Los Tres Mosqueteros (1942)', buscar: 'México, Mario Moreno (Cantinflas), Jorge Reyes, Ángel Garasa, Consuelo Guerrero de Luna, Andrés Soler, Gloria Marín, Raúl Cancino, Rocío Carillo, Estanislao Schillinsky, Rafael Icardo, Miguel Arenas, Salvador Quiroz, José Elías Moreno, Juan García, Julio Villarreal, Manuel Medel, Alfonso Bedoya, P3L01G Películas' }, {
@@ -1343,7 +1366,7 @@
 						    	id: '1GOifS2Nuf3RDttl3OM2qZYYbbahDjMJH', youtubeId: '3Ro9ebQxEOY', buttonId: '1T_xR8ANRkoPujSkt1fCzcg', title: 'SEARCHING', subtitle: 'Buscando (2018)', buscar: 'P3L01' }, {
 						    	id: '1jtWvBFWjj1lw4-9mEhGbMA7Bh67o7_7B', youtubeId: '3GB-7qwwIp0', buttonId: '1dfbNWyAN-nClefzALsiumQ', title: 'SECRETS OF THE OCTOPUS', subtitle: 'Secretos De Los Pulpos (2024)', subtitle2: '1 Temporada 3 Episodios', buscar: 'P3ROIZG' }, {
 						    	id: '1k2dEuNWpAs_6jMu94Zh1POpfA0ODKQpF', youtubeId: 'mwXK06A2sYM', buttonId: '1IaEOWbyi3VVMQHwTRFVIlA', title: 'SEE', subtitle: 'See (2019-22) (3T24E)', subtitle2: 'Serie 3 Temporadas 24 Episodios', buscar: 'P3L01G' }, {
-						    	id: '1rDo02YtcqqXC6v1ocjkGj45kgp0BM91u', youtubeId: 'CKc-mP5xXQY', buttonId: '1VH7RtFbfkJ4CiOzSEZzh9A', title: 'SEED OF CHUCKY', subtitle: 'El Hijo De Chucky (2004)', buscar: 'Estados Unidos, Jennifer Tilly, Brad Dourif, Billy Boyd, Redman, Hannah Spearritt, John Waters, Rebeca Patiño, Arturo Mercado Jr., Óscar Flores, Gabriel Cobayasi, José Antonio Macías, Child\'s Play, Chucky El Muñeco Diabólico P3L01, Prlículas' }, {
+						    	id: '1rDo02YtcqqXC6v1ocjkGj45kgp0BM91u', youtubeId: 'CKc-mP5xXQY', buttonId: '1VH7RtFbfkJ4CiOzSEZzh9A', title: 'SEED OF CHUCKY', subtitle: 'El Hijo De Chucky (2004)', buscar: 'Child\'s Play, Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Chucky El Muñeco Diabólico, La novia de chucky, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, P3L01' }, {
 						    	id: '17a507sxJBwB40dK1JyWDQNNUCMvcu0Pf', youtubeId: 'EVMSuZXEz4s', buttonId: '1ka_Gf0PSXds4YaZbpsAV4w', title: 'SELENA', subtitle: 'Selena (1997)', buscar: 'Estados Unidos, Jennifer Lopez, Edward James Olmos, Constance Marie, Jon Seda, Lupe Ontiveros, Jackie Guerra, Jacob Vargas, P3L01, Películas' }, {
 						    	id: '12Mq2n9uJhaUarktTHirwKS2MLXH96pxO', youtubeId: '5Tda-kt97sc', buttonId: '1_cuSzwakFgp0QW3NC-xYhw', title: 'SEN INANDIR', subtitle: 'Una Imagen Para Creer (2023)', buscar: 'Turquía, Ayça Ayşin Turan, Ekin Koç, Zerrin Sümer, Yıldız Kültür, Naz Çağla Irmak, Çağrı Çıtanak, Kemal Okan Özkan, Bülent Gültekin, P3L01, Películas' }, { 
 						    	id: '10ZcfQ3slt67Q5RxtR_kRyzREMmnxnLes', youtubeId: 'gaX9jW8Xvkw', buttonId: '1JzirZT4tF4CmaepvwXkXkA', title: 'SERVANT', subtitle: 'Servant (2019-23) [Ing T+Esp]', subtitle2: 'Serie 4 Temporadas 40 Episodios', buscar: 'P3L01' }, {
@@ -1739,7 +1762,7 @@
         const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
         const actionButton = document.getElementById('action-button');
         const searchInput = document.getElementById('image-search-input');
-        const searchModalTitle = document.getElementById('search-modal-title');
+        const modalSearchInput = document.getElementById('modal-search-input');
         let currentUrl = 'https://www.terabox.com/';
 
         function cleanText(text) {
@@ -1750,7 +1773,14 @@
         let searchTimeout;
         searchInput.addEventListener('input', (e) => {
             const val = e.target.value;
-            searchModalTitle.textContent = val.toUpperCase() || "RESULTADOS";
+            modalSearchInput.value = val;
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => filterData(val), 400);
+        });
+
+        modalSearchInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            searchInput.value = val;
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => filterData(val), 400);
         });
@@ -1760,31 +1790,50 @@
             const searchModal = document.getElementById('search-modal');
             const resultsGrid = document.getElementById('search-results-grid');
             const emptyMsg = document.getElementById('search-empty');
+            
             if (q.length > 0) {
-                const results = allImages.filter(i => cleanText(i.title).includes(q) || cleanText(i.buscar).includes(q) || cleanText(i.subtitle).includes(q) || (i.subtitle2 && cleanText(i.subtitle2).includes(q)));
+                const results = allImages.filter(i => 
+                    cleanText(i.title).includes(q) || 
+                    cleanText(i.buscar).includes(q) || 
+                    cleanText(i.subtitle).includes(q) || 
+                    (i.subtitle2 && cleanText(i.subtitle2).includes(q))
+                );
+                
                 searchModal.classList.add('active');
                 resultsGrid.innerHTML = '';
+                
                 if (results.length > 0) {
                     emptyMsg.classList.add('hidden');
                     results.forEach(item => {
+                        const thumbId = getRandomValue(item.id);
                         const div = document.createElement('div');
                         div.className = 'cursor-pointer group flex flex-col gap-1.5';
                         div.onclick = () => selectMedia(item);
-                        div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/></div><div class="min-w-0"><h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[8px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p></div>`;
+                        div.innerHTML = `
+                            <div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video">
+                                <img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/>
+                            </div>
+                            <div class="min-w-0">
+                                <h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4>
+                                <p class="text-[8px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p>
+                            </div>`;
                         resultsGrid.appendChild(div);
                     });
-                } else { emptyMsg.classList.remove('hidden'); }
-            } else { closeSearchModal(); }
+                } else { 
+                    emptyMsg.classList.remove('hidden'); 
+                }
+            } else { 
+                closeSearchModal(); 
+            }
         }
 
         function selectMedia(item) {
-            // Aseguramos pantalla completa al cambiar video
+            const selectedYT = getRandomValue(item.youtubeId);
             if (!document.fullscreenElement) toggleFullScreen();
-            
             if (isPlayerReady && player && player.loadVideoById) {
-                player.loadVideoById({ 'videoId': item.youtubeId });
+                player.loadVideoById({ 'videoId': selectedYT });
             } else {
-                firstVideoId = item.youtubeId;
+                firstVideoId = selectedYT;
             }
             currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
             localStorage.setItem('lastViewed', JSON.stringify(item));
@@ -1795,15 +1844,17 @@
         function closeSearchModal() { 
             document.getElementById('search-modal').classList.remove('active');
             searchInput.value = '';
+            modalSearchInput.value = '';
         }
 
         function renderCarousel(container, data) {
             container.innerHTML = '';
             data.forEach(item => {
+                const thumbId = getRandomValue(item.id);
                 const div = document.createElement('div');
                 div.className = 'carousel-item group cursor-pointer';
                 div.onclick = () => selectMedia(item);
-                div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><div class="skeleton absolute inset-0"></div><img src="https://drive.google.com/thumbnail?id=${item.id}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/></div><div class="mt-1.5 px-0.5 min-w-0"><h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p><p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5 italic">${item.subtitle2 || ''}</p></div>`;
+                div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><div class="skeleton absolute inset-0"></div><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/></div><div class="mt-1.5 px-0.5 min-w-0"><h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p><p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5 italic">${item.subtitle2 || ''}</p></div>`;
                 container.appendChild(div);
             });
         }
@@ -1813,10 +1864,11 @@
             const list = document.getElementById('news-list');
             list.innerHTML = '';
             estrenos.forEach(item => {
+                const thumbId = getRandomValue(item.id);
                 const div = document.createElement('div');
                 div.className = "flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition";
                 div.onclick = () => selectMedia(item);
-                div.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-12 h-8 object-cover rounded shadow" /><div class="flex-1 min-w-0"><p class="text-white text-[10px] font-black truncate uppercase leading-tight">${item.title}</p><p class="text-gray-400 text-[8px] truncate mt-0.5">${item.subtitle}</p></div>`;
+                div.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-12 h-8 object-cover rounded shadow" /><div class="flex-1 min-w-0"><p class="text-white text-[10px] font-black truncate uppercase leading-tight">${item.title}</p><p class="text-gray-400 text-[8px] truncate mt-0.5">${item.subtitle}</p></div>`;
                 list.appendChild(div);
             });
             document.getElementById('news-modal').classList.add('active');
@@ -1841,10 +1893,10 @@
             const saved = localStorage.getItem('lastViewed');
             if (saved) {
                 const item = JSON.parse(saved);
-                firstVideoId = item.youtubeId;
+                firstVideoId = getRandomValue(item.youtubeId);
                 currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
             } else if (allImages.length > 0) {
-                firstVideoId = allImages[0].youtubeId;
+                firstVideoId = getRandomValue(allImages[0].youtubeId);
             }
             setTimeout(showNews, 1500);
         });
@@ -1864,6 +1916,7 @@
         if (hours >= HORA_INICIO && hours < HORA_FIN) {
             status.innerText = "● En línea"; status.style.color = "#4ffb8a";
         } else { status.innerText = "○ Fuera de linea"; status.style.color = "#ffb347"; }
+        
         function toggleChat() {
             if (waCard.style.display === 'flex') {
                 waCard.style.display = 'none';
@@ -1881,6 +1934,7 @@
                 waInput.focus();
             }
         }
+        
         function sendToWhatsapp() {
             const text = waInput.value.trim();
             if (text !== "") {
@@ -1889,13 +1943,8 @@
                 waInput.value = ""; toggleChat();
             }
         }
+        
         waInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToWhatsapp(); });
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', () => {
-                const keyboardHeight = window.innerHeight - window.visualViewport.height;
-                waCard.style.bottom = keyboardHeight > 50 ? (keyboardHeight + 10) + 'px' : '90px';
-            });
-        }
     </script>
 </body>
 </html>
