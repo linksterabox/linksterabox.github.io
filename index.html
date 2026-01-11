@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang= "es">
+<html lang="es">
 <head>
-    <meta charset= "UTF-8">
-    <meta name= "viewport" content= "width= device-width, initial-scale= 1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta http-equiv= "Content-Security-Policy" content= "upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
     <title>
     	TERABOX LINKS | PREMIUM
     </title>
     
-    <script src= "https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <link href= "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel= "stylesheet">
-    <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
@@ -31,6 +31,9 @@
             margin: 0;
             padding: 0;
             scroll-behavior: smooth;
+            /* Evitar scroll horizontal y asegurar que ocupe todo el alto */
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .glass {
@@ -249,27 +252,27 @@
     </style>
 </head>
 
-<body class= "select-none">
+<body class="select-none overflow-x-hidden">
 
-<div class= "wa-card" id= "waCard">
-  <div class= "wa-header">
-    <div class= "wa-header-info">
+<div class="wa-card" id="waCard">
+  <div class="wa-header">
+    <div class="wa-header-info">
       <b>Soporte en línea</b>
-      <span id= "waStatus">Cargando estado...</span>
+      <span id="waStatus">Cargando estado...</span>
     </div>
-    <div class= "wa-close" onclick= "toggleChat()">×</div>
+    <div class="wa-close" onclick="toggleChat()">×</div>
   </div>
-  <div class= "wa-body">
-    <div id= "waTyping" class= "wa-bubble typing">Escribiendo...</div>
-    <div id= "waMsg" class= "wa-bubble" style= "display:none;">
-        <b><center><span id= "pageTarget">esta página</span></center></b><br>
+  <div class="wa-body">
+    <div id="waTyping" class="wa-bubble typing">Escribiendo...</div>
+    <div id="waMsg" class="wa-bubble" style="display:none;">
+        <b><center><span id="pageTarget">esta página</span></center></b><br>
         Hola! 👋 Dime Que Película o Serie Quieres Ver y Muy Pronto Aquí La Podras Descargar
     </div>
   </div>
   <div class="wa-footer">
     <input type="text" id="waInput" class="wa-input" placeholder="Escribe tu mensaje ...">
-    <button class= "wa-send" onclick= "sendToWhatsapp()">
-      <svg width= "20" height= "20" viewBox= "0 0 24 24" fill= "white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    <button class="wa-send" onclick="sendToWhatsapp()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
 </div>
@@ -389,22 +392,37 @@
         const btnText = document.getElementById('btn-text');
         if (event.data == YT.PlayerState.PLAYING) {
             btn.classList.add('btn-playing');
-            btnText.innerText = "DESCARGA PELICULA COMPLETA AQUI";
+            btnText.innerText = "PELICULA COMPLETA AQUI";
         } else {
             btn.classList.remove('btn-playing');
             btnText.innerText = "TERABOX";
         }
     }
 
+    // Función para forzar pantalla completa
     function toggleFullScreen() {
+        const docEl = document.documentElement;
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.warn(`No se pudo activar pantalla completa: ${err.message}`);
-            });
+            if (docEl.requestFullscreen) {
+                docEl.requestFullscreen().catch(e => console.warn(e));
+            } else if (docEl.webkitRequestFullscreen) { /* Safari */
+                docEl.webkitRequestFullscreen();
+            } else if (docEl.msRequestFullscreen) { /* IE11 */
+                docEl.msRequestFullscreen();
+            }
         } else {
-            if (document.exitFullscreen) { document.exitFullscreen(); }
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
         }
     }
+
+    // Forzar pantalla completa en el primer clic del usuario
+    document.body.addEventListener('click', function() {
+        if (!document.fullscreenElement) {
+            toggleFullScreen();
+        }
+    }, { once: false });
 
     const allData = {
     	'pelíc': {
@@ -496,6 +514,9 @@
         }
 
         function selectMedia(item) {
+            // Aseguramos pantalla completa al cambiar video
+            if (!document.fullscreenElement) toggleFullScreen();
+            
             if (isPlayerReady && player && player.loadVideoById) {
                 player.loadVideoById({ 'videoId': item.youtubeId });
             } else {
@@ -614,3 +635,4 @@
     </script>
 </body>
 </html>
+
