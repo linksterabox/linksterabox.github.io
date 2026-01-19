@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    
-    <title>
-    	TERABOX LINKS | PREMIUM
-    </title>
-    
+    <title>TERABOX LINKS | PREMIUM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <!-- HLS Support -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -59,211 +54,41 @@
             border-radius: 0 0 12px 12px;
         }
         @keyframes pulse-yellow {
-            0% { 
-            	box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); 
-            	transform: scale(1);
-            }
-            50% {
-            	box-shadow: 0 0 0 12px rgba(234, 179, 8, 0);
-            	transform: scale(1.05);
-            }
-            100% {
-            	box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1);
-            }
+            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); transform: scale(1); }
+            50% { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); transform: scale(1.05); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1); }
         }
-        .btn-playing {
-            animation: pulse-yellow 1.5s infinite !important;
-            background-color: #eab308 !important;
-            color: black !important;
-        }
-
-        .main-content {
-            padding: 12px 12px 100px 12px;
-        }
-
-        .skeleton {
-            background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .carousel-wrapper {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 12px;
-            padding: 8px 0;
-            scrollbar-width: none;
-        }
+        .btn-playing { animation: pulse-yellow 1.5s infinite !important; background-color: #eab308 !important; color: black !important; }
+        .main-content { padding: 12px 12px 100px 12px; }
+        .skeleton { background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .carousel-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 8px 0; scrollbar-width: none; }
         .carousel-wrapper::-webkit-scrollbar { display: none; }
-
-        .carousel-item {
-            flex: 0 0 75%;
-            width: 75%;
-            scroll-snap-align: center;
-        }
-
-        @media (min-width: 640px) {
-            .carousel-item { 
-                flex: 0 0 35%; 
-                width: 35%;
-            }
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 2000;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(12px);
-        }
-        .modal-overlay.active { 
-            display: flex; 
-        }
-
-  @keyframes wa-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-  }
-
-  .wa-launcher {
-    position: fixed;
-    bottom: 25px;
-    left: 20px;
-    background-color: var(--wa-color);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 10000;
-    animation: wa-pulse 2s infinite;
-    transition: transform 0.3s ease;
-  }
-  .wa-launcher:active { transform: scale(0.9); }
-
-  .wa-badge {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    background: #ff0000;
-    color: white;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid white;
-  }
-
-  .wa-card {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 320px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    display: none;
-    flex-direction: column;
-    z-index: 10001;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    overflow: hidden;
-    transition: top 0.3s ease;
-  }
-
-  .wa-header {
-    background: var(--wa-dark);
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .wa-header-info b { display: block; font-size: 15px; }
-  .wa-header-info span { font-size: 12px; opacity: 0.9; }
-  .wa-close { cursor: pointer; font-size: 24px; line-height: 1; }
-
-  .wa-body {
-    padding: 15px;
-    background: var(--wa-bg-chat);
-    max-height: 200px;
-    min-height: 80px;
-    overflow-y: auto;
-  }
-  .wa-bubble {
-    background: white;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    color: #333;
-    border-top-left-radius: 0;
-    position: relative;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  }
-  .typing { font-style: italic; color: #777; font-size: 13px; display: none; }
-
-  .wa-footer {
-    padding: 10px;
-    background: #f0f0f0;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  .wa-input {
-    flex: 1;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 10px 15px;
-    outline: none;
-    font-size: 16px; 
-    color: black;
-  }
-  .wa-send {
-    background: var(--wa-color);
-    border: none;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-  }
-  .wa-send:hover { background: var(--wa-dark); }
-
-  @media (max-width: 480px) {
-    .wa-card { 
-        width: 90%; 
-        right: 5%; 
-        top: 10px;
-    }
-  }
-
-  #modal-search-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-  }
+        .carousel-item { flex: 0 0 75%; width: 75%; scroll-snap-align: center; }
+        @media (min-width: 640px) { .carousel-item { flex: 0 0 35%; width: 35%; } }
+        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px); }
+        .modal-overlay.active { display: flex; }
+        @keyframes wa-pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+        .wa-launcher { position: fixed; bottom: 25px; left: 20px; background-color: var(--wa-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 10000; animation: wa-pulse 2s infinite; transition: transform 0.3s ease; }
+        .wa-launcher:active { transform: scale(0.9); }
+        .wa-badge { position: absolute; top: -2px; right: -2px; background: #ff0000; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+        .wa-card { position: fixed; top: 20px; right: 20px; width: 320px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: none; flex-direction: column; z-index: 10001; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; overflow: hidden; transition: top 0.3s ease; }
+        .wa-header { background: var(--wa-dark); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .wa-header-info b { display: block; font-size: 15px; }
+        .wa-header-info span { font-size: 12px; opacity: 0.9; }
+        .wa-close { cursor: pointer; font-size: 24px; line-height: 1; }
+        .wa-body { padding: 15px; background: var(--wa-bg-chat); max-height: 200px; min-height: 80px; overflow-y: auto; }
+        .wa-bubble { background: white; padding: 12px; border-radius: 10px; font-size: 14px; color: #333; border-top-left-radius: 0; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .typing { font-style: italic; color: #777; font-size: 13px; display: none; }
+        .wa-footer { padding: 10px; background: #f0f0f0; display: flex; gap: 8px; align-items: center; }
+        .wa-input { flex: 1; border: 1px solid #ccc; border-radius: 25px; padding: 10px 15px; outline: none; font-size: 16px; color: black; }
+        .wa-send { background: var(--wa-color); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .wa-send:hover { background: var(--wa-dark); }
+        @media (max-width: 480px) { .wa-card { width: 90%; right: 5%; top: 10px; } }
+        #modal-search-input::placeholder { color: rgba(255, 255, 255, 0.4); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; }
+        #native-video-player { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: none; background: #000; }
     </style>
 </head>
-
 <body class="select-none overflow-x-hidden">
 
 <div class="wa-card" id="waCard">
@@ -306,9 +131,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
                 </button>
             </div>
-            
             <div id="news-list" class="p-3 space-y-2 max-h-[40vh] overflow-y-auto"></div>
-
             <div class="p-5 pt-2 bg-black/20 text-center">
                 <p class="text-[12px] text-gray-300 font-medium">Si te gusta el contenido</p>
                 <p class="text-[12px] text-gray-300 font-medium">Considera apoyarnos con una donación</p>
@@ -333,9 +156,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
                 </button>
             </div>
-            
             <div id="search-results-grid" class="p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto"></div>
-            
             <div id="search-empty" class="p-10 text-center hidden">
                 <p class="text-gray-500 text-xs italic">No hay coincidencias...</p>
             </div>
@@ -346,13 +167,12 @@
         <div class="max-w-screen-xl mx-auto">
             <div class="video-container overflow-hidden">
                 <div id="youtube-player" class="absolute inset-0 w-full h-full"></div>
+                <video id="native-video-player" class="absolute inset-0 w-full h-full" controls playsinline></video>
             </div>
-            
             <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
                 <button onclick="toggleFullScreen()" class="p-1.5 text-blue-400 hover:text-white transition-colors" title="Pantalla Completa">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
                 </button>
-
                 <div class="relative flex-grow">
                     <input type="text" id="image-search-input" placeholder="Buscar..." class="w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
                     <button id="clear-search" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5" onclick="closeSearchModal()">
@@ -379,6 +199,9 @@
     var player;
     var isPlayerReady = false;
     var firstVideoId = '';
+    const nativePlayer = document.getElementById('native-video-player');
+    const ytIframe = document.getElementById('youtube-player');
+    let hls = null;
 
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
@@ -417,39 +240,79 @@
     function toggleFullScreen() {
         const docEl = document.documentElement;
         if (!document.fullscreenElement) {
-            if (docEl.requestFullscreen) {
-                docEl.requestFullscreen().catch(e => console.warn(e));
-            } else if (docEl.webkitRequestFullscreen) {
-                docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) {
-                docEl.msRequestFullscreen();
-            }
+            if (docEl.requestFullscreen) docEl.requestFullscreen().catch(e => console.warn(e));
+            else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+            else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
         } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
+            if (document.exitFullscreen) document.exitFullscreen();
         }
     }
 
-    document.body.addEventListener('click', function() {
-        if (!document.fullscreenElement) {
-            toggleFullScreen();
-        }
-    }, { once: false });
+    function isDirectLink(url) {
+        return url.includes('.m3u8') || url.includes('.mp4') || url.startsWith('http');
+    }
 
-    /**
-     * Función para obtener un valor aleatorio si el parámetro es un Array.
-     * Ejemplo de uso en data: id: ['id1', 'id2'] o youtubeId: ['yt1', 'yt2']
-     */
-    function getRandomValue(val) {
-        if (Array.isArray(val)) {
-            return val[Math.floor(Math.random() * val.length)];
+    function selectMedia(item) {
+        const selectedId = getRandomValue(item.youtubeId);
+        const actionBtn = document.getElementById('action-button');
+        const btnText = document.getElementById('btn-text');
+        
+        // Regla: Ocultar botón Terabox si es de la categoría 'YOUTUBE' o si es un enlace directo
+        const hideTerabox = item.buscar && item.buscar.includes('YOUTUBE') || isDirectLink(selectedId);
+        
+        if (hideTerabox) {
+            actionBtn.style.display = 'none';
+        } else {
+            actionBtn.style.display = 'flex';
         }
+
+        if (isDirectLink(selectedId)) {
+            // Reproductor Nativo / HLS
+            ytIframe.style.display = 'none';
+            nativePlayer.style.display = 'block';
+            if (player && player.pauseVideo) player.pauseVideo();
+
+            if (selectedId.includes('.m3u8')) {
+                if (Hls.isSupported()) {
+                    if (hls) hls.destroy();
+                    hls = new Hls();
+                    hls.loadSource(selectedId);
+                    hls.attachMedia(nativePlayer);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => nativePlayer.play());
+                } else if (nativePlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                    nativePlayer.src = selectedId;
+                    nativePlayer.play();
+                }
+            } else {
+                nativePlayer.src = selectedId;
+                nativePlayer.play();
+            }
+        } else {
+            // Reproductor YouTube
+            nativePlayer.style.display = 'none';
+            ytIframe.style.display = 'block';
+            if (nativePlayer.pause) nativePlayer.pause();
+            
+            if (isPlayerReady && player && player.loadVideoById) {
+                player.loadVideoById({ 'videoId': selectedId });
+            } else {
+                firstVideoId = selectedId;
+            }
+        }
+
+        currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
+        localStorage.setItem('lastViewed', JSON.stringify(item));
+        closeNewsModal();
+        closeSearchModal();
+    }
+
+    function getRandomValue(val) {
+        if (Array.isArray(val)) return val[Math.floor(Math.random() * val.length)];
         return val;
     }
     const allData = {
     	'pelíc': {
-    		title: 'SERIES Y PELICULAS', carousels: [ {
+    		title: 'LINKS DE DESCARGA POR TERABOX', carousels: [ {
     				    id: 'Películas1', data: [ {
     						    id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'jla6YMfkS9Q', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (2011-16)', subtitle2: '6 Temporadas 138 Episodios', buscar: 'P3L02' }, {
     						    id: '1r2ppXqrB2LELgK6aGbOuwbFCywdzkfL-', youtubeId: 'BEsL884-zKQ', buttonId: '1nqfcrwkASrg9WL5P6lwE9Q', title: '2 HEARTS', subtitle: '2 Corazones (2020)', subtitle2: '', buscar: 'BUSCAR' }, {
@@ -1852,14 +1715,9 @@
             title: 'YOUTUBE', carousels: [ {
                         id: 'Películas3', data: [ {
                         			id: '129eeC55Hp2oiClYejZN3SiiO92js1IUv', youtubeId: '_mbQyGpC2LA', title: 'THE BIG WHEEL', subtitle: 'Prueba Heroica (1949)', buscar: 'YOUTUBE' }, {
-                        			id: '1e2P1xeEaaBcX1pQ92BS3pRfRe3HvYC8j', youtubeId: 'sQCHnpSHKP8', title: 'A Stranger In Town', subtitle: 'Un Dolar Entre Los Dientes (1967)', buscar: 'YOUTUBE' }, 
+                        			id: '1e2P1xeEaaBcX1pQ92BS3pRfRe3HvYC8j', youtubeId: 'sQCHnpSHKP8', title: 'A STRABGER IN TOWN', subtitle: 'Un Dolar Entre Los Dientes (1967)', buscar: 'YOUTUBE' },  {
+                                    id: '1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ', youtubeId: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', title: 'LIVE STREAM TEST', subtitle: 'Canal de Prueba IPTV', buscar: 'IPTV' }
                         			]}                   
-                        
-                        
-                        
-                        
-                        
-                        
             ] }
         };
 
@@ -1931,20 +1789,6 @@
             }
         }
 
-        function selectMedia(item) {
-            const selectedYT = getRandomValue(item.youtubeId);
-            if (!document.fullscreenElement) toggleFullScreen();
-            if (isPlayerReady && player && player.loadVideoById) {
-                player.loadVideoById({ 'videoId': selectedYT });
-            } else {
-                firstVideoId = selectedYT;
-            }
-            currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
-            localStorage.setItem('lastViewed', JSON.stringify(item));
-            closeNewsModal();
-            closeSearchModal();
-        }
-
         function closeSearchModal() { 
             document.getElementById('search-modal').classList.remove('active');
             searchInput.value = '';
@@ -1997,10 +1841,9 @@
             const saved = localStorage.getItem('lastViewed');
             if (saved) {
                 const item = JSON.parse(saved);
-                firstVideoId = getRandomValue(item.youtubeId);
-                currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
+                selectMedia(item);
             } else if (allImages.length > 0) {
-                firstVideoId = getRandomValue(allImages[0].youtubeId);
+                selectMedia(allImages[0]);
             }
             setTimeout(showNews, 1500);
         });
@@ -2015,11 +1858,11 @@
         const waLauncher = document.getElementById('waLauncher');
         const waBadge = document.getElementById('waBadge');
         const hours = new Date().getHours();
-        const status = document.getElementById('waStatus');
+        const statusStatus = document.getElementById('waStatus');
         document.getElementById('pageTarget').innerText = document.title;
         if (hours >= HORA_INICIO && hours < HORA_FIN) {
-            status.innerText = "● En línea"; status.style.color = "#4ffb8a";
-        } else { status.innerText = "○ Fuera de linea"; status.style.color = "#ffb347"; }
+            statusStatus.innerText = "● En línea"; statusStatus.style.color = "#4ffb8a";
+        } else { statusStatus.innerText = "○ Fuera de linea"; statusStatus.style.color = "#ffb347"; }
         
         function toggleChat() {
             if (waCard.style.display === 'flex') {
