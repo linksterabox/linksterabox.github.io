@@ -163,6 +163,23 @@
         </div>
     </div>
 
+    <!-- Modal para Compartir Link IPTV -->
+    <div id="share-modal" class="modal-overlay items-center justify-center p-4">
+        <div class="glass w-full max-w-sm rounded-2xl overflow-hidden p-5 flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <h4 class="text-xs font-black text-blue-400">COPIAR LINK IPTV</h4>
+                <button onclick="closeShareModal()" class="text-white opacity-50 hover:opacity-100">×</button>
+            </div>
+            <div class="relative">
+                <input type="text" id="share-url-input" readonly class="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-3 text-[10px] text-gray-300 pr-10 outline-none" />
+                <button onclick="copyShareUrl()" class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-300">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            <p id="copy-success" class="text-[9px] text-green-500 text-center hidden font-bold uppercase">¡Link copiado al portapapeles!</p>
+        </div>
+    </div>
+
     <div class="sticky-header">
         <div class="max-w-screen-xl mx-auto">
             <div class="video-container overflow-hidden">
@@ -172,6 +189,9 @@
             <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
                 <button onclick="toggleFullScreen()" class="p-1.5 text-blue-400 hover:text-white transition-colors" title="Pantalla Completa">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+                <button id="share-iptv-btn" onclick="openShareModal()" class="p-1.5 text-green-400 hover:text-white transition-colors hidden" title="Compartir Link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                 </button>
                 <div class="relative flex-grow">
                     <input type="text" id="image-search-input" placeholder="Buscar..." class="w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
@@ -201,7 +221,9 @@
     var firstVideoId = '';
     const nativePlayer = document.getElementById('native-video-player');
     const ytIframe = document.getElementById('youtube-player');
+    const shareBtn = document.getElementById('share-iptv-btn');
     let hls = null;
+    let currentItemUrl = "";
 
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
@@ -257,6 +279,17 @@
         const actionBtn = document.getElementById('action-button');
         const btnText = document.getElementById('btn-text');
         
+        // Guardar la URL actual para el botón de compartir
+        currentItemUrl = selectedId;
+        
+        // Regla: Mostrar botón de compartir solo si es IPTV
+        const isIPTV = item.buscar && item.buscar.includes('IPTV');
+        if (isIPTV) {
+            shareBtn.classList.remove('hidden');
+        } else {
+            shareBtn.classList.add('hidden');
+        }
+
         // Regla: Ocultar botón Terabox si es de la categoría 'YOUTUBE' o si es un enlace directo
         const hideTerabox = item.buscar && item.buscar.includes('YOUTUBE') || isDirectLink(selectedId);
         
@@ -304,6 +337,23 @@
         localStorage.setItem('lastViewed', JSON.stringify(item));
         closeNewsModal();
         closeSearchModal();
+    }
+
+    function openShareModal() {
+        document.getElementById('share-url-input').value = currentItemUrl;
+        document.getElementById('share-modal').classList.add('active');
+        document.getElementById('copy-success').classList.add('hidden');
+    }
+
+    function closeShareModal() {
+        document.getElementById('share-modal').classList.remove('active');
+    }
+
+    function copyShareUrl() {
+        const input = document.getElementById('share-url-input');
+        input.select();
+        document.execCommand('copy');
+        document.getElementById('copy-success').classList.remove('hidden');
     }
 
     function getRandomValue(val) {
@@ -1602,126 +1652,142 @@
 						    	id: '1TdH4d51MWNw4XmSbxamzvyRf_U619YPt', youtubeId: 'P3_dj7BnHp8', buttonId: '1RII_dln99CnVsQm_UpJMng', title: 'UPGRADED', subtitle: 'Ascenso (2024)', buscar: 'P3L02' }, {
 						    	id: '1QKR6EhPDjjaiY6RgWh3y4CHjHu_VZfJU', youtubeId: 'GggpSObx9Xo', buttonId: '12ho2OKp4eXqIYcGJ4lii9A', title: 'UPPERCUT', subtitle: 'Uppercut (2025)', buscar: 'P3L01G' }, {
 						    	id: '17HeYlTJClU7LgeUQjd7ccvVLjb-prg5e', youtubeId: 'F-ry3P3AZBg', buttonId: '12gfX8tNeSM4dXHguDv4-bw', title: 'UPURGA', subtitle: 'Upurga (2021)', buscar: 'P3L02' },
-    					] }, { 
-						
-						
-						
-						
-						
-						id: 'PelículasV', data: [ {
-						    	id: '1tcuvy9Qt1slX4Ys7aT8aPrv83xBupv6x', youtubeId: 'u9Mv98Gr5pY', buttonId: '1iF1Ge0gLsVVoIITb2CRUWg', title: 'VENOM', subtitle: 'Venom (2018)', buscar: 'Estados Unidos, Tom Hardy, Michelle Williams, Riz Ahmed, Scott Haze, Reid Scott, Jenny Slate, Melora Walters, Woody Harrelson, Peggy Lu, Michelle Lee, Mac Brandt, Sam Medina, P3L01, Películas' }, {
-						    	id: '1XMEZB__cSFDD1zcop_NtVu9Wm3FzDWIw', youtubeId: 'OwrHb30htzg', buttonId: '1iLhWTh1dLrSD5Xy5FXzxdA', title: 'VIETNAM THE WAR THAT CHANGED AMERICA', subtitle: 'Vietnam La Guerra Que Cambió a Estados Unidos (2025) (1T6E) [Ing T+Esp]', subtitle2: 'Serie 1 Temporada 6 Episodios', buscar: 'P3L01G' }, {
-						    	id: '1ya5UcwLz-Z_SD9SnJcdyEiJVqOS7qk6I', youtubeId: '1-G6Ch94Hho', buttonId: '1AZSgCKxBPSByTqUtCecj5Q', title: 'VOLCANO', subtitle: 'Volcano (1997)', buscar: 'Estados Unidos, Tommy Lee Jones, Anne Heche, Gaby Hoffmann, Don Cheadle, Jacqueline Kim, Keith David, John Corbett, Michael Rispoli, Delroy Lindo, Richard Schiff, P3L01G, Películas' },
-				    	] }, {
-						
-						
-						
-						
-						id: 'PelículasW', data: [ {
-						    	id: '1VqI3krODkwnK3rDRHU9Rp0geYc-cD4Nf', youtubeId: 'FI539qelExQ', buttonId: '1aFjw0t2qIZ4_KtQvmGFNQg', title: 'WAR FOR THE PLANET OF THE APES', subtitle: 'El Planeta De Los Simios La Guerra (2017)', buscar: 'P3L01' }, {
-						    	id: '1FAQXrtsxWwPEtOUr3IOISaqS_7GB96Y1', youtubeId: '8otADaRY7QI', buttonId: '1Ezvq0LLAlnBPSKDB0UdBxw', title: 'WATCHMEN', subtitle: 'Watchmen Los Vigilantes (2009)', buscar: 'P3L001' }, {
-						    	id: '1hpyH4Y2_8FDKstKSYeEzyxMaC795Miuv', youtubeId: 'n87LoTTn2_c', buttonId: '1WPnLsrFfpmL6li-bTdioxw', title: 'WE STAND ALONE TOGETHER THE MEN OF EASY COMPANY', subtitle: 'Hermanos De Sangre Los Hombres De La Compañía Easy (2001)', buscar: 'Band Of Brothers, The Pacific' }, {
-					    		id: '1YiQsXtDafWgejhzMqw6pqgkTlI1iN7y0', youtubeId: 'EalZSRSEOw0', buttonId: '1LS3GdxPIHXXIzY5gdiJT7g', title: 'WELCOME TO MARWEN', subtitle: 'Bienvenidos a Marwen (2018)', buscar: 'P3L01' }, {
-					    		id: '1KeZGq8fAx09KvL0jo1ZSeqEqcOdaA1pq', youtubeId: '0Vsy5KzsieQ', buttonId: '12hrpyn2_GX2tfz7pKL4fog', title: 'WE\'RE THE MILLERS', subtitle: 'Quién Ł%$#! Son Los Miller (2013', buscar: 'P3ROIZ' }, {
-						    	id: '1Yqtra_d__IZEibyHzyeyp3ZZXAG79SHt', youtubeId: 'jJnAW7Pg0Aw', buttonId: '1R9pyx5GbyrSE9BWkchUU-g', title: 'WES CRAVEN\'S NEW NIGHTMARE', subtitle: 'La Nueva Pesadilla De West Craven', buscar: 'A Nightmare On Elm Street, Pesadilla En La Calle Del Infierno, Pesadilla En La Calle Elm, Freddy Krueger, S3R3G' }, {
-						    	id: '1_xcn9RGv6eVRV7SkampxwYUuhe1WvzkC', youtubeId: 'UqXBQaKrvPg', buttonId: '18bS6BzbqdaPgm5IVJUkqXA', title: 'WHAT HAPPENS IN VEGAS', subtitle: 'Locura de Amor En Las Vegas (2008) [Ing T+Esp]', buscar: 'Estados Unidos, Cameron Diaz, Ashton Kutcher, Rob Corddry, Lake Bell, Jason Sudeikis, Queen Latifah, Treat Williams, Dennis Farina, Zach Galifianakis, Michelle Krusiec, Krysten Ritter, P3L01G, Películas' }, {
-						    	id: '1Gfl0H0Yl1G9dx2TPoRkiC1HQJcCEPGVu', youtubeId: 'TV3s2STA7NU', buttonId: '1U_1k1OZmcL2xCwORainhpA', title: 'WHAT IF...?', subtitle: 'What If...? (2021-24)', subtitle2: 'Serie 3 Temporadas 26 Episodios', buscar: 'P3L01G' }, {
-						    	id: '1AmvYwDmIdldKYILQj0NO1C204kBYFmHF', youtubeId: 's6nTJMdrGVU', buttonId: '15AuAb5KIOkVSabUecpf9Nw', title: 'WHAT LIES BENEATH', subtitle: 'Revelaciones (2000)', buscar: 'Estados Unidos, Harrison Ford, Michelle Pfeiffer, Diana Scarwid, Joe Morton, Miranda Otto, James Remar, Katharine Towne, Wendy Crewson, Amber Valletta, Ray Baker, Victoria Bidewell, Eliott Goretsky, Daniel Zelman, Rachel Singer, Tom Dahlgren, Sloane Shelton, Micole Mercurio, Jennifer Tung, Dennison Samaroo, Donald Taylor, P3L01G, Películas' }, {
-						    	id: '1EUfRI9aCKoAggOd82x6o0INojiPq9e4p', youtubeId: '9XIpCpfA_JA', buttonId: '1XIj3yNaEMFTqW-5VNMo3mQ', title: 'WHITE FANG', subtitle: 'Colmillo Blanco (2018)', buscar: 'Francia, Luxemburgo, Estados Unidos, Nick Offerman, Rashida Jones, Paul Giamatti, Eddie Spears, Ginnie Watson, David Harbour, P3L01, Películas Animadas, Animes' }, {
-						    	id: '1U2M8uHUNK_Bx_2r0x12GeQKV-iwfVS8U', youtubeId: '1jBkcb51hJg', buttonId: '1OtETOPzEihqDLcdA7d9nHA', title: 'WHY HIM ?', subtitle: 'Por Qué El ? (2016)', buscar: 'Estados Unidos, Bryan Cranston, James Franco, Zoey Deutch, Megan Mullally, Griffin Gluck, Keegan Michael Key, Cedric the Entertainer, Kaley Cuoco, Casey Wilson, Zack Pearlman, Andrew Rannells, Jee Young Han, Steve Aoki, Bob Stephenson, Jacob Kemp, P3L01G, Películas' }, {
-						    	id: '1KOMKwNohygufe1M2LYBnz_81yytD7d2A', youtubeId: 'nN2yBBSRC78', buttonId: '1CZvFZzqDOPORQZvxk8Qn_g', title: 'WIDOWS', subtitle: 'Viudas (2018)', buscar: 'Estados Unidos, Reino Unido, Viola Davis, Liam Neeson, Colin Farrell, Michelle Rodriguez, Elizabeth Debicki, Daniel Kaluuya, Brian Tyree Henry, Cynthia Erivo, Robert Duvall, Jacki Weaver, Jon Bernthal, Garret Dillahunt, Manuel Garcia-Rulfo, P3L01, Películas' }, {
-						    	id: '1SmfCYp6neyyc08BgiRr8Dj7Mv2fOgdHo', youtubeId: 'TZFtUwAs0wk', buttonId: '1x_FqFAudxjqYnC-m7aMTAQ', title: 'WILLOW', subtitle: 'Willow (1988)', buscar: 'Estados Unidos, Val Kilmer, Warwick Davis, Joanne Whalley, Jean Marsh, Billy Barty, Patricia Hayes, Gavan O\'Herlihy, Pat Roach, Kevin Pollak, Rick Overton, Tony Cox, P3L01, Películas' }, {
-						    	id: '1q5nzjjkfHDwViefTA4TG8PpowPttmAZJ', youtubeId: 'QTKpVvofCUk', buttonId: '1NP9pl6W2iHhVZC9iJ1cvgQ', title: 'WITNESS PROTECTION', subtitle: 'Protección De Testigos) (1999)', buscar: 'P3ROIZ' }, {
-						    	id: '1rl1Bfa1p7E0kn6b_F4rWn5WGCj561PfB', youtubeId: 'DehZCccV1GM', buttonId: '1SEK29zoT7Ox-yIQ7ytzvnA', title: 'WOLF\'S RAIN', subtitle: 'Wolf\'s Rain (2003)', subtitle2: '1 Temporada 26 Episodios + 4 OVAS', buscar: 'S3R01' }, {
-						    	id: '1Ujlh8wqUWWvJ4XpfziBTSKzP8I47w3X3', youtubeId: '5RSUcuGIiI0', buttonId: '1Es91xC4vNq6oGnnl1hz19A', title: 'WOLFS', subtitle: 'Lobos (2024)', buscar: 'Estados Unidos, George Clooney, Brad Pitt, Amy Ryan, Austin Abrams, Poorna Jagannathan, Zlatko Buric, Richard Kind, Irina Dubova, Rob Riddell, Hassani Rizzo, Robert Timothy Smith, Frances McDormand, P3L01G, Películas' }, {
-						    	id: '1ZlZkScBIhykBP73k0ekhYz0wjWiu9MlA', youtubeId: 'ASAGdtAJPnU', buttonId: '1jUFw7J-O4jHLBgLWukHAqA', title: 'WONDER', subtitle: 'Extraordinario (2017)', buscar: 'Estados Unidos, Julia Roberts, Owen Wilson, Jacob Tremblay, Mandy Patinkin, Izabela Vidovic, Noah Jupe, Danielle Rose Russell, Nadji Jeter, Daveed Diggs, Sonia Braga, Bryce Gheisar, Millie Davis, P3L01, Películas' }, {
+						   ] }, {
+						   
+						   
+						   
+						   
+						   
+						   id: 'PelículasV', data: [ {
+						   		id: '1tcuvy9Qt1slX4Ys7aT8aPrv83xBupv6x', youtubeId: 'u9Mv98Gr5pY', buttonId: '1iF1Ge0gLsVVoIITb2CRUWg', title: 'VENOM', subtitle: 'Venom (2018)', buscar: 'P3L01' }, {
+						   		id: '1XMEZB__cSFDD1zcop_NtVu9Wm3FzDWIw', youtubeId: 'OwrHb30htzg', buttonId: '1iLhWTh1dLrSD5Xy5FXzxdA', title: 'VIETNAM THE WAR THAT CHANGED AMERICA', subtitle: 'Vietnam La Guerra Que Cambió a Estados Unidos (2025) (1T6E) [Ing T+Esp]', subtitle2: 'Serie 1 Temporada 6 Episodios', buscar: 'P3L01G' }, {
+						   		id: '1ya5UcwLz-Z_SD9SnJcdyEiJVqOS7qk6I', youtubeId: '1-G6Ch94Hho', buttonId: '1AZSgCKxBPSByTqUtCecj5Q', title: 'VOLCANO', subtitle: 'Volcano (1997)', buscar: 'P3L01G' },
+						   ] }, {
+						   
+						   
+						   
+						   
+						   
+						   id: 'PelículasW', data: [ {
+						   		id: '1VqI3krODkwnK3rDRHU9Rp0geYc-cD4Nf', youtubeId: 'FI539qelExQ', buttonId: '1aFjw0t2qIZ4_KtQvmGFNQg', title: 'WAR FOR THE PLANET OF THE APES', subtitle: 'El Planeta De Los Simios La Guerra (2017)', buscar: 'P3L01' }, {
+						   		id: '1FAQXrtsxWwPEtOUr3IOISaqS_7GB96Y1', youtubeId: '8otADaRY7QI', buttonId: '1Ezvq0LLAlnBPSKDB0UdBxw', title: 'WATCHMEN', subtitle: 'Watchmen Los Vigilantes (2009)', buscar: 'P3L001' }, {
+						   		id: '1hpyH4Y2_8FDKstKSYeEzyxMaC795Miuv', youtubeId: 'n87LoTTn2_c', buttonId: '1WPnLsrFfpmL6li-bTdioxw', title: 'WE STAND ALONE TOGETHER THE MEN OF EASY COMPANY', subtitle: 'Hermanos De Sangre Los Hombres De La Compañía Easy (2001)', buscar: 'Band Of Brothers, The Pacific' }, {
+						   		id: '1YiQsXtDafWgejhzMqw6pqgkTlI1iN7y0', youtubeId: 'EalZSRSEOw0', buttonId: '1LS3GdxPIHXXIzY5gdiJT7g', title: 'WELCOME TO MARWEN', subtitle: 'Bienvenidos a Marwen (2018)', buscar: 'P3L01' }, {
+						   		id: '1KeZGq8fAx09KvL0jo1ZSeqEqcOdaA1pq', youtubeId: '0Vsy5KzsieQ', buttonId: '12hrpyn2_GX2tfz7pKL4fog', title: 'WE\'RE THE MILLERS', subtitle: 'Quién Ł%$#! Son Los Miller (2013', buscar: 'P3ROIZ' }, {
+						   		id: '1Yqtra_d__IZEibyHzyeyp3ZZXAG79SHt', youtubeId: 'jJnAW7Pg0Aw', buttonId: '1R9pyx5GbyrSE9BWkchUU-g', title: 'WES CRAVEN\'S NEW NIGHTMARE', subtitle: 'La Nueva Pesadilla De West Craven', buscar: 'A Nightmare On Elm Street, Pesadilla En La Calle Del Infierno, Pesadilla En La Calle Elm, Freddy Krueger, S3R3G' }, {
+						   		id: '1_xcn9RGv6eVRV7SkampxwYUuhe1WvzkC', youtubeId: 'UqXBQaKrvPg', buttonId: '18bS6BzbqdaPgm5IVJUkqXA', title: 'WHAT HAPPENS IN VEGAS', subtitle: 'Locura de Amor En Las Vegas (2008) [Ing T+Esp]', buscar: 'P3L01G' }, {
+						   		id: '1Gfl0H0Yl1G9dx2TPoRkiC1HQJcCEPGVu', youtubeId: 'TV3s2STA7NU', buttonId: '1U_1k1OZmcL2xCwORainhpA', title: 'WHAT IF...?', subtitle: 'What If...? (2021-24)', subtitle2: 'Serie 3 Temporadas 26 Episodios', buscar: 'P3L01G' }, {
+						   		id: '1AmvYwDmIdldKYILQj0NO1C204kBYFmHF', youtubeId: 's6nTJMdrGVU', buttonId: '15AuAb5KIOkVSabUecpf9Nw', title: 'WHAT LIES BENEATH', subtitle: 'Revelaciones (2000)', buscar: 'P3L01G' }, {
+						   		id: '1EUfRI9aCKoAggOd82x6o0INojiPq9e4p', youtubeId: '9XIpCpfA_JA', buttonId: '1XIj3yNaEMFTqW-5VNMo3mQ', title: 'WHITE FANG', subtitle: 'Colmillo Blanco (2018)', buscar: 'P3L01' }, {
+						   		id: '1PDM2iAIRjmH5zK2P6bIL8P6MP2u0E4vu', youtubeId: 'd5ejiic3db4', buttonId: '1ejqIe5kh6hpuz3vXWuHCOw', title: 'WHO AM I', subtitle: 'Quién soy yo? (1998)', buscar: 'P3L02' }, {
+						   		id: '1U2M8uHUNK_Bx_2r0x12GeQKV-iwfVS8U', youtubeId: '1jBkcb51hJg', buttonId: '1OtETOPzEihqDLcdA7d9nHA', title: 'WHY HIM ?', subtitle: 'Por Qué El ? (2016)', buscar: 'P3L01G' }, {
+						   		id: '1KOMKwNohygufe1M2LYBnz_81yytD7d2A', youtubeId: 'nN2yBBSRC78', buttonId: '1CZvFZzqDOPORQZvxk8Qn_g', title: 'WIDOWS', subtitle: 'Viudas (2018)', buscar: 'P3L01' }, {
+						   		id: '1wyETylbbNN3K3CZgeHAP4YWE8eQ2R2Z7', youtubeId: 'DbWlQAcq3Iw', buttonId: '1oeU3lR8tm2Qtu9lpO9UpWQ', title: 'WIL', subtitle: 'Wil (2023)', buscar: 'P3L02' }, {
+						   		id: '1SmfCYp6neyyc08BgiRr8Dj7Mv2fOgdHo', youtubeId: 'TZFtUwAs0wk', buttonId: '1x_FqFAudxjqYnC-m7aMTAQ', title: 'WILLOW', subtitle: 'Willow (1988)', buscar: 'P3L01' }, {
+						   		id: '1-8Z3GrvUP0_TIeomFgmfj4RXQRXXbqWo', youtubeId: 'ZQXN_9eyPAI', buttonId: '1r03jdoqp4Rv98NinL4unog', title: 'WINNIE-THE-POOH: BLOOD AND HONEY', subtitle: 'Winnie-The-Pooh: Miel y Sangre (2023) [Ing T+Esp]', buscar: 'P3L02' }, {
+						   		id: '1q5nzjjkfHDwViefTA4TG8PpowPttmAZJ', youtubeId: 'QTKpVvofCUk', buttonId: '1NP9pl6W2iHhVZC9iJ1cvgQ', title: 'WITNESS PROTECTION', subtitle: 'Protección De Testigos) (1999)', buscar: 'P3ROIZ' }, {
+						   		id: '1rl1Bfa1p7E0kn6b_F4rWn5WGCj561PfB', youtubeId: 'DehZCccV1GM', buttonId: '1SEK29zoT7Ox-yIQ7ytzvnA', title: 'WOLF\'S RAIN', subtitle: 'Wolf\'s Rain (2003)', subtitle2: '1 Temporada 26 Episodios + 4 OVAS', buscar: 'S3R01' }, {
+						   		id: '1Ujlh8wqUWWvJ4XpfziBTSKzP8I47w3X3', youtubeId: '5RSUcuGIiI0', buttonId: '1Es91xC4vNq6oGnnl1hz19A', title: 'WOLFS', subtitle: 'Lobos (2024)', buscar: 'P3L01G' }, {
+						    	id: '1ZlZkScBIhykBP73k0ekhYz0wjWiu9MlA', youtubeId: 'ASAGdtAJPnU', buttonId: '1jUFw7J-O4jHLBgLWukHAqA', title: 'WONDER', subtitle: 'Extraordinario (2017)', buscar: 'P3L01' }, {
 						    	id: '1dZcN3666tk2Uoz9_JKYFoyx2SMN1oaw1', youtubeId: '1Q8fG0TtVAY', buttonId: '1cUxDyOU4XAs2ylOkFWcERw', title: 'WONDER WOMAN', subtitle: 'La Mujer Maravilla (2017)', buscar: 'P3L01' }, {
+						    	id: '1UZNp9Acg4q31N_Bo-2ZN5-rGwYfqhAPr', youtubeId: '-YRw-3dgsjo', buttonId: '1UAWJTxPzfpGrq_wA06yHZA', title: 'WONKA', subtitle: 'Wonka (2023)', buscar: 'P3L02' }, {
 						    	id: '1G1i2uEsDGwgDhfGDA3SweIAQKtzm3Z9D', youtubeId: 'gpSfxMRo7sQ', buttonId: '1fPMLDnRuRW1vgkiXmsTePg', title: 'WORLD WAR II IN COLOUR', subtitle: 'La Segunda Guerra Mundial a Color (2009)', subtitle2: '1 Temporada 13 Episodios', buscar: 'S3R01G' },
-				    	] }, {
-					
-					
-					
-					
-					
-						id: 'PelículasX', data: [ {
-						    	id: '1Za_Wv8_hY_3BkHk7qfI56tlCuZUO9Czk', youtubeId: 'VNxwlx6etXI', buttonId: '1m7sgF2clbvOOCnCTbj7Wog', title: 'X-MEN', subtitle: 'X Men (2000)', buscar: 'Estados Unidos, Hugh Jackman, Patrick Stewart, Ian McKellen, Halle Berry, Famke Janssen, James Marsden, Anna Paquin, Rebecca Romijn, Ray Park, Tyler Mane, Bruce Davison, Shawn Ashmore, Kevin Rushton, Sumela Kay, Alex Burton, Los Hombres X, P3L01, Películas' }, {
-						    	id: '1hTnTZbVYdq5Y_mgiHNGNwmIBu3SiarZm', youtubeId: 'pWMD3CHMuAU', buttonId: '17HrMFawvG1IRseaSPrtNBw', title: 'X-MEN DAYS OF FUTURE PAST', subtitle: 'X Men Días Del Futuro Pasado (2014)', buscar: 'Estados Unidos, Hugh Jackman, James McAvoy, Michael Fassbender, Jennifer Lawrence, Patrick Stewart, Ian McKellen, Nicholas Hoult, Ellen Page, Elliot Page, Peter Dinklage, Halle Berry, Shawn Ashmore, Omar Sy, Evan Peters, Josh Helman, Fan Bingbing, Adan Canto, Booboo Stewart, Daniel Cudmore, Lucas Till, Famke Janssen, James Marsden, Kelsey Grammer, Los Hombres X, P3L01, Películas' }, {
-						    	id: '1Dgbz4VGLMuXe-Z03Aqisr0aWPMAshHY2', youtubeId: 'RRj40M97i6s', buttonId: '1EGKdKLBYTlCipuxINQTpnA', title: 'X-MEN ORIGINS WOLVERINE', subtitle: 'X Men Orígenes Wolverine (2009)', buscar: 'Estados Unidos, Hugh Jackman, Liev Schreiber, Danny Huston, Lynn Collins, Kevin Durand, will.i.am, Taylor Kitsch, Ryan Reynolds, Dominic Monaghan, Daniel Henney, Scott Adkins, Tim Pocock, Julia Blake, Patrick Stewart, Los Hombres X, P3L01, Películas' }, {
-						    	id: '1N-Tk3PNjeTI2p2odYPZbm6ZXRCqS7gYl', youtubeId: 'X8ozc_dQprk', buttonId: '1jN6B3U3p-DIFK-fNHQm4xg', title: 'X-MEN THE LAST STAND', subtitle: 'X Men La Batalla Final (2006)', buscar: 'Estados Unidos, Hugh Jackman, Halle Berry, Ian McKellen, Famke Janssen, Anna Paquin, Kelsey Grammer, James Marsden, Rebecca Romijn, Shawn Ashmore, Aaron Stanford, Vinnie Jones, Ben Foster, Elliot Page, Ellen Page, Daniel Cudmore, Patrick Stewart, Dania Ramirez, Ken Leung, Shohreh Aghdashloo, Eric Dane, Michael Murphy, Josef Sommer, Bill Duke, Cayden Boyd, Connor Widdows, Olivia Williams, R. Lee Ermey, Los Hombres X. P3L01, Películas' }, {
-						    	id: '1DWycDosRrmflG5A5LAa7AdVCuocLyR2h', youtubeId: 'KNIdceH7XOw', buttonId: '1fJmRCnb-P379_RM3yHhBTg', title: 'X-MEN UNITED', subtitle: 'X Men 2 (2003)', buscar: 'Estados Unidos, Patrick Stewart, Hugh Jackman, Ian McKellen, Halle Berry, Famke Janssen, James Marsden, Anna Paquin, Rebecca Romijn, Brian Cox, Alan Cumming, Bruce Davison, Kelly Hu, Aaron Stanford, Shawn Ashmore, Daniel Cudmore, Keely Purvis, Michael Soltis, Steve Bacic, Los Hombres X, P3L01, Películas' },
-				    	] }, {
-					
-					
-					
-					
-					
-						id: 'PelículasY', data: [ {
-						    	id: '1WONs90wzZyzgtXiWCSw99Dh7havHdsDj', youtubeId: 'R87R7HA4zNc', buttonId: '1tns4NV6qqqkjaYzReAL88w', title: 'YA VEREMOS', subtitle: 'Ya Veremos (2018)', buscar: 'México, Mauricio Ochmann, Fernanda Castillo, Emiliano Aramayo, Erik Hayser, Rodrigo Cachero, Ariel Levy, Paco Rueda, Katsuhiro Honda, Estefanía Ahumada, Ignacio López Tarso, Isela Vega, Lupita Sandoval, Lorena Velázquez, Martín Altomaro, Arturo Barba, P3L01, Películas' }, {
-						    	id: '1vm-Z65jtoTdz1tv-NnqxBxjBOGu6Pimo', youtubeId: 'ucmnTmYpGhI', buttonId: '1hjwcoKc3OHkVkxwGsGXUJQ', title: 'YOU DON\'T MESS WITH THE ZOHAN', subtitle: 'No Te Metas Con Zohan (2008)', buscar: 'Estados Unidos, Adam Sandler, John Turturro, Emmanuelle Chriqui, Nick Swardson, Lainie Kazan, Ido Mosseri, Rob Schneider, Michael Buffer, Mariah Carey, John Paul DeJoria, Dave Matthews, Shelley Berman, Chris Rock, Kevin Nealon, Henry Winkler, Charlotte Rae, Alec Mapa, Barry Livingston, Sayed Badreya, Daoud Heidami, Michael Leland, Rick Gifford, Daniel Zausmer, P3L01, Películas' }, {
-						    	id: '1_yE7hVLqoHzqDgarNLtLxaCn1B85pjmJ', youtubeId: 'rR1SzALB8IU', buttonId: '1Koqs_H1WYvt_KEfkV2bF0Q', title: 'YOU, ME AND DUPREE', subtitle: 'Tú, Yo y Ahora Dupree (2006)', buscar: 'Estados Unidos, Owen Wilson, Kate Hudson, Matt Dillon, Michael Douglas, Seth Rogen, Amanda Detmer, Ralph Ting, Todd Stashwick, Bill Hader, Lance Armstrong, Jason Winer, Sidney S. Liufau, S3R01, Películas' }, {
-						    	id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' }, {
-						    	id: '1rTAl_poAbKMI4luIquq3wwJbaj4kus-O', youtubeId: 'kDruG4M5R2A', buttonId: '11WmZEnddfYcY7gGeHH3Fuw', title: 'YUYU HAKUSHO', subtitle: 'YuYu Hakusho (2023)', subtitle2: '1 Temporada 5 Episodios', buscar: 'S3R01' }, {
-						    	id: '1XNsjGaz99I-CdSrGtaoINVsoru8b3CPx', youtubeId: 'swH_nJUC5bo', buttonId: '1mQ3ntU1sJfWDKyEX4AqAmA', title: 'YUYU HAKUSHO GHOST FILES', subtitle: 'Yu Yu Hakusho Los Guerreros Del Más Allá (1992-94)', subtitle2: '4 Temporadas 112 Episodios + 1 OVA', buscar: 'S3R01' }, 
-				    	] }, {
-					
-					
-					
-					
-					
-						id: 'PelículasZ', data: [ {
-						    	id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'Estados Unidos, Nicholas Rowe, Alan Cox, Sophie Ward, Anthony Higgins, Susan Fleetwood, Freddie Jones, Nigel Stock, Roger Ashton Griffiths, Earl Rhodes, Brian Oulton, Patrick Newell, Donald Eccles, Matthew Ryan, Matthew Blakstad, Jonathan Lacey, Walter Sparrow, Nadim Sawalha, Roger Brierley, Vivienne Chandler, Lockwood West, John Scott Martin, George Malpas, Willoughby Goddard, Michael Hordern, P3L01, Películas' },
-						] }, 
-                    
-                    
-                    
-                    
-            ] },
-            
-            
-            
-            
-            
-            
-            
-            
-        'estrenos': {
-            title: 'MAS RECIENTE', carousels: [ {
-                        id: 'Películas2', data: [ {
-                        			id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
-                        			id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
-                        			id: '1sC4vbqdak-bpDtyiprA5gPHOSn7frHda', youtubeId: 'BL6M27fz_d0', buttonId: '1qOtN2NXz9owvZyrft6xNDQ', title: 'PETER PAN\'S NEVERLAND NIGHTMARE', subtitle: 'La pesadilla De Peter Pan (2025)', buscar: 'P3L02' }, {
-                        			id: '19TnSPSE_CsTNaUVI-dwUr1W6gO2Fdykr', youtubeId: '8FudANSsWNQ', buttonId: '1-JqSGTx1SkG6ujEBhCC5dQ', title: 'FINAL DESTINATION: BLOODLINES', subtitle: 'Destino Final: Linajes (2025)', buscar: 'S3R01G' }, {
-                             id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, P3ROIZG' }, {
-                        	    id: '1J_EFte8kd3WB8KxXRkNgc9Ff-cD61C3O', youtubeId: '5gquha3ICHE', buttonId: '1ZEvaj9VriI5OAFDszLRSbw', title: 'SQUID GAME', subtitle: 'El Juego del Calamar (2021-25)', subtitle2: '3 Temporada 22 Episodios', buscar: 'S3R01' }, {
-                        		id: '1MZkGA1SQonGS-gmz7UOhQbdU9IejkZ_5', youtubeId: 'eotAOKm4l18', buttonId: '1zRA0mxO0XUhmOkN3iEOHQA', title: 'ALIEN: EARTH', subtitle: 'Alien: Planeta Tierra (2025)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3L00' }, {
-                        		id: '1OfVWpDfjOpvAIiiQvOSAas0MGKveZwG7', youtubeId: 'ixVlecN1Jnw', buttonId: '19XZ45pprU0WNrcDaw7kHug', title: 'SOY FRANKELDA', subtitle: 'Soy Frankelda: La Película (2025)', buscar: 'P3L00' }, {
-                        		id: '1oXevdN-mXo1yfTIdwmNJAyMFy8IrQr1c', youtubeId: 'HvTnvWjM5gY', buttonId: '1HCMxOWpc_TGa_xpIRdhdcg', title: 'APOCALYPSE: THE LANDING OF NORMANDY', subtitle: 'Apocalipsis: El desembarco de Normandía (2024)', subtitle2: '1 Temporada 2 Episodios', buscar: 'P3L01' }, {
-                        		id: '1VpcTfi7_JDHYshfA--cUFLl7RihUP2qh', youtubeId: 'YUDbl9qBihk', buttonId: '1V4XOXvy9bTMP9LYgPurF3w', title: 'DRAGON BALL DAIMA', subtitle: 'Dragon Ball Daima (2024)', subtitle2: '1 Temporada 20 Episodios', buscar: 'S3R01' }, {
-                        		id: '1GUENgqotu2IFlgoISlNF_xcw9QlHoq7N', youtubeId: 'pDgBUVuKXKk', buttonId: '13XZAbXJBVaN-Z4nmnBo0Ug', title: '200% WOLF', subtitle: '200% Lobo (2024)', buscar: '100% Wolf, 100 Wolf, S3R01' }, {
-                        		id: '1hwGT-DjHI4hYhwG_qBSta4igNRNh26Iv', youtubeId: '0JCq_hmNhJs', buttonId: '1xH-bwpuGxXhbityu2mPvtQ', title: 'SQUID GAME: THE CHALLENGE', subtitle: 'El Juego Del Calamar: El desafío (2023)', subtitle2: '1 Temporada 10 Episodios', buscar: 'S3R01' }, {
-                        		id: '1FZcdIt-xfUft_wQ8vaLpSzaermzT-YQJ', youtubeId: 'qhCOAuzcQXY', buttonId: '1LcplNXdFGragDK45_h-YKA', title: '500 DIAS DE ESCOBAR', subtitle: '500 Días De Escobar (2023)', buscar: 'P3L01' }, {
-                                id: '137YFz_v6vzB8MJuvbloiJEwUH_lIyWVW', youtubeId: 'lnewrKA6BzY', buttonId: '1GqyJeSYrLOt_8248ABwd2Q', title: 'SUPER DRAGON BALL HEROES', subtitle: 'Super Dragon Ball Heroes (2018)', subtitle2: '5 Temporads 49 Episodios', buscar: 'S3R01' }, {                         
-                                id: '1G2PCA4EyFw22UbeT-0j4xsEzuBerRfHg', youtubeId: 'IEnmRWU1A1Y', buttonId: '13pNNdoN1OwiG6udYNNRToQ', title: 'EL CAPO', subtitle: 'El Capo (2009-14)', subtitle2: '3 Temporadas 223 Episodios', buscar: 'S3R01' }, {
-                                id: '1563acEZ4GTAFo2iHI7_dMnuCY6wwR1CP', youtubeId: 'TP5Dhz1LXUg', buttonId: '1OG3dAIacyMYX4wkiRR1j5w', title: 'COMBAT!', subtitle: 'Combate! (1962)', subtitle2: '1 Temporada 31 Episodios', buscar: 'P3L01' }, {
-                                id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZ' }, {
-                                id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Addams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'P3ROIZ' }, {
-                                id: '1EJDdKM2ao6wLAfG5KXnuVQhm3Uca2v0r', youtubeId: '56601nxTJ2I', buttonId: '1tY0_cFlif5TnnwoiBTQhsA', title: 'THE GREEN HORNET', subtitle: 'El Avispón Verde (1966)', subtitle2: '1 Temporada 26 Episodios', buscar: 'P3ROIZ' },
-                        ] },
-                        
-                        
-                        
-                    ]},    
-        'ytub': {
-            title: 'YOUTUBE', carousels: [ {
-                        id: 'Películas3', data: [ {
-                        			id: '129eeC55Hp2oiClYejZN3SiiO92js1IUv', youtubeId: '_mbQyGpC2LA', title: 'THE BIG WHEEL', subtitle: 'Prueba Heroica (1949)', buscar: 'YOUTUBE' }, {
-                        			id: '1e2P1xeEaaBcX1pQ92BS3pRfRe3HvYC8j', youtubeId: 'sQCHnpSHKP8', title: 'A STRABGER IN TOWN', subtitle: 'Un Dolar Entre Los Dientes (1967)', buscar: 'YOUTUBE' },  {
-                                    id: '1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ', youtubeId: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', title: 'LIVE STREAM TEST', subtitle: 'Canal de Prueba IPTV', buscar: 'IPTV' }
-                        			]}                   
-            ] }
-        };
-
-        const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
+						   ] }, {
+						   
+						   
+						   
+						   
+						   
+						   id: 'PelículasX', data: [ {
+						   		id: '1Za_Wv8_hY_3BkHk7qfI56tlCuZUO9Czk', youtubeId: 'VNxwlx6etXI', buttonId: '1m7sgF2clbvOOCnCTbj7Wog', title: 'X-MEN', subtitle: 'X Men (2000)', buscar: 'Los Hombres X, P3L01' }, {
+						   		id: '1hTnTZbVYdq5Y_mgiHNGNwmIBu3SiarZm', youtubeId: 'pWMD3CHMuAU', buttonId: '17HrMFawvG1IRseaSPrtNBw', title: 'X-MEN DAYS OF FUTURE PAST', subtitle: 'X Men Días Del Futuro Pasado (2014)', buscar: 'Los Hombres X, P3L01' }, {
+						   		id: '1Dgbz4VGLMuXe-Z03Aqisr0aWPMAshHY2', youtubeId: 'RRj40M97i6s', buttonId: '1EGKdKLBYTlCipuxINQTpnA', title: 'X-MEN ORIGINS WOLVERINE', subtitle: 'X Men Orígenes Wolverine (2009)', buscar: 'Los Hombres X, P3L01' }, {
+						   		id: '1N-Tk3PNjeTI2p2odYPZbm6ZXRCqS7gYl', youtubeId: 'X8ozc_dQprk', buttonId: '1jN6B3U3p-DIFK-fNHQm4xg', title: 'X-MEN THE LAST STAND', subtitle: 'X Men La Batalla Final (2006)', buscar: 'Los Hombres X. P3L01' }, {
+						   		id: '1DWycDosRrmflG5A5LAa7AdVCuocLyR2h', youtubeId: 'KNIdceH7XOw', buttonId: '1fJmRCnb-P379_RM3yHhBTg', title: 'X-MEN UNITED', subtitle: 'X Men 2 (2003)', buscar: 'Los Hombres X, P3L01' },
+						   ] }, {
+						   
+						   
+						   
+						   
+						   
+						   id: 'PelículasY', data: [ {
+						   		id: '1WONs90wzZyzgtXiWCSw99Dh7havHdsDj', youtubeId: 'R87R7HA4zNc', buttonId: '1tns4NV6qqqkjaYzReAL88w', title: 'YA VEREMOS', subtitle: 'Ya Veremos (2018)', buscar: 'P3L01' }, {
+						   		id: '1vm-Z65jtoTdz1tv-NnqxBxjBOGu6Pimo', youtubeId: 'ucmnTmYpGhI', buttonId: '1hjwcoKc3OHkVkxwGsGXUJQ', title: 'YOU DON\'T MESS WITH THE ZOHAN', subtitle: 'No Te Metas Con Zohan (2008)', buscar: 'P3L01' }, {
+						   		id: '1_yE7hVLqoHzqDgarNLtLxaCn1B85pjmJ', youtubeId: 'rR1SzALB8IU', buttonId: '1Koqs_H1WYvt_KEfkV2bF0Q', title: 'YOU, ME AND DUPREE', subtitle: 'Tú, Yo y Ahora Dupree (2006)', buscar: 'S3R01' }, {
+						   		id: '1mfVPNIP3M1W9ipPdf5lm_E5YhaE_CyUh', youtubeId: 'QWvMK5j-fXU', buttonId: '1d5DKgxMz49OdxDbp3sbtFA', title: 'YOUNG SHERLOCK HOLMES', subtitle: 'El Secreto De La Pirámide (1985)', buscar: 'P3L01' }, {
+						   		id: '1rTAl_poAbKMI4luIquq3wwJbaj4kus-O', youtubeId: 'kDruG4M5R2A', buttonId: '11WmZEnddfYcY7gGeHH3Fuw', title: 'YUYU HAKUSHO', subtitle: 'YuYu Hakusho (2023)', subtitle2: '1 Temporada 5 Episodios', buscar: 'S3R01' }, {
+						   		id: '1XNsjGaz99I-CdSrGtaoINVsoru8b3CPx', youtubeId: 'swH_nJUC5bo', buttonId: '1mQ3ntU1sJfWDKyEX4AqAmA', title: 'YUYU HAKUSHO GHOST FILES', subtitle: 'Yu Yu Hakusho Los Guerreros Del Más Allá (1992-94)', subtitle2: '4 Temporadas 112 Episodios + 1 OVA', buscar: 'S3R01' },
+						   ] }, {
+						   
+						   
+						   
+						   
+						   
+						   id: 'PelículasZ', data: [ {
+						   		id: '18z9YQ8TesqGJv3Y0jS3fY9SfQ70adFfT', youtubeId: 'jWM0ct-OLsM', buttonId: '16Asx8HzwcUeKEZNlGb1dig', title: 'ZOOTOPIA', subtitle: 'Zootopia (2016)', buscar: 'P3L02' },
+						   ] },
+						   
+						   
+						   
+						   
+						   
+					] },
+					'estrenos': {
+						title: 'MAS RECIENTE', carousels: [ {
+						 	id: 'Películas2', data: [ {
+						 			id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
+						 			id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
+						 			id: '1sC4vbqdak-bpDtyiprA5gPHOSn7frHda', youtubeId: 'BL6M27fz_d0', buttonId: '1qOtN2NXz9owvZyrft6xNDQ', title: 'PETER PAN\'S NEVERLAND NIGHTMARE', subtitle: 'La pesadilla De Peter Pan (2025)', buscar: 'P3L02' }, {
+						 			id: '19TnSPSE_CsTNaUVI-dwUr1W6gO2Fdykr', youtubeId: '8FudANSsWNQ', buttonId: '1-JqSGTx1SkG6ujEBhCC5dQ', title: 'FINAL DESTINATION: BLOODLINES', subtitle: 'Destino Final: Linajes (2025)', buscar: 'S3R01G' }, {
+						 			id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, P3ROIZG' }, {
+						 			id: '1J_EFte8kd3WB8KxXRkNgc9Ff-cD61C3O', youtubeId: '5gquha3ICHE', buttonId: '1ZEvaj9VriI5OAFDszLRSbw', title: 'SQUID GAME', subtitle: 'El Juego del Calamar (2021-25)', subtitle2: '3 Temporada 22 Episodios', buscar: 'S3R01' }, {
+						 			id: '1MZkGA1SQonGS-gmz7UOhQbdU9IejkZ_5', youtubeId: 'eotAOKm4l18', buttonId: '1zRA0mxO0XUhmOkN3iEOHQA', title: 'ALIEN: EARTH', subtitle: 'Alien: Planeta Tierra (2025)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3L00' }, {
+						 			id: '1OfVWpDfjOpvAIiiQvOSAas0MGKveZwG7', youtubeId: 'ixVlecN1Jnw', buttonId: '19XZ45pprU0WNrcDaw7kHug', title: 'SOY FRANKELDA', subtitle: 'Soy Frankelda: La Película (2025)', buscar: 'P3L00' }, {
+						 			id: '1oXevdN-mXo1yfTIdwmNJAyMFy8IrQr1c', youtubeId: 'HvTnvWjM5gY', buttonId: '1HCMxOWpc_TGa_xpIRdhdcg', title: 'APOCALYPSE: THE LANDING OF NORMANDY', subtitle: 'Apocalipsis: El desembarco de Normandía (2024)', subtitle2: '1 Temporada 2 Episodios', buscar: 'P3L01' }, {
+						 			id: '1VpcTfi7_JDHYshfA--cUFLl7RihUP2qh', youtubeId: 'YUDbl9qBihk', buttonId: '1V4XOXvy9bTMP9LYgPurF3w', title: 'DRAGON BALL DAIMA', subtitle: 'Dragon Ball Daima (2024)', subtitle2: '1 Temporada 20 Episodios', buscar: 'S3R01' }, {
+						 			id: '1GUENgqotu2IFlgoISlNF_xcw9QlHoq7N', youtubeId: 'pDgBUVuKXKk', buttonId: '13XZAbXJBVaN-Z4nmnBo0Ug', title: '200% WOLF', subtitle: '200% Lobo (2024)', buscar: '100% Wolf, 100 Wolf, S3R01' }, {
+						 			id: '1hwGT-DjHI4hYhwG_qBSta4igNRNh26Iv', youtubeId: '0JCq_hmNhJs', buttonId: '1xH-bwpuGxXhbityu2mPvtQ', title: 'SQUID GAME: THE CHALLENGE', subtitle: 'El Juego Del Calamar: El desafío (2023)', subtitle2: '1 Temporada 10 Episodios', buscar: 'S3R01' }, {
+						 			id: '1FZcdIt-xfUft_wQ8vaLpSzaermzT-YQJ', youtubeId: 'qhCOAuzcQXY', buttonId: '1LcplNXdFGragDK45_h-YKA', title: '500 DIAS DE ESCOBAR', subtitle: '500 Días De Escobar (2023)', buscar: 'P3L01' }, {
+						 			id: '137YFz_v6vzB8MJuvbloiJEwUH_lIyWVW', youtubeId: 'lnewrKA6BzY', buttonId: '1GqyJeSYrLOt_8248ABwd2Q', title: 'SUPER DRAGON BALL HEROES', subtitle: 'Super Dragon Ball Heroes (2018)', subtitle2: '5 Temporads 49 Episodios', buscar: 'S3R01' }, {
+						 			id: '1G2PCA4EyFw22UbeT-0j4xsEzuBerRfHg', youtubeId: 'IEnmRWU1A1Y', buttonId: '13pNNdoN1OwiG6udYNNRToQ', title: 'EL CAPO', subtitle: 'El Capo (2009-14)', subtitle2: '3 Temporadas 223 Episodios', buscar: 'S3R01' }, {
+						 			id: '1563acEZ4GTAFo2iHI7_dMnuCY6wwR1CP', youtubeId: 'TP5Dhz1LXUg', buttonId: '1OG3dAIacyMYX4wkiRR1j5w', title: 'COMBAT!', subtitle: 'Combate! (1962)', subtitle2: '1 Temporada 31 Episodios', buscar: 'P3L01' }, {
+						 			id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZ' }, {
+						 			id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Addams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'P3ROIZ' }, {
+						 			id: '1EJDdKM2ao6wLAfG5KXnuVQhm3Uca2v0r', youtubeId: '56601nxTJ2I', buttonId: '1tY0_cFlif5TnnwoiBTQhsA', title: 'THE GREEN HORNET', subtitle: 'El Avispón Verde (1966)', subtitle2: '1 Temporada 26 Episodios', buscar: 'P3ROIZ' },
+						 	] },
+						 	
+						 	
+						 	
+						 	
+						 	
+				] },
+				  'ytub': {
+				  	title: 'YOUTUBE', carousels: [ {
+				  		id: 'Películas3', data: [ {
+				  				id: '129eeC55Hp2oiClYejZN3SiiO92js1IUv', youtubeId: '_mbQyGpC2LA', title: 'THE BIG WHEEL', subtitle: 'Prueba Heroica (1949)', buscar: 'YOUTUBE' }, {
+				  				id: '1e2P1xeEaaBcX1pQ92BS3pRfRe3HvYC8j', youtubeId: 'sQCHnpSHKP8', title: 'A STRABGER IN TOWN', subtitle: 'Un Dolar Entre Los Dientes (1967)', buscar: 'YOUTUBE' },
+				  		] },
+				
+				
+				
+				
+				
+				] },
+					'tv': {
+           title: 'TV (IPTV)', carousels: [ {
+           	id: 'Películas4', data: [ {
+           			id: '14fQuQVDFVx0pEBk0pCR34ZfBw7yS5Ela', youtubeId: 'https://mdstrm.com/live-stream-playlist/609b243156cca108312822a6.m3u8', title: 'AZTECA 1 (HD)', subtitle: 'México', buscar: 'IPTV' }, {
+           			id: '1TsLDKnhhKv_Uly_H-E1s30KRsNPMHuHs', youtubeId: 'https://channel01-onlymex.akamaized.net/hls/live/2022749/event01/index.m3u8', title: 'LAS ESTRELLAS', subtitle: 'Las Estrellas, México', buscar: 'IPTV' }, {
+           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2152', title: 'RUN TIME CINE Y SERIES', subtitle: 'Run Time Cine y Series 24/7', buscar: 'IPTV' }, {
+           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2649', title: 'RUN TIME ESPAÑOL', subtitle: 'Run Time Español 24/7', buscar: 'IPTV' }, {
+           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2648', title: 'RUN TIME ENGLISH', subtitle: 'Run Time English 24/7', buscar: 'IPTV' }, {
+           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=3528', title: 'RUN TIME FAMILIA', subtitle: 'Run Time Familia 24/7', buscar: 'IPTV' }, {
+           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2153', title: 'RUN TIME FILMS', subtitle: 'Run Time Films 24/7', buscar: 'IPTV' }, {
+           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2154', title: 'RUN TIME LATINO', subtitle: 'Run Time Latino (24/7)', buscar: 'IPTV' },
+           	] }
+        ] }
+    };
+const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
         const actionButton = document.getElementById('action-button');
         const searchInput = document.getElementById('image-search-input');
         const modalSearchInput = document.getElementById('modal-search-input');
