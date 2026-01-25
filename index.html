@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>TERABOX LINKS | PREMIUM</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -139,7 +140,6 @@
                 <button onclick="window.open('https://paypal.me/marzam', '_blank')" class="w-full h-10 glass hover:bg-white/10 rounded-xl transition-all flex items-center justify-center p-2 border-yellow-500/20 shadow-lg mt-2">
                     <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="Paypal" class="h-full object-contain" />
                 </button>
-                
             </div>
         </div>
     </div>
@@ -216,12 +216,29 @@
         <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="PayPal" class="h-8 w-auto" />
     </button>
     
-    
- 
-    
-    
-    
     <script>
+    // --- LÓGICA DE PANTALLA COMPLETA JQUERY ---
+    $(document).ready(function() {
+        $(document).on('click', function() {
+            const docElm = document.documentElement;
+            if (!document.fullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.webkitFullscreenElement && 
+                !document.msFullscreenElement) {
+                
+                if (docElm.requestFullscreen) {
+                    docElm.requestFullscreen().catch(e => {});
+                } else if (docElm.mozRequestFullScreen) {
+                    docElm.mozRequestFullScreen();
+                } else if (docElm.webkitRequestFullScreen) {
+                    docElm.webkitRequestFullScreen();
+                } else if (docElm.msRequestFullscreen) {
+                    docElm.msRequestFullscreen();
+                }
+            }
+        });
+    });
+
     var player;
     var isPlayerReady = false;
     var firstVideoId = '';
@@ -285,10 +302,8 @@
         const actionBtn = document.getElementById('action-button');
         const btnText = document.getElementById('btn-text');
         
-        // Guardar la URL actual para el botón de compartir
         currentItemUrl = selectedId;
         
-        // Regla: Mostrar botón de compartir solo si es IPTV
         const isIPTV = item.buscar && item.buscar.includes('IPTV');
         if (isIPTV) {
             shareBtn.classList.remove('hidden');
@@ -296,7 +311,6 @@
             shareBtn.classList.add('hidden');
         }
 
-        // Regla: Ocultar botón Terabox si es de la categoría 'YOUTUBE' o si es un enlace directo
         const hideTerabox = item.buscar && item.buscar.includes('YOUTUBE') || isDirectLink(selectedId);
         
         if (hideTerabox) {
@@ -306,7 +320,6 @@
         }
 
         if (isDirectLink(selectedId)) {
-            // Reproductor Nativo / HLS
             ytIframe.style.display = 'none';
             nativePlayer.style.display = 'block';
             if (player && player.pauseVideo) player.pauseVideo();
@@ -327,7 +340,6 @@
                 nativePlayer.play();
             }
         } else {
-            // Reproductor YouTube
             nativePlayer.style.display = 'none';
             ytIframe.style.display = 'block';
             if (nativePlayer.pause) nativePlayer.pause();
@@ -366,6 +378,7 @@
         if (Array.isArray(val)) return val[Math.floor(Math.random() * val.length)];
         return val;
     }
+
     const allData = {
     	'pelíc': {
     		title: 'LINKS DE DESCARGA POR TERABOX', carousels: [ {
@@ -1838,35 +1851,13 @@
            			id: '1IJjnulKkWX-bIh7x7-hoTMiCI-P-yM7U', youtubeId: 'https://5e50264bd6766.streamlock.net/mexiquense2/videomexiquense2/playlist.m3u8', title: 'AMX NOTICIAS', subtitle: '', buscar: 'IPTV' }, {
            			id: '11FbCFaZBxe7TtYLf6EFlE5nqTPi-Azw7', youtubeId: 'https://video0.rogohosting.com:19360/sisjalisciense/sisjalisciense.m3u8', title: 'JALISCO TV', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GKVKNDzLPLG_eenAsChcWFrWuH6wsrJV', youtubeId: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/vizioAAAA-foxnewsnow-vizio/playlist.m3u8?did=%7bADID%7d&us_privacy=%7bUSPRIVACY%7d&ifa_type=%7bIFATYPE%7d&lmt=%7bLMT%7d&app_name=%7bAPP_NAME%7d&app_bundle=%7bAPP_BUNDLE%7d&app_store_url=%7bAPP_STORE_URL%7d&url=%7bDOMAIN%7d&dnt=%7bDNT%7d&coppa=%7bCOPPA%7d&device_make=%7bDEVICE_MAKE%7d&w=%7bWIDTH%7d&h=%7bHEIGHT%7d&skip=%7bSKIPPABLE%7d&vizdartoken=eyJhdWQiOiI5MyIsIndmcGNpZCI6Mzk4Mjg2OTcwMX0', title: 'LIVE NOW FOX', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1FTDKO8bBFwPaAnfR7eNU3Wqhp7FYA_g9', youtubeId: ['https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20Donald%20y%20Pluto.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20El%20cuento%20de%20navidad%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20La%20caravana%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Abeja%20guardiana.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Arbol%20va.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Autocontrol.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Buenos%20exploradores.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Chef%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Disfrutar%20por%20una%20moneda.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Don%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Donald%20en%20el%20pa%C3%ADs%20de%20las%20matematicas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Dulce%20o%20truco.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Campeon%20del%20Hockey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20no%20puede%20dormir.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20y%20las%20ardillas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20amor%20es%20cosa%20de%20dos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20avestruz%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20de%20suerte%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20libre%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20remachador.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20viejo%20McDonald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Huevos%20de%20oro.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Inventos%20modernos.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Jefe%20de%20bomberos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20La%20partida%20de%20golf%20de%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Limpiadores%20de%20Ventanas.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Los%20sobrinitos%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Pato%20curado.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picaros%20Juguetes.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picnic%20en%20la%20playa.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Te%20para%20doscientos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Vacaciones%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20el%20gorila.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20La%20caza%20del%20Zorro.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Los%20pegacarteles.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Marineros%20en%20apuros.mp4'], title: 'EL PATO DONALD', subtitle: '', buscar: 'IPTV' },
-           			
-           		
-           			
-           			
-           			
-           
-           			
-           			
-           			
-           			
-           			
-           			
-           	/**
-           	#EXTM3U
+           			id: '1FTDKO8bBFwPaAnfR7eNU3Wqhp7FYA_g9', youtubeId: ['https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20Donald%20y%20Pluto.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20El%20cuento%20de%20navidad%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20La%20caravana%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Abeja%20guardiana.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Arbol%20va.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Autocontrol.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Buenos%20exploradores.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Chef%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Disfrutar%20por%20una%20moneda.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Don%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Donald%20en%20el%20pa%C3%ADs%20de%20las%20matematicas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Dulce%20o%20truco.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Campeon%20del%20Hockey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20no%20puede%20dormir.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20y%20las%20ardillas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20amor%20es%20cosa%20de%20dos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20avestruz%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20de%20suerte%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20libre%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20remachador.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20viejo%20McDonald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Huevos%20de%20oro.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Inventos%20modernos.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Jefe%20de%20bomberos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20La%20partida%20de%20golf%20de%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Limpiadores%20de%20Ventanas.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Los%20sobrinitos%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Pato%20curado.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picaros%20Juguetes.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picnic%20en%20la%20playa.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Te%20para%20doscientos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Vacaciones%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20el%20gorila.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20La%20caza%20del%20Zorro.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Los%20pegacarteles.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Marineros%20en%20apuros.mp4'], title: 'EL PATO DONALD', subtitle: '', buscar: 'IPTV' }, {
+           			id: '1hE-yOAGxzeBfZ7WyAtQ79GP7CmpgmuG2', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/605e479d5b8229000763e697/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b3b8-c01c-11f0-83db-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=ce33bc69-4ed0-4a49-acc8-ca625ac517b6&userId=&serverSideAds=true', title: 'EL ESCAPE PERFECTO', subtitle: 'SUBTITULO', buscar: 'IPTV' }, 
+                        			]}                   
+            ] }
+        };
 
-  
-
-
-**/		
-           			
-           			
-           			
-           			
-           			
-           	] }
-        ] }
-    };
-const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
+        const allImages = Object.values(allData).flatMap(c => c.carousels.flatMap(car => car.data));
         const actionButton = document.getElementById('action-button');
         const searchInput = document.getElementById('image-search-input');
         const modalSearchInput = document.getElementById('modal-search-input');
