@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- HLS Support -->
+    <!-- HLS Support for M3U8 -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         :root {
@@ -47,6 +47,7 @@
             position: relative;
             padding-bottom: 56.25%;
             background: #000;
+            border-bottom: 2px solid rgba(37, 99, 235, 0.3);
         }
         .controls-bar {
             height: 44px;
@@ -121,6 +122,7 @@
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="32" alt="WhatsApp">
 </div>
 
+    <!-- Modales -->
     <div id="news-modal" class="modal-overlay items-center justify-center p-4">
         <div class="glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
             <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
@@ -164,7 +166,6 @@
         </div>
     </div>
 
-    <!-- Modal para Compartir Link IPTV -->
     <div id="share-modal" class="modal-overlay items-center justify-center p-4">
         <div class="glass w-full max-w-sm rounded-2xl overflow-hidden p-5 flex flex-col gap-4">
             <div class="flex justify-between items-center">
@@ -181,11 +182,14 @@
         </div>
     </div>
 
+    <!-- Cabecera y Reproductor -->
     <div class="sticky-header">
         <div class="max-w-screen-xl mx-auto">
             <div class="video-container overflow-hidden">
+                <!-- Capa YouTube -->
                 <div id="youtube-player" class="absolute inset-0 w-full h-full"></div>
-                <video id="native-video-player" class="absolute inset-0 w-full h-full" controls playsinline></video>
+                <!-- Capa Nativa (MP4/M3U8) -->
+                <video id="native-video-player" class="absolute inset-0 w-full h-full" controls playsinline crossorigin="anonymous"></video>
             </div>
             <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
                 <button onclick="toggleFullScreen()" class="p-1.5 text-blue-400 hover:text-white transition-colors" title="Pantalla Completa">
@@ -208,6 +212,7 @@
         </div>
     </div>
 
+    <!-- Contenido Principal -->
     <div class="main-content max-w-screen-xl mx-auto">
         <div id="original-carousels-section" class="space-y-6"></div>
     </div>
@@ -217,7 +222,7 @@
     </button>
     
     <script>
-    // --- LÓGICA DE PANTALLA COMPLETA JQUERY ---
+    // --- PANTALLA COMPLETA ---
     $(document).ready(function() {
         $(document).on('click', function() {
             const docElm = document.documentElement;
@@ -225,16 +230,7 @@
                 !document.mozFullScreenElement && 
                 !document.webkitFullscreenElement && 
                 !document.msFullscreenElement) {
-                
-                if (docElm.requestFullscreen) {
-                    docElm.requestFullscreen().catch(e => {});
-                } else if (docElm.mozRequestFullScreen) {
-                    docElm.mozRequestFullScreen();
-                } else if (docElm.webkitRequestFullScreen) {
-                    docElm.webkitRequestFullScreen();
-                } else if (docElm.msRequestFullscreen) {
-                    docElm.msRequestFullscreen();
-                }
+                if (docElm.requestFullscreen) docElm.requestFullscreen().catch(e => {});
             }
         });
     });
@@ -248,6 +244,7 @@
     let hls = null;
     let currentItemUrl = "";
 
+    // YouTube Iframe API
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -258,7 +255,7 @@
             height: '100%',
             width: '100%',
             videoId: firstVideoId,
-            playerVars: { 'autoplay': 0, 'rel': 0, 'enablejsapi': 1 },
+            playerVars: { 'autoplay': 0, 'rel': 0, 'enablejsapi': 1, 'origin': window.location.origin },
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
@@ -285,16 +282,17 @@
     function toggleFullScreen() {
         const docEl = document.documentElement;
         if (!document.fullscreenElement) {
-            if (docEl.requestFullscreen) docEl.requestFullscreen().catch(e => console.warn(e));
-            else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
-            else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
+            if (docEl.requestFullscreen) docEl.requestFullscreen();
         } else {
             if (document.exitFullscreen) document.exitFullscreen();
         }
     }
 
+    // Detector de tipos de link
     function isDirectLink(url) {
-        return url.includes('.m3u8') || url.includes('.mp4') || url.startsWith('http');
+        if (!url) return false;
+        const low = url.toLowerCase();
+        return low.includes('.m3u8') || low.includes('.mp4') || low.includes('.m3u') || (low.startsWith('http') && !low.includes('youtube.com') && !low.includes('youtu.be'));
     }
 
     function selectMedia(item) {
@@ -304,45 +302,65 @@
         
         currentItemUrl = selectedId;
         
+        // --- NUEVA LÓGICA IPTV: ABRIR EN VENTANA NUEVA ---
         const isIPTV = item.buscar && item.buscar.includes('IPTV');
         if (isIPTV) {
+            window.open(selectedId, '_blank');
+            closeNewsModal();
+            closeSearchModal();
+            return; // Salir para que no intente reproducir internamente
+        }
+        // -----------------------------------------------
+
+        if (selectedId.includes('.m3u8')) {
             shareBtn.classList.remove('hidden');
         } else {
             shareBtn.classList.add('hidden');
         }
 
-        const hideTerabox = item.buscar && item.buscar.includes('YOUTUBE') || isDirectLink(selectedId);
-        
-        if (hideTerabox) {
-            actionBtn.style.display = 'none';
-        } else {
-            actionBtn.style.display = 'flex';
-        }
+        // Ocultar botón de descarga si es video directo o YouTube nativo
+        const hideTerabox = (item.buscar && item.buscar.includes('YOUTUBE')) || isDirectLink(selectedId);
+        actionBtn.style.display = hideTerabox ? 'none' : 'flex';
 
+        // Lógica de Reproducción (Solo para NO IPTV)
         if (isDirectLink(selectedId)) {
             ytIframe.style.display = 'none';
             nativePlayer.style.display = 'block';
             if (player && player.pauseVideo) player.pauseVideo();
 
-            if (selectedId.includes('.m3u8')) {
+            if (selectedId.toLowerCase().includes('.m3u8') || selectedId.toLowerCase().includes('.m3u')) {
                 if (Hls.isSupported()) {
                     if (hls) hls.destroy();
                     hls = new Hls();
                     hls.loadSource(selectedId);
                     hls.attachMedia(nativePlayer);
-                    hls.on(Hls.Events.MANIFEST_PARSED, () => nativePlayer.play());
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        nativePlayer.play().catch(() => {});
+                    });
+                    hls.on(Hls.Events.ERROR, function (event, data) {
+                        if (data.fatal) {
+                            switch (data.type) {
+                                case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
+                                case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
+                                default: hls.destroy(); break;
+                            }
+                        }
+                    });
                 } else if (nativePlayer.canPlayType('application/vnd.apple.mpegurl')) {
                     nativePlayer.src = selectedId;
-                    nativePlayer.play();
+                    nativePlayer.play().catch(() => {});
                 }
             } else {
+                if (hls) { hls.destroy(); hls = null; }
                 nativePlayer.src = selectedId;
-                nativePlayer.play();
+                nativePlayer.load();
+                nativePlayer.play().catch(() => {});
             }
         } else {
             nativePlayer.style.display = 'none';
             ytIframe.style.display = 'block';
             if (nativePlayer.pause) nativePlayer.pause();
+            if (hls) { hls.destroy(); hls = null; }
             
             if (isPlayerReady && player && player.loadVideoById) {
                 player.loadVideoById({ 'videoId': selectedId });
@@ -357,15 +375,14 @@
         closeSearchModal();
     }
 
+    // Funciones de UI
     function openShareModal() {
         document.getElementById('share-url-input').value = currentItemUrl;
         document.getElementById('share-modal').classList.add('active');
         document.getElementById('copy-success').classList.add('hidden');
     }
 
-    function closeShareModal() {
-        document.getElementById('share-modal').classList.remove('active');
-    }
+    function closeShareModal() { document.getElementById('share-modal').classList.remove('active'); }
 
     function copyShareUrl() {
         const input = document.getElementById('share-url-input');
@@ -379,6 +396,7 @@
         return val;
     }
 
+    // Datos y Filtros
     const allData = {
     	'pelíc': {
     		title: 'LINKS DE DESCARGA POR TERABOX', carousels: [ {
@@ -1623,7 +1641,7 @@
 						    	id: '1-QejVlMlfsLFlD0HOx2lZHzRIMerYU5m', youtubeId: 'R1v0uFms68U', buttonId: '13QLTkjfTuMeNWcBFufyq3w', title: 'THE WALKING DEAD', subtitle: 'The Walking Dead (2010-22)', subtitle2: '11 Temporadas 177 Episodios', buscar: 'P3L02G' }, {
 						    	id: '1jhwEYhZKYpyeIfiJrHeoQQEzUmKnfhTS', youtubeId: 'iTOaFootkSk', buttonId: '1H0BWZIUwidI4WcEAyDohOA', title: 'THE WALKING DEAD: DARYL DIXON', subtitle: 'The Walking Dead: Daryl Dixon 2023-24)', subtitle2: '2 Temporadas 12 Episodios', buscar: 'P3L02' }, {
 						    	id: '1lyS37CEZSpD4lsQq91JgxjTl697pyOdm', youtubeId: 'jg2tucyhp3M', buttonId: '1TEj2oY_1CKBN9OvEIdLS4g', title: 'THE WALKING DEAD: DEAD CITY', subtitle: 'The Walking Dead: Dead City (2023)', subtitle2: '1 Temporada 6 Episodios', buscar: 'P3L02G' }, {
-						    	id: '1n-LcXDbLRHBrbK9zhi6SjcXGAEdsIIOu', youtubeId: 'CSiSA-D207o', buttonId: '1VnSNv5t8GJ5iT-1F-FgLYQ', title: 'THE WALKING DEAD THE ONES WHO LIVE', subtitle: 'The Walking Dead: Los que viven (2024)', subtitle2: '1 Temporada 6 Episodios', buscar: 'P3L02G' }, {
+						    	id: '1n-LcXDbLRHBrbK9zhi6SjcXGAEdsIIOu', youtubeId: 'CSiSA-D207o', buttonId: '1VnSNv5t8GJ5iT-1F-FgLYQ', title: 'THE WALKING DEAD: THE ONES WHO LIVE', subtitle: 'The Walking Dead: Los que viven (2024)', subtitle2: '1 Temporada 6 Episodios', buscar: 'P3L02G' }, {
 						    	id: '1uEnlqoGvA1svK6GUYTUff_yN2nxvxnmG', youtubeId: 'MWjp82a5qmA', buttonId: '1ipcvG6rPn3LrdC1R0MWJtg', title: 'THE WALKING DEAD: WORLD BEYOND', subtitle: 'The Walking Dead: World Beyond (2020-21)', subtitle2: '2 Temporadas 20 Episodios', buscar: 'P3L02' }, {
 						    	id: '16ZWHK-3bjot6lPN79CA4K-wjnbV84sfc', youtubeId: '--gdB-nnQkU', buttonId: '1JHDSmu68_2JG3pwYugRgkg', title: 'THE WARRIORS', subtitle: 'Los Guerreros (1979)', buscar: 'P3L01' }, {
 						    	id: '1vukK1PCa0UaGZTrlvzhMMMxNsz6gxsK8', youtubeId: 'vVLvkqfTRVQ', buttonId: '1Dx26Zdy3Ua0uQggRvlyskA', title: 'THE WATERBOY', subtitle: 'El Aguador (1998)', buscar: 'P3L02' }, {
@@ -1811,15 +1829,11 @@
            			id: '14fQuQVDFVx0pEBk0pCR34ZfBw7yS5Ela', youtubeId: 'https://mdstrm.com/live-stream-playlist/609b243156cca108312822a6.m3u8', title: 'AZTECA UNO (HD)', subtitle: '', buscar: 'IPTV' }, {
            			id: '1TsLDKnhhKv_Uly_H-E1s30KRsNPMHuHs', youtubeId: 'https://channel01-onlymex.akamaized.net/hls/live/2022749/event01/index.m3u8', title: 'LAS ESTRELLAS', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2550', title: 'RUN TIME ACCION', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2153', title: 'RUN TIME BRASIL', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2152', title: 'RUN TIME CINE Y SERIES', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2551', title: 'RUN TIME COMEDIA', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=3533', title: 'RUN TIME CRIMEN', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2649', title: 'RUN TIME ESPAÑOL', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2648', title: 'RUN TIME ENGLISH', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=3528', title: 'RUN TIME FAMILIA', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2153', title: 'RUN TIME FILMS', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2160', title: 'RUN TIME FRANCE', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=2154', title: 'RUN TIME LATINO', subtitle: '', buscar: 'IPTV' }, {
            			id: '1GnfigM2qJxMrJvLEg-wcuiW1z8cGDMdC', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=3529', title: 'RUN TIME TERROR', subtitle: '', buscar: 'IPTV' }, {
            				id: '1HHAKXMyreOcMhOn1AiHdMhlEJB8Z6GoN', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=5106', title: 'AYM SPORTS', subtitle: '', buscar: 'IPTV' }, {
@@ -1829,14 +1843,6 @@
            			id: '1vJjtceZwk0azlG9QjMRTeMwIWbM-_Psd', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=5504', title: 'WPT', subtitle: '', buscar: 'IPTV' }, {
            			id: '1MTMSsOI0CdXG-8Ucw8G_wjLGR0PUEEu2', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=6404', title: 'C4 EN ALERTA', subtitle: '', buscar: 'IPTV' }, {
            			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=6405', title: 'CANAL 6 CDMX', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'https://mdstrm.com/live-stream-playlist/57b4dbf5dbbfc8f16bb63ce1.m3u8', title: 'CANAL 6 MTY', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'http://mdstrm.com/live-stream-playlist/57bf686a61ff39e1085d43e1.m3u8', title: 'CANAL 6 LAG', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'http://mdstrm.com/live-stream-playlist/5c54d38ca392a5119bb0aa0d.m3u8', title: 'CANAL 6 GDL', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'http://mdstrm.com/live-stream-playlist/5d56ed29c92dd106ff01543b.m3u8', title: 'CANAL 6 PUE', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'http://mdstrm.com/live-stream-playlist/5d4b0fec848918070128c8cb.m3u8', title: 'CANAL 6 GTO', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'http://mdstrm.com/live-stream-playlist/5d5d51a4e9a40e25f4a0332c.m3u8', title: 'CANAL 6 SAL', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1cCIzgl-bw1iY7MbBy9IEC-ZzMEgrAmFX', youtubeId: 'http://mdstrm.com/live-stream-playlist/5d9e440d675235586a92be7f.m3u8', title: 'CANAL 6 CDJ', subtitle: '', buscar: 'IPTV' }, {
-           			id: '18UDbwLJQAO26qNtxDSKqCZ78DBL_NKVB', youtubeId: 'https://mdstrm.com/live-stream-playlist/5a7b1e63a8da282c34d65445.m3u8', title: 'CANAL 8 CJCR', subtitle: '', buscar: 'IPTV' }, {
            			id: '1b3w_LbBogCdW6xnak0FF80hTbTeaXjXI', youtubeId: ['https://stream.ads.ottera.tv/playlist.m3u8?network_id=6403', 'https://mdstrm.com/live-stream-playlist/610178c7db32a4112d994650.m3u8'], title: 'MILENIO TELEVISION', subtitle: '', buscar: 'IPTV' }, {
            			id: '1hVx0VMoRHdXrxA1OqzFSfYIBgpdC0xeG', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=11014', title: 'TELEDIARIO NOW', subtitle: '', buscar: 'IPTV' }, {
            			id: '1sRcYpaLv0CFLl6qcuF8eMGj87svYzFcF', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=6149', title: 'IMAGEN TV (-1 Hr.)', subtitle: '', buscar: 'IPTV' }, {
@@ -1846,13 +1852,11 @@
            			id: '14sPlkjzxhERlGX55s0jF0LEne0Yzavle', youtubeId: 'https://s5.mexside.net:1936/tvmigrante/tvmigrante/chunklist_w1795049700.m3u8', title: 'TV MIGRANTE', subtitle: '', buscar: 'IPTV' }, {
            			id: '1Z216um2i8oeGd1xT3uNTJHr2e0DBsmG1', youtubeId: 'https://5fc584f3f19c9.streamlock.net/canal22/smil:canal22.smil/playlist.m3u8', title: 'CANAL 22', subtitle: '', buscar: 'IPTV' }, {
            			id: '1WK-tsWJInxAZkcd2oEWZ-3L7PApICeR9', youtubeId: 'https://5fc584f3f19c9.streamlock.net/canal222/smil:canal222.smil/playlist.m3u8', title: 'MX NUESTRO CINE (22.2)', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1l_l8G0bonwwvF6t04xCL2odahaLnn9jQ', youtubeId: 'http://mdstrm.com/live-stream-playlist/57b4dc126338448314449d0c.m3u8', title: 'TELERITMO', subtitle: '', buscar: 'IPTV' }, {
            			id: '1YEOJ8K6gERVEKL4-1ren67dgYMBiu-mk', youtubeId: 'https://5e50264bd6766.streamlock.net/mexiquense/videomexiquense/playlist.m3u8', title: 'MEXIQUENSE TELEVISION', subtitle: '', buscar: 'IPTV' }, {
            			id: '1IJjnulKkWX-bIh7x7-hoTMiCI-P-yM7U', youtubeId: 'https://5e50264bd6766.streamlock.net/mexiquense2/videomexiquense2/playlist.m3u8', title: 'AMX NOTICIAS', subtitle: '', buscar: 'IPTV' }, {
            			id: '11FbCFaZBxe7TtYLf6EFlE5nqTPi-Azw7', youtubeId: 'https://video0.rogohosting.com:19360/sisjalisciense/sisjalisciense.m3u8', title: 'JALISCO TV', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1GKVKNDzLPLG_eenAsChcWFrWuH6wsrJV', youtubeId: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/vizioAAAA-foxnewsnow-vizio/playlist.m3u8?did=%7bADID%7d&us_privacy=%7bUSPRIVACY%7d&ifa_type=%7bIFATYPE%7d&lmt=%7bLMT%7d&app_name=%7bAPP_NAME%7d&app_bundle=%7bAPP_BUNDLE%7d&app_store_url=%7bAPP_STORE_URL%7d&url=%7bDOMAIN%7d&dnt=%7bDNT%7d&coppa=%7bCOPPA%7d&device_make=%7bDEVICE_MAKE%7d&w=%7bWIDTH%7d&h=%7bHEIGHT%7d&skip=%7bSKIPPABLE%7d&vizdartoken=eyJhdWQiOiI5MyIsIndmcGNpZCI6Mzk4Mjg2OTcwMX0', title: 'LIVE NOW FOX', subtitle: '', buscar: 'IPTV' }, {
            			id: '1FTDKO8bBFwPaAnfR7eNU3Wqhp7FYA_g9', youtubeId: ['https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20Donald%20y%20Pluto.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20El%20cuento%20de%20navidad%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20La%20caravana%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Abeja%20guardiana.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Arbol%20va.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Autocontrol.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Buenos%20exploradores.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Chef%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Disfrutar%20por%20una%20moneda.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Don%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Donald%20en%20el%20pa%C3%ADs%20de%20las%20matematicas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Dulce%20o%20truco.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Campeon%20del%20Hockey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20no%20puede%20dormir.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20y%20las%20ardillas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20amor%20es%20cosa%20de%20dos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20avestruz%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20de%20suerte%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20libre%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20remachador.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20viejo%20McDonald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Huevos%20de%20oro.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Inventos%20modernos.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Jefe%20de%20bomberos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20La%20partida%20de%20golf%20de%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Limpiadores%20de%20Ventanas.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Los%20sobrinitos%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Pato%20curado.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picaros%20Juguetes.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picnic%20en%20la%20playa.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Te%20para%20doscientos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Vacaciones%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20el%20gorila.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20La%20caza%20del%20Zorro.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Los%20pegacarteles.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Marineros%20en%20apuros.mp4'], title: 'EL PATO DONALD', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1hE-yOAGxzeBfZ7WyAtQ79GP7CmpgmuG2', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/605e479d5b8229000763e697/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b3b8-c01c-11f0-83db-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=ce33bc69-4ed0-4a49-acc8-ca625ac517b6&userId=&serverSideAds=true', title: 'EL ESCAPE PERFECTO', subtitle: 'SUBTITULO', buscar: 'IPTV' }, 
+           			id: '1uf75Vkm2dI-zRcjJsstaUzuyWvKjom-s', youtubeId: 'http://51.222.85.85:81/hls/loco/index.m3u8', title: 'LOCOMOTION', subtitle: '', buscar: 'IPTV' }, 
                         			]}                   
             ] }
         };
@@ -1893,13 +1897,10 @@
                 const results = allImages.filter(i => 
                     cleanText(i.title).includes(q) || 
                     cleanText(i.buscar).includes(q) || 
-                    cleanText(i.subtitle).includes(q) || 
-                    (i.subtitle2 && cleanText(i.subtitle2).includes(q))
+                    cleanText(i.subtitle).includes(q)
                 );
-                
                 searchModal.classList.add('active');
                 resultsGrid.innerHTML = '';
-                
                 if (results.length > 0) {
                     emptyMsg.classList.add('hidden');
                     results.forEach(item => {
@@ -1907,28 +1908,16 @@
                         const div = document.createElement('div');
                         div.className = 'cursor-pointer group flex flex-col gap-1.5';
                         div.onclick = () => selectMedia(item);
-                        div.innerHTML = `
-                            <div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video">
-                                <img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/>
-                            </div>
-                            <div class="min-w-0">
-                                <h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4>
-                                <p class="text-[8px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p>
-                            </div>`;
+                        div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/></div><div class="min-w-0"><h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[8px] text-gray-400 truncate mt-0.5">${item.subtitle}</p></div>`;
                         resultsGrid.appendChild(div);
                     });
-                } else { 
-                    emptyMsg.classList.remove('hidden'); 
-                }
-            } else { 
-                closeSearchModal(); 
-            }
+                } else { emptyMsg.classList.remove('hidden'); }
+            } else { closeSearchModal(); }
         }
 
         function closeSearchModal() { 
             document.getElementById('search-modal').classList.remove('active');
-            searchInput.value = '';
-            modalSearchInput.value = '';
+            searchInput.value = ''; modalSearchInput.value = '';
         }
 
         function renderCarousel(container, data) {
@@ -1938,7 +1927,7 @@
                 const div = document.createElement('div');
                 div.className = 'carousel-item group cursor-pointer';
                 div.onclick = () => selectMedia(item);
-                div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><div class="skeleton absolute inset-0"></div><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/></div><div class="mt-1.5 px-0.5 min-w-0"><h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5">${item.subtitle}</p><p class="text-[9px] text-gray-400 truncate leading-tight mt-0.5 italic">${item.subtitle2 || ''}</p></div>`;
+                div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><div class="skeleton absolute inset-0"></div><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/></div><div class="mt-1.5 px-0.5 min-w-0"><h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[9px] text-gray-400 truncate mt-0.5">${item.subtitle}</p></div>`;
                 container.appendChild(div);
             });
         }
@@ -1952,7 +1941,7 @@
                 const div = document.createElement('div');
                 div.className = "flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition";
                 div.onclick = () => selectMedia(item);
-                div.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-12 h-8 object-cover rounded shadow" /><div class="flex-1 min-w-0"><p class="text-white text-[10px] font-black truncate uppercase leading-tight">${item.title}</p><p class="text-gray-400 text-[8px] truncate mt-0.5">${item.subtitle}</p></div>`;
+                div.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-12 h-8 object-cover rounded shadow" /><div class="flex-1 min-w-0"><p class="text-white text-[10px] font-black truncate uppercase">${item.title}</p><p class="text-gray-400 text-[8px] truncate">${item.subtitle}</p></div>`;
                 list.appendChild(div);
             });
             document.getElementById('news-modal').classList.add('active');
@@ -1977,15 +1966,22 @@
             const saved = localStorage.getItem('lastViewed');
             if (saved) {
                 const item = JSON.parse(saved);
-                selectMedia(item);
+                // No reproducir automáticamente si el guardado era IPTV
+                if (!(item.buscar && item.buscar.includes('IPTV'))) {
+                    selectMedia(item);
+                }
             } else if (allImages.length > 0) {
-                selectMedia(allImages[0]);
+                // No reproducir automáticamente si el primero es IPTV
+                if (!(allImages[0].buscar && allImages[0].buscar.includes('IPTV'))) {
+                    selectMedia(allImages[0]);
+                }
             }
             setTimeout(showNews, 1500);
         });
 
         actionButton.onclick = () => window.open(currentUrl, '_blank');
 
+        // Lógica WhatsApp
         const MI_TELEFONO = "525621896010";
         const HORA_INICIO = 9;
         const HORA_FIN = 18;
@@ -2026,7 +2022,6 @@
                 waInput.value = ""; toggleChat();
             }
         }
-        
         waInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToWhatsapp(); });
     </script>
 </body>
