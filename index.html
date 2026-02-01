@@ -1,227 +1,483 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang= "es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>TERABOX LINKS | PREMIUM</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- HLS Support for M3U8 -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --bg-dark: #0a0a0c;
-            --card-bg: rgba(20, 20, 25, 0.95);
-            --wa-color: #25d366;
-            --wa-dark: #128c7e;
-            --wa-bg-chat: #e5ddd5;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: #f8fafc;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        .glass {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: var(--bg-dark);
-            padding-bottom: 4px;
-        }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            background: #000;
-            border-bottom: 2px solid rgba(37, 99, 235, 0.3);
-        }
-        .controls-bar {
-            height: 44px;
-            margin-top: -1px;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-        }
-        @keyframes pulse-yellow {
-            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); transform: scale(1); }
-            50% { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); transform: scale(1.05); }
-            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1); }
-        }
-        .btn-playing { animation: pulse-yellow 1.5s infinite !important; background-color: #eab308 !important; color: black !important; }
-        .main-content { padding: 12px 12px 100px 12px; }
-        .skeleton { background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .carousel-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 8px 0; scrollbar-width: none; }
-        .carousel-wrapper::-webkit-scrollbar { display: none; }
-        .carousel-item { flex: 0 0 75%; width: 75%; scroll-snap-align: center; }
-        @media (min-width: 640px) { .carousel-item { flex: 0 0 35%; width: 35%; } }
-        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px); }
-        .modal-overlay.active { display: flex; }
-        @keyframes wa-pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
-        .wa-launcher { position: fixed; bottom: 25px; left: 20px; background-color: var(--wa-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 10000; animation: wa-pulse 2s infinite; transition: transform 0.3s ease; }
-        .wa-launcher:active { transform: scale(0.9); }
-        .wa-badge { position: absolute; top: -2px; right: -2px; background: #ff0000; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
-        .wa-card { position: fixed; top: 20px; right: 20px; width: 320px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: none; flex-direction: column; z-index: 10001; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; overflow: hidden; transition: top 0.3s ease; }
-        .wa-header { background: var(--wa-dark); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .wa-header-info b { display: block; font-size: 15px; }
-        .wa-header-info span { font-size: 12px; opacity: 0.9; }
-        .wa-close { cursor: pointer; font-size: 24px; line-height: 1; }
-        .wa-body { padding: 15px; background: var(--wa-bg-chat); max-height: 200px; min-height: 80px; overflow-y: auto; }
-        .wa-bubble { background: white; padding: 12px; border-radius: 10px; font-size: 14px; color: #333; border-top-left-radius: 0; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .typing { font-style: italic; color: #777; font-size: 13px; display: none; }
-        .wa-footer { padding: 10px; background: #f0f0f0; display: flex; gap: 8px; align-items: center; }
-        .wa-input { flex: 1; border: 1px solid #ccc; border-radius: 25px; padding: 10px 15px; outline: none; font-size: 16px; color: black; }
-        .wa-send { background: var(--wa-color); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-        .wa-send:hover { background: var(--wa-dark); }
-        @media (max-width: 480px) { .wa-card { width: 90%; right: 5%; top: 10px; } }
-        #modal-search-input::placeholder { color: rgba(255, 255, 255, 0.4); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; }
-        #native-video-player { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: none; background: #000; }
-    </style>
+	<meta charset= "UTF-8">
+	<meta name= "viewport" content= "width=device-width, initial-scale=1.0">
+	<meta http-equiv= "Content-Security-Policy" content= "upgrade-insecure-requests">
+	
+	<title>
+		TERABOX LINKS | PREMIUM
+	</title>
+	
+	<script src= "https://code.jquery.com/jquery-3.7.1.min.js">
+	</script>
+	<script src= "https://cdn.tailwindcss.com">
+	</script>
+	
+	<link href= "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel= "stylesheet">
+	<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	
+	<!-- HLS Soporte para M3U8 -->
+	<script src= "https://cdn.jsdelivr.net/npm/hls.js@latest">
+	</script>
+	
+	<style>
+		:root {
+			--primary: #2563eb;
+			--bg-dark: #0a0a0c;
+			--card-bg: rgba(20, 20, 25, 0.95);
+			--wa-color: #25d366;
+			--wa-dark: #128c7e;
+			--wa-bg-chat: #e5ddd5;
+		}
+		body {
+			font-family: 'Inter', sans-serif;
+			background-color: var(--bg-dark);
+			color: #f8fafc;
+			margin: 0;
+			padding: 0;
+			scroll-behavior: smooth;
+			overflow-x: hidden;
+			min-height: 100vh;
+		}
+		.glass {
+			background: var(--card-bg);
+			backdrop-filter: blur(16px);
+			-webkit-backdrop-filter: blur(16px);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+		.sticky-header {
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			background-color: var(--bg-dark);
+			padding-bottom: 4px;
+		}
+		.video-container {
+			position: relative;
+			padding-bottom: 56.25%;
+			background: #000;
+			border-bottom: 2px solid rgba(37, 99, 235, 0.3);
+		}
+		.controls-bar {
+			height: 44px;
+			margin-top: -1px;
+			border-top: none;
+			border-radius: 0 0 12px 12px;
+		}
+		@keyframes pulse-yellow {
+			0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7);
+			transform: scale(1);
+		}
+		50% {
+			box-shadow: 0 0 0 12px rgba(234, 179, 8, 0);
+			transform: scale(1.05);
+		}
+		100% {
+			box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
+			transform: scale(1);
+		}
+		
+		}
+		.btn-playing {
+			animation: pulse-yellow 1.5s infinite !important;
+			background-color: #eab308 !important;
+			color: black !important;
+		}
+		.main-content {
+			padding: 12px 12px 100px 12px;
+		}
+		.skeleton {
+			background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+			background-size: 200% 100%;
+			animation: loading 1.5s infinite;
+		}
+		@keyframes loading {
+			0% {
+				background-position: 200% 0;
+			}
+			100% {
+				background-position: -200% 0;
+			}
+		}
+		.carousel-wrapper {
+			display: flex;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+			gap: 12px;
+			padding: 8px 0;
+			scrollbar-width: none;
+		}
+		.carousel-wrapper::-webkit-scrollbar {
+			display: none;
+		}
+		.carousel-item {
+			flex: 0 0 75%;
+			width: 75%;
+			scroll-snap-align: center;
+		}
+		@media (min-width: 640px) {
+			.carousel-item {
+				flex: 0 0 35%;
+				width: 35%;
+			}
+		}
+		.modal-overlay {
+			display: none;
+			position: fixed;
+			inset: 0;
+			z-index: 2000;
+			background: rgba(0, 0, 0, 0.92);
+			backdrop-filter: blur(12px);
+		}
+		.modal-overlay.active {
+			display: flex;
+		}
+		@keyframes wa-pulse {
+			0% {
+				box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+			}
+			70% {
+				box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+			}
+			100% {
+				box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+			}
+		}
+		.wa-launcher {
+			position: fixed; 
+			bottom: 25px;
+			left: 20px;
+			background-color: var(--wa-color);
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+			z-index: 10000;
+			animation: wa-pulse 2s infinite;
+			transition: transform 0.3s ease;
+		}
+		.wa-launcher:active {
+			transform: scale(0.9);
+		}
+		.wa-badge {
+			position: absolute;
+			top: -2px;
+			right: -2px;
+			background: #ff0000;
+			color: white;
+			border-radius: 50%;
+			width: 22px;
+			height: 22px;
+			font-size: 12px;
+			font-weight: bold;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 2px solid white;
+		}
+		.wa-card {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			width: 320px;
+			background: white;
+			border-radius: 15px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+			display: none;
+			flex-direction: column;
+			z-index: 10001;
+			font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+			overflow: hidden;
+			transition: top 0.3s ease;
+		}
+		.wa-header {
+			background: var(--wa-dark);
+			color: white;
+			padding: 15px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.wa-header-info b {
+			display: block;
+			font-size: 15px;
+		}
+		.wa-header-info span {
+			font-size: 12px;
+			opacity: 0.9;
+		}
+		.wa-close {
+			cursor: pointer;
+			font-size: 24px;
+			line-height: 1;
+		}
+		.wa-body {
+			padding: 15px;
+			background: var(--wa-bg-chat);
+			max-height: 200px;
+			min-height: 80px;
+			overflow-y: auto;
+		}
+		.wa-bubble {
+			background: white;
+			padding: 12px;
+			border-radius: 10px;
+			font-size: 14px;
+			color: #333;
+			border-top-left-radius: 0;
+			position: relative;
+			box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+		}
+		.typing {
+			font-style: italic;
+			color: #777;
+			font-size: 13px;
+			display: none;
+		}
+		.wa-footer {
+			padding: 10px;
+			background: #f0f0f0;
+			display: flex;
+			gap: 8px;
+			align-items:
+			center;
+		}
+		.wa-input {
+			flex: 1;
+			border: 1px solid #ccc;
+			border-radius: 25px;
+			padding: 10px 15px;
+			outline: none;
+			font-size: 16px;
+			color: black;
+		}
+		.wa-send {
+			background: var(--wa-color);
+			border: none;
+			color: white;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background 0.2s;
+		}
+		.wa-send:hover {
+			background: var(--wa-dark);
+		}
+		@media (max-width: 480px) {
+			.wa-card {
+				width: 90%;
+				right: 5%;
+				top: 10px;
+			}
+		}
+		#modal-search-input::placeholder {
+			color: rgba(255, 255, 255, 0.4);
+			text-transform: uppercase;
+			font-weight: 800;
+			letter-spacing: 0.05em;
+		}
+		#native-video-player {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0; left: 0;
+			display: none;
+			background: #000;
+		}
+	</style>
 </head>
-<body class="select-none overflow-x-hidden">
 
-<div class="wa-card" id="waCard">
-  <div class="wa-header">
-    <div class="wa-header-info">
-      <b>Soporte en línea</b>
-      <span id="waStatus">Cargando estado...</span>
-    </div>
-    <div class="wa-close" onclick="toggleChat()">×</div>
-  </div>
-  <div class="wa-body">
-    <div id="waTyping" class="wa-bubble typing">Escribiendo...</div>
-    <div id="waMsg" class="wa-bubble" style="display:none;">
-        <b><center><span id="pageTarget">esta página</span></center></b><br>
-        HOLA !! 👋<br>SI NO ENCONTRASTE LO QUE BUSCAS ...
-        DIME CUAL QUIERES VER Y PRONTO LA PODRAS DESCARGAR AQUI
-    </div>
-  </div>
-  <div class="wa-footer">
-    <input type="text" id="waInput" class="wa-input" placeholder="Escribe tu mensaje ...">
-    <button class="wa-send" onclick="sendToWhatsapp()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-    </button>
-  </div>
-</div>
+<body class= "select-none overflow-x-hidden">
 
-<div class="wa-launcher" id="waLauncher" onclick="toggleChat()">
-  <div class="wa-badge" id="waBadge">1</div>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="32" alt="WhatsApp">
-</div>
+	<!-- WHATSAPP -->
 
-    <!-- Modales -->
-    <div id="news-modal" class="modal-overlay items-center justify-center p-4">
-        <div class="glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
-            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
-                <h3 class="text-md font-extrabold text-yellow-400 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"/></svg>
-                    NOVEDADES
-                </h3>
-                <button onclick="closeNewsModal()" class="p-2 hover:bg-white/10 rounded-full transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
-                </button>
-            </div>
-            <div id="news-list" class="p-3 space-y-2 max-h-[40vh] overflow-y-auto"></div>
-            <div class="p-5 pt-2 bg-black/20 text-center">
-                <p class="text-[12px] text-gray-300 font-medium">Si te gusta el contenido</p>
-                <p class="text-[12px] text-gray-300 font-medium">Considera apoyarnos con una donación</p>
-                <p class="text-[12px] text-gray-300 font-medium" style="color:#FF5733;">!!TU AYUDA MANTIENE VIVO ESTE PROYECTO!!</p>
-                <button onclick="window.open('https://paypal.me/marzam', '_blank')" class="w-full h-10 glass hover:bg-white/10 rounded-xl transition-all flex items-center justify-center p-2 border-yellow-500/20 shadow-lg mt-2">
-                    <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="Paypal" class="h-full object-contain" />
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="search-modal" class="modal-overlay items-center justify-center p-4">
-        <div class="glass w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
-            <div class="p-4 border-b border-white/10 flex items-center gap-3 bg-white/5">
-                <div class="flex items-center gap-2 flex-grow min-w-0">
-                    <span class="w-1.5 h-6 bg-blue-600 rounded-full flex-shrink-0"></span>
-                    <input type="text" id="modal-search-input" 
-                           class="w-full bg-transparent border-none text-sm font-black text-white uppercase tracking-widest outline-none placeholder:text-gray-600"
-                           placeholder="BUSCAR MÁS..." />
-                </div>
-                <button onclick="closeSearchModal()" class="p-2 hover:bg-white/10 rounded-full transition flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/></svg>
-                </button>
-            </div>
-            <div id="search-results-grid" class="p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto"></div>
-            <div id="search-empty" class="p-10 text-center hidden">
-                <p class="text-gray-500 text-xs italic">No hay coincidencias...</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="share-modal" class="modal-overlay items-center justify-center p-4">
-        <div class="glass w-full max-w-sm rounded-2xl overflow-hidden p-5 flex flex-col gap-4">
-            <div class="flex justify-between items-center">
-                <h4 class="text-xs font-black text-blue-400">COPIAR LINK IPTV</h4>
-                <button onclick="closeShareModal()" class="text-white opacity-50 hover:opacity-100">×</button>
-            </div>
-            <div class="relative">
-                <input type="text" id="share-url-input" readonly class="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-3 text-[10px] text-gray-300 pr-10 outline-none" />
-                <button onclick="copyShareUrl()" class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-300">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
-            <p id="copy-success" class="text-[9px] text-green-500 text-center hidden font-bold uppercase">¡Link copiado al portapapeles!</p>
-        </div>
-    </div>
-
-    <!-- Cabecera y Reproductor -->
-    <div class="sticky-header">
-        <div class="max-w-screen-xl mx-auto">
-            <div class="video-container overflow-hidden">
-                <!-- Capa YouTube -->
-                <div id="youtube-player" class="absolute inset-0 w-full h-full"></div>
-                <!-- Capa Nativa (MP4/M3U8) -->
-                <video id="native-video-player" class="absolute inset-0 w-full h-full" controls playsinline crossorigin="anonymous"></video>
-            </div>
-            <div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
-                <button onclick="toggleFullScreen()" class="p-1.5 text-blue-400 hover:text-white transition-colors" title="Pantalla Completa">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-                </button>
-                <button id="share-iptv-btn" onclick="openShareModal()" class="p-1.5 text-green-400 hover:text-white transition-colors hidden" title="Compartir Link">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                </button>
-                <div class="relative flex-grow">
-                    <input type="text" id="image-search-input" placeholder="Buscar..." class="w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
-                    <button id="clear-search" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5" onclick="closeSearchModal()">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="3"/></svg>
-                    </button>
-                </div>
-                <button id="action-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition active:scale-95 text-[10px]">
-                    <span id="btn-text">TERABOX</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2.5"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contenido Principal -->
-    <div class="main-content max-w-screen-xl mx-auto">
-        <div id="original-carousels-section" class="space-y-6"></div>
-    </div>
-    
-    <button onclick="window.open('https://paypal.me/marzam', '_blank')" class="fixed bottom-6 right-6 z-50 glass p-1 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl">
-        <img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="PayPal" class="h-8 w-auto" />
-    </button>
-    
-    <script>
+	<div class= "wa-card" id= "waCard">
+		<div class= "wa-header">
+			<div class= "wa-header-info">
+			 <b>Soporte en línea</b>
+			 <span id= "waStatus">
+			 	Cargando estado...
+			 </span>
+			</div>
+			<div class= "wa-close" onclick= "toggleChat()">
+				×
+			</div>
+		</div>
+		<div class= "wa-body">
+			<div id= "waTyping" class= "wa-bubble typing">
+				Escribiendo...
+			</div>
+			<div id= "waMsg" class= "wa-bubble" style= "display:none;">
+				<b> <center> <span id= "pageTarget">
+					esta página
+				</span></center></b><br>
+				HOLA !! 👋<br>SI NO ENCONTRASTE LO QUE BUSCAS ... DIME CUAL QUIERES VER Y PRONTO LA PODRAS DESCARGAR AQUI
+			</div>
+		</div>
+		<div class= "wa-footer">
+			<input type= "text" id= "waInput" class= "wa-input" placeholder= "Escribe tu mensaje ...">
+			<button class= "wa-send" onclick= "sendToWhatsapp()">
+				<svg width= "20" height= "20" viewBox= "0 0 24 24" fill= "white">
+					<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+				</svg>
+			</button>
+		</div>
+	</div>
+	
+	<div class= "wa-launcher" id= "waLauncher" onclick= "toggleChat()">
+		<div class= "wa-badge" id= "waBadge">
+			1
+		</div>
+		<img src= "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width= "32" alt= "WhatsApp">
+	</div>
+	
+	<!-- Modales -->
+	<div id= "news-modal" class= "modal-overlay items-center justify-center p-4">
+		<div class= "glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
+			<div class= "p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+				<h3 class= "text-md font-extrabold text-yellow-400 flex items-center gap-2">
+					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
+						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"/>
+					</svg>
+					NOVEDADES
+				</h3>
+				
+				<button onclick= "closeNewsModal()" class= "p-2 hover:bg-white/10 rounded-full transition">
+					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
+						<path d= "M6 18L18 6M6 6l12 12" stroke-width= "2.5"/>
+					</svg>
+				</button>
+			</div>
+			<div id= "news-list" class= "p-3 space-y-2 max-h-[40vh] overflow-y-auto">
+			</div>
+			<div class="p-5 pt-2 bg-black/20 text-center">
+				<p class= "text-[12px] text-gray-300 font-medium">
+					Si te gusta el contenido
+				</p>
+				<p class="text-[12px] text-gray-300 font-medium">
+					Considera apoyarnos con una donación
+				</p>
+				<p class= "text-[12px] text-gray-300 font-medium" style= "color:#FF5733;">
+					!!TU AYUDA MANTIENE VIVO ESTE PROYECTO!!
+				</p>
+				<button onclick= "window.open('https://paypal.me/marzam', '_blank')" class= "w-full h-10 glass hover:bg-white/10 rounded-xl transition-all flex items-center justify-center p-2 border-yellow-500/20 shadow-lg mt-2">
+					<img src= "https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt= "Paypal" class= "h-full object-contain" />
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<div id= "search-modal" class= "modal-overlay items-center justify-center p-4">
+		<div class="glass w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+			<div class="p-4 border-b border-white/10 flex items-center gap-3 bg-white/5">
+				<div class="flex items-center gap-2 flex-grow min-w-0">
+					<span class="w-1.5 h-6 bg-blue-600 rounded-full flex-shrink-0">
+					</span>
+					<input type= "text" id= "modal-search-input" class= "w-full bg-transparent border-none text-sm font-black text-white uppercase tracking-widest outline-none placeholder:text-gray-600" placeholder= "BUSCAR MÁS..." />
+				</div>
+				<button onclick= "closeSearchModal()" class= "p-2 hover:bg-white/10 rounded-full transition flex-shrink-0">
+					<svg class="w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
+						<path d= "M6 18L18 6M6 6l12 12" stroke-width= "2.5"/>
+					</svg>
+				</button>
+			</div>
+			<div id= "search-results-grid" class= "p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto">
+			</div>
+			<div id= "search-empty" class= "p-10 text-center hidden">
+				<p class= "text-gray-500 text-xs italic">
+					No hay coincidencias...
+				</p>
+			</div>
+		</div>
+	</div>
+	
+	<div id= "share-modal" class= "modal-overlay items-center justify-center p-4">
+		<div class= "glass w-full max-w-sm rounded-2xl overflow-hidden p-5 flex flex-col gap-4">
+			<div class= "flex justify-between items-center">
+				<h4 class= "text-xs font-black text-blue-400">
+					COPIAR LINK IPTV
+				</h4>
+				<button onclick= "closeShareModal()" class= "text-white opacity-50 hover:opacity-100">
+					×
+				</button>
+			</div>
+			<div class= "relative">
+				<input type= "text" id= "share-url-input" readonly class= "w-full bg-black/40 border border-white/10 rounded-lg py-2 px-3 text-[10px] text-gray-300 pr-10 outline-none" />
+				<button onclick= "copyShareUrl()" class= "absolute right-2 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-300">
+					<i class= "fas fa-copy">
+					</i>
+				</button>
+			</div>
+			<p id= "copy-success" class= "text-[9px] text-green-500 text-center hidden font-bold uppercase">
+				¡Link copiado al portapapeles!
+			</p>
+		</div>
+	</div>
+	
+	<!-- Cabecera y Reproductor -->
+	<div class= "sticky-header">
+		<div class= "max-w-screen-xl mx-auto">
+			<div class= "video-container overflow-hidden">
+			
+				<!-- Capa YouTube -->
+				<div id= "youtube-player" class= "absolute inset-0 w-full h-full">
+				</div>
+				
+				<!-- Capa Nativa (MP4/M3U8) -->
+				<video id= "native-video-player" class= "absolute inset-0 w-full h-full" controls playsinline crossorigin= "anonymous">
+				</video>
+			</div>
+			<div class= "controls-bar glass flex items-center gap-2 px-2 mx-1">
+				<button onclick= "toggleFullScreen()" class= "p-1.5 text-blue-400 hover:text-white transition-colors" title= "Pantalla Completa">
+					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
+						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+					</svg>
+				</button>
+				<button id= "share-iptv-btn" onclick= "openShareModal()" class= "p-1.5 text-green-400 hover:text-white transition-colors hidden" title= "Compartir Link">
+					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
+						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+					</svg>
+				</button>
+				<div class= "relative flex-grow">
+					<input type= "text" id= "image-search-input" placeholder= "Buscar..." class= "w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
+						<button id= "clear-search" class= "absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5" onclick= "closeSearchModal()">
+							<svg class="w-3.5 h-3.5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
+								<path d= "M6 18L18 6M6 6l12 12" stroke-width= "3"/>
+							</svg>
+						</button>
+					</div>
+					<button id= "action-button" class= "bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition active:scale-95 text-[10px]">
+						<span id="btn-text">
+							TERABOX
+						</span>
+						<svg class= "w-3.5 h-3.5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width= "2.5"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Contenido Principal -->
+		<div class= "main-content max-w-screen-xl mx-auto">
+			<div id= "original-carousels-section" class= "space-y-6">
+			</div>
+		</div>
+		
+		<button onclick= "window.open('https://paypal.me/marzam', '_blank')" class= "fixed bottom-6 right-6 z-50 glass p-1 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl">
+			<img src= "https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt= "PayPal" class= "h-8 w-auto" />
+		</button>
+		
+		
+		<script>
     // --- PANTALLA COMPLETA ---
     $(document).ready(function() {
         $(document).on('click', function() {
@@ -302,15 +558,16 @@
         
         currentItemUrl = selectedId;
         
-        // --- NUEVA LÓGICA IPTV: ABRIR EN VENTANA NUEVA ---
+        // --- ABRIR IPTV EN VENTANA NUEVA ---
+        
         const isIPTV = item.buscar && item.buscar.includes('IPTV');
         if (isIPTV) {
             window.open(selectedId, '_blank');
             closeNewsModal();
             closeSearchModal();
-            return; // Salir para que no intente reproducir internamente
+            return; // Salir para no reproducir internamente
         }
-        // -----------------------------------------------
+        
 
         if (selectedId.includes('.m3u8')) {
             shareBtn.classList.remove('hidden');
@@ -318,11 +575,13 @@
             shareBtn.classList.add('hidden');
         }
 
-        // Ocultar botón de descarga si es video directo o YouTube nativo
+        // Ocultar botón descarga si es video directo o YouTube
+        
         const hideTerabox = (item.buscar && item.buscar.includes('YOUTUBE')) || isDirectLink(selectedId);
         actionBtn.style.display = hideTerabox ? 'none' : 'flex';
 
-        // Lógica de Reproducción (Solo para NO IPTV)
+        // Reproducción para NO IPTV
+        
         if (isDirectLink(selectedId)) {
             ytIframe.style.display = 'none';
             nativePlayer.style.display = 'block';
@@ -376,6 +635,7 @@
     }
 
     // Funciones de UI
+    
     function openShareModal() {
         document.getElementById('share-url-input').value = currentItemUrl;
         document.getElementById('share-modal').classList.add('active');
@@ -397,6 +657,7 @@
     }
 
     // Datos y Filtros
+    
     const allData = {
     	'pelíc': {
     		title: 'LINKS DE DESCARGA POR TERABOX', carousels: [ {
@@ -573,6 +834,7 @@
 								id: '1efio-unu1LUz5nSd6iDdLhqR6z7INGFR', youtubeId: 'y7wzBVARwaU', buttonId: '1oNYinw5xoA8xE3jaVi2kyg', title: 'BAD TIMES AT THE EL ROYALE', subtitle: 'Malos Momentos En El Hotel Royale (2018)', buscar: 'P3L01' }, {
 								id: '1Dxj2NbKpWVrkwmSP-5N701S-lSa_AuhO', youtubeId: 'hKbo-ZKdSqw', buttonId: '1wq4ImC7JmgjmdrFnaX_Cdw', title: 'BADLAND HUNTERS', subtitle: 'Cazadores En Tierra Inhóspita (2024)', buscar: 'P3L02' }, {
 								id: '1GBLnna4K0QemZ3iur-Nn6s1KZ5ELxAH5', youtubeId: 'r1DosMJafGk', buttonId: '1wLtbVj_qHwNi-xAOjtdIDQ', title: 'BAND OF BROTHERS', subtitle: 'Hermanos De Sangre (2001)', subtitle2: 'Serie 1 Temporada 10 Episodios', buscar: 'The Pacific, We Stand Alone Together, S3R01' }, {
+								id: '1EsZhSNRB90t-aTfDsHO8PZEtMkbi5Jya', youtubeId: 'x19tdyNa-QI', buttonId: '1Rje3J3TQaZH6M71F0p7-Zw', title: 'BANG', subtitle: 'Bang (2025)', buscar: 'PEROIZG' }, {
 								id: '1Z6tvjS6Zqsz1O4NkanXUrZ175jxo05PI', youtubeId: 'nBXsRgy_EtM', buttonId: '1Ein6VQyTT02rs7swkB5rUQ', title: 'BANK OF DAVE', subtitle: 'El Banco De Dave (2023)', buscar: 'P3L01' }, {
 								id: '1c1IfoP7eePb2lg2CQOjecp0kFLsV1-yQ', youtubeId: 'HgbTi9wSD-4', buttonId: '1TLSyQ-E9FMDiUAF-0Kn13A', title: 'BARNYARD', subtitle: 'La Granja (2006)', buscar: 'P3L01' }, {
 								id: '1GbLDtQ6JyAfBKaxVBYEe1Q38H2b5Bety', youtubeId: 'wZXK-3WxK1o', buttonId: '1h30T83goJiWlglDblxmaQg', title: 'BARRY LYNDON', subtitle: 'Barry Lyndon (1975)', buscar: 'P3L01' }, {
@@ -656,6 +918,7 @@
 								id: '14Z5Y_AIsKIDxZOdJY3k0kDchlm4XRPDj', youtubeId: 'A2gSaAT7X3g', buttonId: '1NzzTUM9j-4FHR9mS8zayuQ', title: 'CARS 3', subtitle: 'Cars 3 (2017)', buscar: 'P3L01' }, {
 								id: '1SKG92bwoILhMuCmjkM5kJPXRu-qPi0nq', youtubeId: 'rSt1NFGgVUs', buttonId: '1DtNU2Q_0uIj-9p7IF414oQ', title: 'CASANOVA', subtitle: 'Casanova (2005)', buscar: 'P3L01G' }, {
 								id: '1Z1AD776jIlMKJ2dZ3SPkoS8fs0_XyMeJ', youtubeId: 'r4U_6MkxW-0', buttonId: '13wK0c7hVbNcjMi1-VIRlyQ', title: 'CASTLEVANIA', subtitle: 'Castlevania (2017-20)', subtitle2: 'Serie 3 Temporadas 22 Episodios', buscar: 'S3R01' }, {
+								id: '13fHOzwFkBo0pUrExAp6gNZvM65HwF6qY', youtubeId: 'd1n552v1ng0', buttonId: '18tjMJUGG-M8DNGphus5EZg', title: 'CHAINSAW MAN THE MOVIE: REZE ARC', subtitle: 'Chainsaw Man La Película: Arco de Reze (2025)', buscar: 'PEROIZG' }, {
 								id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
 								id: '1qB7aMNPceSVqZHn3jKf2GtdFKQaa7LCo', youtubeId: 'c7ptH4YsMM4', buttonId: '1xD3JmEphGScA4mlxFtnDBw', title: 'CHICKEN LITTLE', subtitle: 'Chicken Little (2005)', buscar: 'P3L02' }, {
 								id: '19pI5vEDUZLhGTeaGe8lioTZyDNtd8A8N', youtubeId: 'AEOfT7hUcDs', buttonId: '1hXGpvdLloclofqrrP04kSA', title: 'CHICKEN RUN', subtitle: 'Pollitos En Fuga (2000)', buscar: 'P3L01' }, {
@@ -822,6 +1085,7 @@
 								id: '1vUxaJX4OTJnglwx8hYSa5SG_qtyMBFtI', youtubeId: 'keW_fKq187k', buttonId: '1oLxWRi02nPDD8-gHxD49yQ', title: 'EVIL DEAD RISE', subtitle: 'Evil Dead El Despertar (2023)', buscar: 'El Despertar Del Diablo, P3L01' }, {
 								id: '154CkrgVmebnQMLF8RvMRu_ClQa_uD_fT', youtubeId: 'AhSnxFOMTDU', buttonId: '1uan3vc2v0lLk5DM4j7cePw', title: 'EVOLUTION', subtitle: 'Evolución (2001)', buscar: 'P3L01G' }, {
 								id: '1LBKlQqHKdsf-pLsIuXfCufrkI3MvaasR', youtubeId: 't-8YsulfxVI', buttonId: '1ZfqLMdSXaS3AlSZXgpOESA', title: 'EXODUS GODS AND KINGS', subtitle: 'Éxodo Dioses y Reyes (2014)', buscar: 'P3L01G' }, {
+								id: '1VEdBykuCcraTw7N_NejhBnc7GbvA7fzq', youtubeId: 'yh12RZ_RKFo', buttonId: '1VrOwu42YcZd21xn2rmRs4g', title: 'EXORCISM CHRONICLES: THE BEGINNING', subtitle: 'Crónicas De Exorcismo El Comienzo (2024)', buscar: 'PEROIZG' }, {
 								id: '1jbLbo8-NC4IAx0NVzSQFdIcnn096cjHt', youtubeId: 'D3PzxPzpaSQ', buttonId: '1SR-XYR3pmUd53qkXnPE89A', title: 'EXPLORERS', subtitle: 'Exploradores (1985)', buscar: 'P3L01' }, {
 								id: '1P_qPlL_vmcgv4IwgB9eaVMrAwKibDJxl', youtubeId: 'L6P3nI6VnlY', buttonId: '1e43-i1-EPS-hA7_5MdoWig', title: 'EXTRACTION', subtitle: 'Misión De Rescate (2020)', buscar: 'P3L01' }, {
 								id: '1Iq3OVwMFPED8t5oIx19q2QjAQrtHLACx', youtubeId: 'mO0OuR26IZM', buttonId: '1TKYvXQnitp_wjX_EGc3MEA', title: 'EXTRACTION 2', subtitle: 'Misión De Rescate 2 (2023)', buscar: 'P3L01' }, {
@@ -895,6 +1159,7 @@
 					
 					
 						id: 'PelículasG', data: [ {
+								id: '1SB7FuVM6fQE9ssU5Q3FtEozKH7z5UHsd', youtubeId: 'mhQcpvKHis4', buttonId: '1ZYW9FIM-81WCslsVZuoeiA', title: 'G20', subtitle: 'G20 (2025)', buscar: 'PEROIZG' }, {
 								id: '1_Km6ZX2mZ1FcRzmewgxPbLlqxsIxq1iq', youtubeId: 'Gq-b_iNrQaQ', buttonId: '1STRwHEaWgLqpQkjUP2ghIg', title: 'GALAXY EXPRESS 999', subtitle: 'El Expreso Galáctico (1978) [Jap T+Esp]', subtitle2: '1 Temporada 112 Episodios', buscar: 'S3R01' }, {
 								id: '1lBRMFOYXdqdE4QFmU1fl_nkfS9PLRoCh', youtubeId: '4AdIgtVP8aQ', buttonId: '16gs65Q39e95VkxkHnFpYkw', title: 'GAMERA REBIRTH', subtitle: 'Gamera Renacimiento (2023)', subtitle2: '1 Temporada 6 Episodios', buscar: 'S3R01' }, {
 								id: '1V2dI0ebOcNmbCKfIEj9XkSaNkA3nTNyf', youtubeId: 'ITlM041DW1U', buttonId: '1nxLIHgLajkHc2dfC5HuAIw', title: 'GEORGE OF THE JUNGLE', subtitle: 'George De La Selva (1997)', buscar: 'P3L02' }, {
@@ -911,6 +1176,7 @@
 								id: '1CkMXvtrZrhY0GlKGvBX7ozJqy0CFr3Dx', youtubeId: 'TEACtsg1tQ4', buttonId: '1IyRSabenDkvvpa_ZD4kstQ', title: 'GONE GIRL', subtitle: 'Perdida (2014)', buscar: 'P3L01G' }, {
 								id: '1Mv3BNXbCsp6_aB6lj3JCmsPerVSAm6DQ', youtubeId: 'H0qahz8NI0Q', buttonId: '15R9DGttp4BlsmrhL5UnP-A', title: 'GOOD LUCK CHARLIE!', subtitle: 'Buena Suerte Charlie! (2010)', subtitle2: '4 Temporadas 97 Episodios', buscar: 'S3R01' }, {
 								id: '1Qko0pu7K6YIeIEToU55-TyTxJYOiG22z', youtubeId: 'BjQryiW9MOs', buttonId: '12zl8PaWZUlc7VhtonBvlFg', title: 'GOOD LUCK CHARLIE! IT\'S CHRISTMAS!', subtitle: 'Buena Suerte Charlie! Es Navidad! (2011)', buscar: 'P3L01' }, {
+								id: '1uBtrjQqzNf15gEG7VL7dvOAWg30caett', youtubeId: '2ilzidi_J8Q', buttonId: '19xpAlogz39jYPgTMQfROTw', title: 'GOODFELLAS', subtitle: 'Buenos Muchachos (1990)', buscar: 'PEROIZG' }, {
 								id: '1Qn3dzYn-zy2x4NgmndN2PCYk3iFnPVv-', youtubeId: 'IZk9jCGbn_I', buttonId: '1IoWpgNl6U043yf_dfFoSWA', title: 'GORGEOUS', subtitle: 'Amor Inesperado (1999)', buscar: 'P3L01' }, {
 								id: '1tDCpPfHzKQ_4EGeEGwHkO4eJITpMlkWS', youtubeId: 'TcBrd-9GHKg', buttonId: '1TMlnPRIMNxq0MzBIp3H08A', title: 'GRAN HOTEL', subtitle: 'Gran Hotel (1944)', buscar: 'P3L01G' }, {
 								id: '13Uo3yg-g3NRqeUGo7QidketR76t9rL7t', youtubeId: 'GVPzGBvPrzw', buttonId: '1JLQKF-41wfP9LdbCkTaJTg', title: 'GRAN TURISMO', subtitle: 'Gran Turismo De Jugador a Corredor (2023)', buscar: 'BUSCAR' }, {
@@ -1788,6 +2054,7 @@
 						 			id: '1cQERnDE5fRJ46k7QbwnDBLt-yLnYWVd0', youtubeId: 'c7dGOpMFFeA', buttonId: '1wcxiutG8HvipUCJCT8WPLw', title: 'THE BOOTY', subtitle: 'El botín (2026)', buscar: 'P3L02G' }, {
 						 			id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
 						 			id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
+						 			id: '1EsZhSNRB90t-aTfDsHO8PZEtMkbi5Jya', youtubeId: 'x19tdyNa-QI', buttonId: '1Rje3J3TQaZH6M71F0p7-Zw', title: 'BANG', subtitle: 'Bang (2025)', buscar: 'PEROIZG' }, {
 						 			id: '1sC4vbqdak-bpDtyiprA5gPHOSn7frHda', youtubeId: 'BL6M27fz_d0', buttonId: '1qOtN2NXz9owvZyrft6xNDQ', title: 'PETER PAN\'S NEVERLAND NIGHTMARE', subtitle: 'La pesadilla De Peter Pan (2025)', buscar: 'P3L02' }, {
 						 			id: '19TnSPSE_CsTNaUVI-dwUr1W6gO2Fdykr', youtubeId: '8FudANSsWNQ', buttonId: '1-JqSGTx1SkG6ujEBhCC5dQ', title: 'FINAL DESTINATION: BLOODLINES', subtitle: 'Destino Final: Linajes (2025)', buscar: 'S3R01G' }, {
 						 			id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, P3ROIZG' }, {
@@ -1795,7 +2062,7 @@
 						 			id: '1MZkGA1SQonGS-gmz7UOhQbdU9IejkZ_5', youtubeId: 'eotAOKm4l18', buttonId: '1zRA0mxO0XUhmOkN3iEOHQA', title: 'ALIEN: EARTH', subtitle: 'Alien: Planeta Tierra (2025)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3L00' }, {
 						 			id: '1OfVWpDfjOpvAIiiQvOSAas0MGKveZwG7', youtubeId: 'ixVlecN1Jnw', buttonId: '19XZ45pprU0WNrcDaw7kHug', title: 'SOY FRANKELDA', subtitle: 'Soy Frankelda: La Película (2025)', buscar: 'P3L00' }, {
 						 			id: '16r8Zd9lMpO7OxFm81lqzi9DLDaogTlqG', youtubeId: 'GNgK75OZ0mQ', buttonId: '16vTprkar5mYMpkmUw3vBFg', title: '100 METERS', subtitle: '100 metros (2025)', buscar: 'PEROIZG' }, {
-						 			id: '1VpcTfi7_JDHYshfA--cUFLl7RihUP2qh', youtubeId: 'YUDbl9qBihk', buttonId: '1V4XOXvy9bTMP9LYgPurF3w', title: 'DRAGON BALL DAIMA', subtitle: 'Dragon Ball Daima (2024)', subtitle2: '1 Temporada 20 Episodios', buscar: 'S3R01' }, {
+						 			id: '1SB7FuVM6fQE9ssU5Q3FtEozKH7z5UHsd', youtubeId: 'mhQcpvKHis4', buttonId: '1ZYW9FIM-81WCslsVZuoeiA', title: 'G20', subtitle: 'G20 (2025)', buscar: 'PEROIZG' }, {
 						 			id: '1GUENgqotu2IFlgoISlNF_xcw9QlHoq7N', youtubeId: 'pDgBUVuKXKk', buttonId: '13XZAbXJBVaN-Z4nmnBo0Ug', title: '200% WOLF', subtitle: '200% Lobo (2024)', buscar: '100% Wolf, 100 Wolf, S3R01' }, {
 						 			id: '1hwGT-DjHI4hYhwG_qBSta4igNRNh26Iv', youtubeId: '0JCq_hmNhJs', buttonId: '1xH-bwpuGxXhbityu2mPvtQ', title: 'SQUID GAME: THE CHALLENGE', subtitle: 'El Juego Del Calamar: El desafío (2023)', subtitle2: '1 Temporada 10 Episodios', buscar: 'S3R01' }, {
 						 			id: '1FZcdIt-xfUft_wQ8vaLpSzaermzT-YQJ', youtubeId: 'qhCOAuzcQXY', buttonId: '1LcplNXdFGragDK45_h-YKA', title: '500 DIAS DE ESCOBAR', subtitle: '500 Días De Escobar (2023)', buscar: 'P3L01' }, {
@@ -1803,8 +2070,7 @@
 						 			id: '1G2PCA4EyFw22UbeT-0j4xsEzuBerRfHg', youtubeId: 'IEnmRWU1A1Y', buttonId: '13pNNdoN1OwiG6udYNNRToQ', title: 'EL CAPO', subtitle: 'El Capo (2009-14)', subtitle2: '3 Temporadas 223 Episodios', buscar: 'S3R01' }, {
 						 			id: '1563acEZ4GTAFo2iHI7_dMnuCY6wwR1CP', youtubeId: 'TP5Dhz1LXUg', buttonId: '1OG3dAIacyMYX4wkiRR1j5w', title: 'COMBAT!', subtitle: 'Combate! (1962)', subtitle2: '1 Temporada 31 Episodios', buscar: 'P3L01' }, {
 						 			id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZ' }, {
-						 			id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Addams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'P3ROIZ' }, {
-						 			id: '1EJDdKM2ao6wLAfG5KXnuVQhm3Uca2v0r', youtubeId: '56601nxTJ2I', buttonId: '1tY0_cFlif5TnnwoiBTQhsA', title: 'THE GREEN HORNET', subtitle: 'El Avispón Verde (1966)', subtitle2: '1 Temporada 26 Episodios', buscar: 'P3ROIZ' },
+						 			id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Addams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'P3ROIZ' }, 
 						 	] },
 						 	
 						 	
@@ -1820,7 +2086,7 @@
 				  				id: '1NCrBMzMbibhaiBX5HtfT37QLmj5fBjXw', youtubeId: '1EfCjewsSHY', title: 'ELLA, LUCIFER Y YO', subtitle: 'Ella, Lucifer y Yo (1953)', buscar: 'YOUTUBE' }, {
 				  				id: '1IoZmXszXMGGLXuYnp8mFDhya6Khzch2T', youtubeId: 'GGPIqJh7rmc', title: 'HAZLO COMO HOMBRE', subtitle: 'Hazlo Como Hombre (2017)', buscar: 'YOUTUBE' }, {
 				  				id: '1vjg4pMNtHNHE6Dg9NtkG1OoMjTcMM8sO', youtubeId: 'cMPmhVb0280', title: 'QUIEREME PORQUE ME MUERO', subtitle: 'Quiereme porque me muero (1953)', buscar: 'YOUTUBE' }, {
-				  				id: '129eeC55Hp2oiClYejZN3SiiO92js1IUv', youtubeId: '_mbQyGpC2LA', title: 'THE BIG WHEEL', subtitle: 'Prueba Heroica (1949)', buscar: 'YOUTUBE' }, {
+				  				id: '1xu_k_VN8XG0fjJHXGCCrI36zM8rpB5ro', youtubeId: '_OWD2gaWdOM', title: 'YETI', subtitle: 'Yeti (2025)', buscar: 'YOUTUBE' }, {
 				  				id: '1vjaLP33nIVD0qhUVLUX-bv2fg7GsdItq', youtubeId: 'rf_ixD_yD_4', title: 'THE INCREDIBLE HULK', subtitle: 'El increíble Hulk (2008)', buscar: 'YOUTUBE' }, 
 				  				
 				  		] },
@@ -1879,12 +2145,13 @@
            			id: '16r8Zd9lMpO7OxFm81lqzi9DLDaogTlqG', title: '** 100 METERS **', subtitle: '100 METERS (2025)', youtubeId: 'https://pomf2.lain.la/f/1r7v9507.mp4', buscar: 'IPTV' }, {
            			id: '1h2wreT_AF3gDpgocnhwRessjs2pL7Dv0', title: '** A BRONX TALE **', subtitle: 'Historias del Bronx (1993)', youtubeId: 'https://pomf2.lain.la/f/v61mn75q.mp4', buscar: 'IPTV' }, {
            			id: '1zdDZs6ul7ix9QO7UWC0HLM54pXg7PwbH', title: '** ATHENA **', subtitle: 'Atena (2023)', youtubeId: 'https://pomf2.lain.la/f/duegk7w9.mp4', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'BANG', subtitle: 'Bang (2025)', youtubeId: 'https://pomf2.lain.la/f/64p0uqsb.mp4', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'PLAY DIRTY', subtitle: 'Juego Sucio (2025)', youtubeId: 'https://pomf2.lain.la/f/5pukrgyk.mp4?download=1', buscar: 'IPTV' }, {
+           			id: '1EsZhSNRB90t-aTfDsHO8PZEtMkbi5Jya', title: '** BANG **', subtitle: 'Bang (2025)', youtubeId: 'https://pomf2.lain.la/f/64p0uqsb.mp4', buscar: 'IPTV' }, {
+           			id: '13fHOzwFkBo0pUrExAp6gNZvM65HwF6qY', title: '** CHAINSAW MAN THE MOVIE: REZE ARC **', subtitle: 'Chainsaw Man La Película: Arco de Reze (2025)', youtubeId: ['https://archive.org/download/chainsaw-man-la-pelicula-arco-de-reze/Chainsaw%20Man%20la%20pel%C3%ADcula%20-Arco%20de%20Reze.mp4', 'https://pomf2.lain.la/f/wytsfla2.mp4'], buscar: 'IPTV' }, {
            			id: '1FTDKO8bBFwPaAnfR7eNU3Wqhp7FYA_g9', title: ' DONALD DUCK', subtitle: 'El Pato Donald', youtubeId: ['https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20Donald%20y%20Pluto.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20El%20cuento%20de%20navidad%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Mickey%20Mouse%20-%20La%20caravana%20de%20Mickey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Abeja%20guardiana.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Arbol%20va.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Autocontrol.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Buenos%20exploradores.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Chef%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Disfrutar%20por%20una%20moneda.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Don%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Donald%20en%20el%20pa%C3%ADs%20de%20las%20matematicas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Dulce%20o%20truco.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Campeon%20del%20Hockey.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20no%20puede%20dormir.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20Pato%20Donald%20y%20las%20ardillas.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20amor%20es%20cosa%20de%20dos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20avestruz%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20de%20suerte%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20dia%20libre%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20remachador.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20El%20viejo%20McDonald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Huevos%20de%20oro.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Inventos%20modernos.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Jefe%20de%20bomberos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20La%20partida%20de%20golf%20de%20Donald.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Limpiadores%20de%20Ventanas.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Los%20sobrinitos%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Pato%20curado.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picaros%20Juguetes.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Picnic%20en%20la%20playa.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Te%20para%20doscientos.mp4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20-%20Vacaciones%20de%20Donald.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20el%20gorila.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20La%20caza%20del%20Zorro.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Los%20pegacarteles.MP4', 'https://archive.org/download/pato-donald_202301/Pato%20Donald%20y%20Goofy%20-%20Marineros%20en%20apuros.mp4'], buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Estragos (2025)', youtubeId: 'https://pomf2.lain.la/f/ej6kbln.mp4?download=1', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'TITULO', subtitle: 'G20 (2025)', youtubeId: 'https://1a-1791.com/video/fww1/db/s8/2/5/U/S/D/5USDy.aaa.mp4', buscar: 'IPTV' }, {
-           			id: '1uBtrjQqzNf15gEG7VL7dvOAWg30caett', title: 'GOODFELLAS', subtitle: 'Buenos muchachos (1990)', youtubeId: 'https://pomf2.lain.la/f/0ep0qypn.mp4', buscar: 'IPTV' }, {
+           			id: '1VEdBykuCcraTw7N_NejhBnc7GbvA7fzq', title: '** EXORCISM CHRONICLES: THE BEGINNING **', subtitle: 'Crónicas De Exorcismo El Comienzo (2024)', youtubeId: 'https://pomf2.lain.la/f/vf826ovc.mp4', buscar: 'IPTV' }, {
+           			id: '1SB7FuVM6fQE9ssU5Q3FtEozKH7z5UHsd', title: '** G20 **', subtitle: 'G20 (2025)', youtubeId: 'https://1a-1791.com/video/fww1/db/s8/2/5/U/S/D/5USDy.aaa.mp4', buscar: 'IPTV' }, {
+           			id: '1uBtrjQqzNf15gEG7VL7dvOAWg30caett', title: '** GOODFELLAS **', subtitle: 'Buenos muchachos (1990)', youtubeId: 'https://pomf2.lain.la/f/0ep0qypn.mp4', buscar: 'IPTV' }, {
+           			id: '1pLFYfAvaGs4astN5u3_CmvSW5hCV_AR3', title: 'HAVOC', subtitle: 'Estragos (2025)', youtubeId: 'https://pomf2.lain.la/f/ej6kbln.mp4?download=1', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: '', subtitle: 'High Ground (2025)', youtubeId: 'https://pomf2.lain.la/f/2y9x5848.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'High Rollers (2025)', subtitle: 'High Rollers (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/bqywn638073dk5io5sd7y/f-sica.mp4?rlkey=gmxkpeo70ncvrg7mv3fbwznqq&st=986anuq6&dl=0', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'Hostile Takeover (2025)', subtitle: 'Hostile Takeover (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/z687by53gov6n6v0v3ycz/lengua.mp4?rlkey=rhpornxf6ofshwty1d8gs2aa0&st=eolylmmv&dl=0', buscar: 'IPTV' }, {
@@ -1894,25 +2161,58 @@
            			id: '1Pf1QE_Aj9LPoDng4hn6BWeO4WVLKTS4n', title: 'London Calling (2025)', subtitle: 'London Calling (2025)', youtubeId: 'https://pomf2.lain.la/f/hth1an64.mp4', buscar: 'IPTV' }, {
            			id: '1FwQ4DYB-ei9boWyv8baAnEhrOEJzePDG', title: 'MUZZLE', subtitle: 'Muzzle (2023)', youtubeId: 'https://pomf2.lain.la/f/hlbbj67.mp4', buscar: 'IPTV' }, {
            			id: '1uGT-WVwlYGbHrRwD7wdy66OINz0j1nCG', title: 'MUZZLE 2 CITY OF WOLVES', subtitle: 'Muzzle 2: Ciudad De Lobos (2025)', youtubeId: 'https://pomf2.lain.la/f/vob9d876.mp4', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'RISQUE', subtitle: 'Premature Death - The Movie (2025)', youtubeId: 'https://pomf2.lain.la/f/cgop09y7.mp4', buscar: 'IPTV' }, {
+           			id: '', title: '', subtitle: 'Ne Zha 2 (2025)', youtubeId: 'https://pomf2.lain.la/f/3454ux8o.mp4?download=1', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'PLAY DIRTY', subtitle: 'Juego Sucio (2025)', youtubeId: 'https://pomf2.lain.la/f/5pukrgyk.mp4?download=1', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Premature Death - The Movie (2025)', youtubeId: 'https://pomf2.lain.la/f/cgop09y7.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'RISQUE', subtitle: 'Risque (2025)', youtubeId: 'https://pomf2.lain.la/f/epnr0qn.mp4', buscar: 'IPTV' }, {
            			id: '1tn_Augi8DVb3RtUSodLKKSpplo-0gnSV', title: 'SCARFACE', subtitle: 'Caracortada (1932)', youtubeId: 'https://pomf2.lain.la/f/r6vlkny.mp4', buscar: 'IPTV' }, {
            			id: '10A67cjVaWt_FdRkAecIpeBd7KX_aU9zO', title: 'SCARFACE', subtitle: 'Caracortada (1983)', youtubeId: 'https://pomf2.lain.la/f/1uxk4m3y.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEB', title: 'Shadow Force (2025)', subtitle: 'Shadow Force (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/y6ua2r13dk52dkdwbk4no/lengua.mp4?rlkey=s7slcokl5mxzjdn3zzrb791b1&st=j4zhltme&dl=0', buscar: 'IPTV' }, {           			
            			id: '1CdQ0GXU5kjuCGdecTwMFdl6QxD4rROeE', title: '** SISU ** (2022)', subtitle: 'Sisu (2022)', youtubeId: 'https://pomf2.lain.la/f/uzssb56b.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'sisu: Camino a la venganza (2025)', subtitle: 'sisu: Camino a la venganza (2025)', youtubeId: 'https://pomf2.lain.la/f/lnr9rf5k.mp4', buscar: 'IPTV' }, {
+           			id: '1OfVWpDfjOpvAIiiQvOSAas0MGKveZwG7', title: '** SOY FRANKELDA **', subtitle: 'Soy Frankelda (2025)', youtubeId: 'https://pomf2.lain.la/f/5kj6ss2d.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'Sunray: Fallen Soldier (2025)', subtitle: 'Sunray: Fallen Soldier (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/eg18k5879eg9mxrx5piq8/f-sica.mp4?rlkey=agybvj9avb6av6mpfgy344fub&st=4ll2yw6i&dl=0', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: '', subtitle: 'Tee Yai Nacido para el crimen (2025)', youtubeId: 'https://pomf2.lain.la/f/rh3oafiw.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: '', subtitle: 'The Gentleman (2025)', youtubeId: 'https://pomf2.lain.la/f/e2uwp5l1.mp4', buscar: 'IPTV' }, {
            			id: '1QEusCKl5wS8XVq60li9UCpLbF5G8HF3t', title: 'THE IRISHMAN', subtitle: 'El irlandés (2019)', youtubeId: 'https://pomf2.lain.la/f/r61zlqah.mp4', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'The Running Man (2025)', subtitle: 'The Running Man (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/dosxlzcqsp8vaxsqqkgwh/f-sica.mp4?rlkey=vnk5b9aaudgknmcg6fblcy3g6&st=vw1rdanl&dl=0', buscar: 'IPTV' }, {
-           			id: '1uxJkw_es3spNbgjyOE6JaRKbBjSbY-MN', title: 'THE TANK', subtitle: 'Tijer: Tanque De Guerra (2025)', youtubeId: 'https://pomf2.lain.la/f/r4xa7oe.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: '', subtitle: 'The Running Man (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/dosxlzcqsp8vaxsqqkgwh/f-sica.mp4?rlkey=vnk5b9aaudgknmcg6fblcy3g6&st=vw1rdanl&dl=0', buscar: 'IPTV' }, {
+           				id: 'IMAGEN', title: '', subtitle: 'The Storm (2024)', youtubeId: 'https://dl.dropbox.com/scl/fi/5psp5j7te4ap30s7dn6dt/matem-tica.mp4?rlkey=sloc0fmiyffq1kt3mg5p2c3od&st=yly3cykw&dl=0', buscar: 'IPTV' }, {
+           				id: '1uxJkw_es3spNbgjyOE6JaRKbBjSbY-MN', title: 'THE TANK', subtitle: 'Tijer: Tanque De Guerra (2025)', youtubeId: 'https://pomf2.lain.la/f/r4xa7oe.mp4', buscar: 'IPTV' }, {
            			id: '1hQRS1naEPRWLvwrrcEHQOpWPM41bpVSD', title: 'TRAP HOUSE', subtitle: 'Refugio Mortal (2025)', youtubeId: 'https://pomf2.lain.la/f/17jap2e4.mp4', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: '', subtitle: 'Una batalla tras otra (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/srmvwqynt5tszzszqlypk/f-sica.mp4?rlkey=zsos8mndm2ivsn6ggh905jwpq&st=j3t98swf&dl=0', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'Venganza justificada (2025)', subtitle: '', youtubeId: 'https://pomf2.lain.la/f/wqb7cxbw.mp4', buscar: 'IPTV' }, {
+           			
+           			
+           			
+           			
+           			
+           			
+           			/**
+           			
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'JUJUTSU KAISEN: Execution -Shibuya Incident x The Culling Game Begins- (2025)', youtubeId: 'https://pomf2.lain.la/f/yofrzo5.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Gato fantasma Anzu (2024)', youtubeId: 'https://archive.org/download/anzu-gato-fantasma-2024-2castellano/anzu-gato-fantasma-2024-2%5Bcastellano%5D.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'El Brujo: Sirenas de las Profundidades (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/u8cx3m93edo38b5n38d22/sociales-2.mp4?rlkey=zum4blypsajzh7u4ijy7clrd7&st=lkxnexjl&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'El perfume de Irak (2024)', youtubeId: 'https://dl.dropbox.com/scl/fi/exazjbzekd8ek5jru749r/matematica.mp4?rlkey=ohjaprm6eb1zxj75380nixcrt&st=ayka1a3a&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'The Twits (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/a7av4mk7079vzjkql5wsb/sociales.mp4?rlkey=k24hywstrd4adz2q3j8zzi36j&st=b0t2jy8p&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Otra Película de Huevos y un Pollo (2025)', youtubeId: 'https://archive.org/download/naturales-3_202510/naturales%20%285%29.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Ne Zha 2 (2025) [Jap T+Esp]', youtubeId: 'https://archive.org/download/ver-los-desenredos-del-amor-2025-online-gratis-espanol-pelisplus/ver%20Ne%20Zha%202%20%282025%29cuevsna.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'The Empire of Corpses (2015)', youtubeId: 'https://archive.org/download/shisha-no-teikoku-bd-1080p-cast-eng-jap-subs/Shisha%20no%20Teikoku%20%5BBD-1080p%5D%5BCast%2BEng%2BJap%2BSubs%5D.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Mononoke the Movie: Chapter II - The Ashes of Rage (2025)', youtubeId: 'https://archive.org/download/naturaleza_202508/naturaleza.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Un Reino Para Todos Nosotros (2023)', youtubeId: 'https://archive.org/download/un-reino-para-todos-nosotros-latino/Un%20Reino%20Para%20Todos%20Nosotros%20Latino.mp4', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Robot Chicken Self-Discovery Special', youtubeId: 'https://dl.dropbox.com/scl/fi/150ljouy96s0huqx6zad1/sociales-industrial.mp4?rlkey=w71of0yzp96nhkher9fvrdcu3&st=653s8nn5&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Sneaks (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/k23k2gvok52vdyx6ls0to/fisica.mp4?rlkey=luwo3ovh3sqkjzfjxrn1j8zre&st=529stwr5&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Guardianes de la noche: Kimetsu no Yaiba - La fortaleza infinita (2025)', youtubeId: 'https://archive.org/download/ciencia-sociales/ciencia%20sociales.mkv', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Guardianes de la noche: Kimetsu no Yaiba - La fortaleza infinita (2025)', youtubeId: 'https://archive.org/download/ciencia-sociales/ciencia%20sociales.mkv', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Asesino de demonios Castillo infinito de Kimetsu no Yaiba (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/y8d1okwnr7bzsvxtlldzm/sociales.mp4?rlkey=y2b4nk9e82qx30kmv3555nfsi&st=ei8ad0tw&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Demon Slayer: Kimetsu no Yaiba Infinity Castle (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/7ybcu6ua7xatk70dchkdx/sociales.mp4?rlkey=43icav3nfy2l8s5837gvhwy4h&st=k9ccmass&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train (2020)', youtubeId: 'https://dl.dropbox.com/scl/fi/yw3hcvvpoo6qw0i3nl0js/f-sica.mp4?rlkey=wfq4lk3higi1nv4tav61bpi4j&st=tm7mxr8k&dl=0', buscar: 'IPTV' }, {
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Sibling's Bond (2019)', youtubeId: 'https://pomf2.lain.la/f/abm33kzv.mp4', buscar: 'IPTV' }, {
+           			
+           			**/
+           			
+           			
            			id: 'IMAGEN', title: 'Vengeance (2025)', subtitle: '', youtubeId: 'https://pomf2.lain.la/f/hlr3d8ia.mp4?download=1', buscar: 'IPTV' }, 
-           			
-           			
+		
            	
            	]}    
                         			
