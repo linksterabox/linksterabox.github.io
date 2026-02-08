@@ -17,7 +17,6 @@
 	<link href= "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel= "stylesheet">
 	<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	
-	<!-- HLS Soporte para M3U8 -->
 	<script src= "https://cdn.jsdelivr.net/npm/hls.js@latest">
 	</script>
 	
@@ -298,8 +297,6 @@
 
 <body class= "select-none overflow-x-hidden">
 
-	<!-- WHATSAPP -->
-
 	<div class= "wa-card" id= "waCard">
 		<div class= "wa-header">
 			<div class= "wa-header-info">
@@ -340,7 +337,6 @@
 		<img src= "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width= "32" alt= "WhatsApp">
 	</div>
 	
-	<!-- Modales -->
 	<div id= "news-modal" class= "modal-overlay items-center justify-center p-4">
 		<div class= "glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
 			<div class= "p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
@@ -423,16 +419,13 @@
 		</div>
 	</div>
 	
-	<!-- Cabecera y Reproductor -->
 	<div class= "sticky-header">
 		<div class= "max-w-screen-xl mx-auto">
 			<div class= "video-container overflow-hidden">
 			
-				<!-- Capa YouTube -->
 				<div id= "youtube-player" class= "absolute inset-0 w-full h-full">
 				</div>
 				
-				<!-- Capa Nativa (MP4/M3U8) -->
 				<video id= "native-video-player" class= "absolute inset-0 w-full h-full" controls playsinline crossorigin= "anonymous">
 				</video>
 			</div>
@@ -442,6 +435,13 @@
 						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
 					</svg>
 				</button>
+				
+				<button onclick="showNews()" class="p-1.5 text-yellow-500 hover:text-yellow-400 transition-colors" title="Novedades">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+					</svg>
+				</button>
+
 				<button id= "share-iptv-btn" onclick= "openShareModal()" class= "p-1.5 text-green-400 hover:text-white transition-colors hidden" title= "Compartir Link">
 					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
 						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
@@ -466,7 +466,6 @@
 			</div>
 		</div>
 		
-		<!-- Contenido Principal -->
 		<div class= "main-content max-w-screen-xl mx-auto">
 			<div id= "original-carousels-section" class= "space-y-6">
 			</div>
@@ -662,10 +661,10 @@
     	'pelíc': {
     		title: '<center><p style="background-color:blue; color:white">LINKS DE DESCARGA POR TERABOX</p></center>', carousels: [ {
     				    id: 'Películas1', data: [ {
-    						    id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'jla6YMfkS9Q', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (2011-16)', subtitle2: '6 Temporadas 138 Episodios', buscar: 'P3L02' },  {
+    				    		id: '1ATOJcg4vQJPMmoMCzqlQTxEr-vlhBzQY', youtubeId: 'jla6YMfkS9Q', buttonId: '1mvtGF4bUXIjNOlU5DLbsBw', title: '2 BROKE GIRLS', subtitle: '2 Chicas Quebradas (2011-16)', subtitle2: '6 Temporadas 138 Episodios', buscar: 'P3L02' },  {
     						    id: '1r2ppXqrB2LELgK6aGbOuwbFCywdzkfL-', youtubeId: 'BEsL884-zKQ', buttonId: '1nqfcrwkASrg9WL5P6lwE9Q', title: '2 HEARTS', subtitle: '2 Corazones (2020)', subtitle2: '', buscar: 'BUSCAR' }, {
 								id: '1YHx1xAuPOkPIX4T_lrwlJyFc4mkF-CSS', youtubeId: 'heOcee5ZB9c', buttonId: '1sa2uaoP8BBVf45XYfkokIA', title: '3 METROS SOBRE EL CIELO', subtitle: '3 Metros Sobre El Cielo', buscar: 'BUSCAR' }, {
-								id: '13InCrLYkfU9Q_9XNkHoVEyHp3jXauwYU', youtubeId: '1IYksquG4Ns', buttonId: '1jDwUjdoa4AQQ0Wzv7lmcsQ', title: '4X4', subtitle: '4X4 (2019)', buscar: 'Locked, P3ROIZG' }, {
+								id: '13InCrLYkfU9Q_9XNkHoVEyHp3jXauwYU', youtubeId: '1IYksquG4Ns', buttonId: '1jDwUjdoa4AQQ0Wzv7lmcsQ', title: '4X4', subtitle: '4X4 (2019)', buscar: 'Locked, PEROIZG' }, {
 								id: '1AnU5oOEuF3veMdxO7PkbBfZI7nAzkewe', youtubeId: 'XV3sbY51Xcc', buttonId: '1dGe9ocJmxjmJXMAi-MB5UQ', title: '5 DAYS OF WAR', subtitle: '5 Días De Guerra (2011)', buscar: 'P3L01' }, {
 								id: '1PmtwCUg1XBUblAYT1n7wNFv9BPC5i9H8', youtubeId: 'eBvrywQtNUg', buttonId: '1xnKcrNhE-sKYSXnURcaghQ', title: '9', subtitle: 'Numero 9 (2009)', buscar: 'P3L02' }, {
 								id: '1Q3X6RMmBm_ZRhhGU0Ed4d2St79E1AADo', youtubeId: '3ZaMk8t98H8', buttonId: '1e4csR_FUe1QUpFK0OHn7lA', title: '10x10', subtitle: 'Una Verdad Inquietante (2018)', buscar: 'P3L01' }, {
@@ -949,7 +948,7 @@
 								id: '1-4YIPgr_xxWc2rGNEOByQgZdaum_WYTM', youtubeId: 'flvz5RMRx7E', buttonId: '11y3FeCvWYVHRRMxbluU-hg', title: 'CRAZY,  STUPID, LOVE', subtitle: 'Loco y Estúpido Amor (2011)', buscar: 'P3L02' }, {
 								id: '13fKTeGvkSYHQIdR-YrQXSRj-MeKCan9w', youtubeId: 'S0PXMi9_yf8', buttonId: '1LGZ2vCno1mAG_hWEpFWo9Q', title: 'CRIMINAL RECORD', subtitle: 'Historial Delictivo (2024) (1T8E) [Ing T+Esp]', subtitle2: 'Serie 1 Temporada 8 Episodios', buscar: 'P3L01G' }, {
 								id: '1K1YO4aBmkmoonOLrwOCNvjhId2BVKKC1', youtubeId: 'Esjc0rPj3K4', buttonId: '1JdwcmeLsW180kDtbaIBHaw', title: 'CUBE', subtitle: 'El Cubo (1997)', buscar: 'P3L02' }, {
-								id: '1crYz1B45X9q8vRptUf3iJknMYLJwoayX', youtubeId: 'AqKpA_3KQRc', buttonId: '1ZOGIcHam7kWz2bpk-rZndw', title: 'CULT MASSACRE: ONE DAY IN JONESTOWN', subtitle: 'Jonestown: Masacre en la secta (2024)', subtitle2: '1 Temporada 3 Episodios', buscar: 'P3ROIZG' }, {
+								id: '1crYz1B45X9q8vRptUf3iJknMYLJwoayX', youtubeId: 'AqKpA_3KQRc', buttonId: '1ZOGIcHam7kWz2bpk-rZndw', title: 'CULT MASSACRE: ONE DAY IN JONESTOWN', subtitle: 'Jonestown: Masacre en la secta (2024)', subtitle2: '1 Temporada 3 Episodios', buscar: 'PEROIZG' }, {
 								id: '1gschrDoEvOtJzEaNhhYiHmma8BFQCsnI', youtubeId: 'RuIlzy7QPeM', buttonId: '1AmkkeT1QhjbV6_K9nDzLpg', title: 'CULT OF CHUCKY', subtitle: 'El Culto De Chucky (2017)', buscar: 'Child\'s Play, Bride Of Chucky, Curse Of Chucky, Living With Chucky, Seed Of Chuck, Chucky El Muñeco Diabólico, La novia de chucky, La Maldición de Chucky, Viviendo con chucky, El hijo de chucky, P3L01' }, {
 								id: '15AWuFzFAaf1RLultrAD-WLN_dOaGWw8O', youtubeId: 'YEBU6m7toSg', buttonId: '1yxgr3v7AEXrLkSqdfqINOA', title: 'CURSE OF CHUCKY', subtitle: 'La Maldición De Chucky (2013)', buscar: 'Child\'s Play, Bride Of Chucky, Cult Of Chucky, Living With Chucky, Seed Of Chuck, Chucky El Muñeco Diabólico, La novia de chucky, El Culto de chucky. Viviendo con chucky, El hijo de chucky, P3L01' }, {
 								id: '1aiamCiJgNsgaqwYlAzeGZfFcuFDo6Rr4', youtubeId: 'SW6U8D1CtbQ', buttonId: '1r4MhWM7CgSmH8AkYQRWv9g', title: 'CUT OFF', subtitle: 'Aislados (2018)', buscar: 'P3L01' }, {
@@ -981,7 +980,7 @@
 								id: '1H7fggj8-LkzIl4bvgbxBAcZoUTOd7Z_P', youtubeId: '0TZyEEnsgWU', buttonId: '1ZbkhbX3k-hBJDexNifThSQ', title: 'DIAMONDS AND LEMONS', subtitle: 'Diamantes y Limones (2018) (Ing)', buscar: 'Adventure Time, Hora de Aventura, S3R01' }, {
 								id: '1rXHkNXQGUT9jAtTG-nnQbb5HJl-KiQjK', youtubeId: 'jaJuwKCmJbY', buttonId: '1Tt6IdWzgkczRzLeMMbx_vg', title: 'DIE HARD', subtitle: 'Duro De Matar (1988)', buscar: 'P3L01' }, {
 								id: '1C24YcgM-cgbAgy72C-LJhaLaWzIJ1-6E', youtubeId: 'CvHp7xJZ4_U', buttonId: '1mW1My4MQD2mnIRKSr5mkfQ', title: 'DIE HARD 2', subtitle: 'Duro de Matar 2 (1990)', buscar: 'P3L02' }, {
-								id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, P3ROIZG' }, {
+								id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, PEROIZG' }, {
 								id: '1wQxBGpo5ieKHn6FqUarXArZes8bW9k7p', youtubeId: 'CpSEG64Tq6o', buttonId: '1Yv6NYSTjYugjWuCegXj7KA', title: 'DINOSAURS', subtitle: 'Dinosaurs (1991-94)', subtitle2: '4 Temporadas 65 Episodios', buscar: 'P3L00' }, {
 								id: '1BeviUV2p5iAXGgboZIQZbdW1deO5zFEF', youtubeId: 'so6XoqZgbVM', buttonId: '10eMyKUAdKr9ipLcI_mq7bg', title: 'DISCLAIMER', subtitle: 'Desprecio (2024)', subtitle2: 'Serie 1 Temporada 7 Episodios', buscar: 'P3L01G' }, {
 								id: '1TJNtq7NWE7qLHivvPJrPU-9VFz0gxnqI', youtubeId: 'Aw7Eln_xuWc', buttonId: '1mjTArr5JYX6TMChrWm46-A', title: 'DIVERGENT', subtitle: 'Divirgente (2014)', buscar: 'P3L02' }, {
@@ -1174,6 +1173,7 @@
 								id: '1_sqqahdsKB8yBZSMYQ3Xyyho3rTs2WXp', youtubeId: 'aaFrYWbevHE', buttonId: '1UL4J2GzFxFWvBCas2KJlxw', title: 'GODZILLA', subtitle: 'Godzilla (1998)', buscar: 'P3L01' }, {
 								id: '1Co4LawiUA9fVI0efBa_O4OWKZgsjjw_x', youtubeId: 'ZkIe8xlfolU', buttonId: '1Tx4wTlxyR9Celp-b9zHAzQ', title: 'GODZILLA THE PLANET EATER', subtitle: 'Godzilla El Devorador De Planetas (2018)', buscar: 'P3L01' }, {
 								id: '1CkMXvtrZrhY0GlKGvBX7ozJqy0CFr3Dx', youtubeId: 'TEACtsg1tQ4', buttonId: '1IyRSabenDkvvpa_ZD4kstQ', title: 'GONE GIRL', subtitle: 'Perdida (2014)', buscar: 'P3L01G' }, {
+								id: '1zkNEhYwTjhTTmLJZGvlFEEbCSk6ZWUK_', youtubeId: '9a4M-Em-aqM', buttonId: '1O2C_TyKnccgDnVgbOeiFoQ', title: 'GOLDBEAK', subtitle: 'Entre Picos y Plumas (2021)', buscar: 'PEROIZG' }, {
 								id: '1Mv3BNXbCsp6_aB6lj3JCmsPerVSAm6DQ', youtubeId: 'H0qahz8NI0Q', buttonId: '15R9DGttp4BlsmrhL5UnP-A', title: 'GOOD LUCK CHARLIE!', subtitle: 'Buena Suerte Charlie! (2010)', subtitle2: '4 Temporadas 97 Episodios', buscar: 'S3R01' }, {
 								id: '1Qko0pu7K6YIeIEToU55-TyTxJYOiG22z', youtubeId: 'BjQryiW9MOs', buttonId: '12zl8PaWZUlc7VhtonBvlFg', title: 'GOOD LUCK CHARLIE! IT\'S CHRISTMAS!', subtitle: 'Buena Suerte Charlie! Es Navidad! (2011)', buscar: 'P3L01' }, {
 								id: '1uBtrjQqzNf15gEG7VL7dvOAWg30caett', youtubeId: '2ilzidi_J8Q', buttonId: '19xpAlogz39jYPgTMQfROTw', title: 'GOODFELLAS', subtitle: 'Buenos Muchachos (1990)', buscar: 'PEROIZG' }, {
@@ -1208,7 +1208,7 @@
 								id: '1XZXXDEDidLdRDWabe7u_ctt0xDMwTfaP', youtubeId: 'feuDJPWFslk', buttonId: '1CR6ttkGxplTSLK13HarpWw', title: 'HARINA', subtitle: 'Harina (2022-23)', subtitle2: '2 Temporadas 16 Episodios', buscar: 'S3R01' }, {
 								id: '1Hvvdkj5-j3FoK1WLa7tFdlMr8XaY6bRK', youtubeId: 'fC5S3_LFix0', buttonId: '1xZQYJMhW2y-iCIUrCQU4uQ', title: 'HAUNTED MANSION', subtitle: 'Mansión Embrujada (2023)', buscar: 'P3L01G' }, {
 								id: '1GESL8ctq2pcYeL-wTVqEi4WrIJJWM9W0', youtubeId: 'g1Po7unlsXY', buttonId: '1Coplpu8SBg5LpJWAXXt4Tg', title: 'HAVOC', subtitle: 'Estragos (2025)', buscar: 'PEROIZG' }, {
-								id: '1_MDe2ZcRkoeKnUFSDqsOfZV42GOVOzwn', youtubeId: 'tVlqVHKn2dg', buttonId: '18Ft9Ks3Ot7c0dNM8rwgeCw', title: 'HE\'S JUST NOT THAT INTO YOU', subtitle: 'A El No Le Gustas Tanto (2009)', buscar: 'P3ROIZG' }, {
+								id: '1_MDe2ZcRkoeKnUFSDqsOfZV42GOVOzwn', youtubeId: 'tVlqVHKn2dg', buttonId: '18Ft9Ks3Ot7c0dNM8rwgeCw', title: 'HE\'S JUST NOT THAT INTO YOU', subtitle: 'A El No Le Gustas Tanto (2009)', buscar: 'PEROIZG' }, {
 								id: '1H9rGno-J2Hx6gH6HRK4mvwVEc_GpVj95', youtubeId: '0xbBLJ1WGwQ', buttonId: '1L2MQaXrhhecAJnpYqBxWsA', title: 'HEAT', subtitle: 'Fuego Contra Fuego (1995)', buscar: 'P3L01G' }, {
 								id: '1-v_YxmutEHwerLH0EpWkoIHxfUvHHbPC', youtubeId: '_wpTw7Ta6iw', buttonId: '1I1i3gfd3ZpmxO6CgYmlOcw', title: 'HECKLE', subtitle: 'Heckle (2020) [Esp-Ing T+Esp]', buscar: 'P3L02' }, {
 								id: '1J8qsAyQKhvRY2tWGSE3gqj-BE5W6bYxn', youtubeId: '29iRCu4b4wo', buttonId: '1LpUYcrzGh58IrFS872t39Q', title: 'HEIDI', subtitle: 'Heidi (1937)', buscar: 'P3L02' }, {
@@ -1228,6 +1228,7 @@
 								id: '1t0eOW9T7EtStvLWE-ZhZAmXP6TnCy1eZ', youtubeId: '_C6DxBbDU9s', buttonId: '1MznVsGpTAFBhaKR07iRm6A', title: 'HELLSING: ULTIMATE', subtitle: 'Hellsing: Ultimate (2006)', subtitle2: '1 Temporada 10 Episodios', buscar: 'S3R01' }, {
 								id: '1pJEgSIE5NcMEmR-BjdE_P62oclbUrSh0', youtubeId: 'O5mAW4QuedM', buttonId: '1DkEF_P2qrLlQYETqiMfB8A', title: 'HERE COMES THE GRUMP', subtitle: 'Ahí Viene ¡Cascarrabias! (1969)', subtitle2: '1 Temporada 34 Episodios', buscar: 'S3R01' }, {
 								id: '1vSNQBBBop1NQEkHTwhAyyFhMfEZQNWD3', youtubeId: 'bUe4_L6OEFU', buttonId: '1L2eF-3JQyAsqMTPTLU5UsQ', title: 'HERE COMES THE GRUMP', subtitle: 'Ahí Viene Cascarrabias! (2018)', buscar: 'P3L01' }, {
+								id: '1MHvFWCj-lTAuBvX62CLCqaivRQfv8E9f', youtubeId: 'aHXkfwajXf8', buttonId: '1JpJvSjgNcBpdKXEi3Gm5hg', title: 'HIGH GROUND', subtitle: 'High Ground En La Tierra De Los Justos (2025)', buscar: 'PEROIZG' }, {
 								id: '1jdi152J0m3-r_JQx335LCrMCW8TMsFKB', youtubeId: '1TASJymwQeo', buttonId: '1X_FeK2SmNxwSj4uUaGzleg', title: 'HISTORY OF THE WORLD PART 1', subtitle: 'La Loca Historia Del Mundo (1981)', buscar: 'P3L01G' }, {
 								id: '1x3DOYD1_072tvrueMdX4dCTlnFQ8WIEu', youtubeId: 'Pcpb-Zq4-dQ', buttonId: '1PknRxIAmJ4RTluvLVfh93g', title: 'HOLD YOUR BREATH', subtitle: 'Aguanta La Respiración (2024)', buscar: 'P3L01G' }, {
 								id: '1NSAT7TqerLgT959RduPGfh5FAWestWHd', youtubeId: 'brjkpRBpFnc', buttonId: '1-CfA59dzNcK6xIZW6ehauA', title: 'HOLMES & WATSON', subtitle: 'Holmes y Watson (2018)', buscar: 'Sherlock Holmes, P3L01' }, {
@@ -1282,7 +1283,7 @@
 						    	id: '1JlD-irTqZKiH1UsYBK1EE7lVinjYC3f_', youtubeId: 'xheJ1TTkUx0', buttonId: '1htrkgk7egUj46cdXYAJEmA', title: 'INQUILINOS', subtitle: 'Inquilinos (2018)', buscar: 'P3L01' }, {
 						    	id: '15oEhZCm_PkXckQM4DhZT4LAMREOrBQHk', youtubeId: '1HFv47QHWJU', buttonId: '1c0WZSuVbIEzGfXZiLbaABg', title: 'INSIDE OUT', subtitle: 'Intensa Mente (2015)', buscar: 'P3L02' }, {
 						    	id: '1WWEQkPpUyOxKW2-x8dZeKcsILf_7jzu0', youtubeId: 'LEjhY15eCx0', buttonId: '1Y3UTen8JRzWKKZzz14vrQQ', title: 'INSIDE OUT 2', subtitle: 'Intensa Mente 2 (2024)', buscar: 'BUSCAR' }, {
-						    	id: '1VZ1-pBh5E21_Fc_SH5dsEtDTa2Clrl3e', youtubeId: 'Cm4PsV_79gs', buttonId: '1HFlGyHuBzW5NH8kGuoB1vQ', title: 'INSIDE THE MANSON CULT: THE LOST TAPES', subtitle: 'Manson: Las cintas perdidas(2018)', buscar: 'P3ROIZG' }, {
+						    	id: '1VZ1-pBh5E21_Fc_SH5dsEtDTa2Clrl3e', youtubeId: 'Cm4PsV_79gs', buttonId: '1HFlGyHuBzW5NH8kGuoB1vQ', title: 'INSIDE THE MANSON CULT: THE LOST TAPES', subtitle: 'Manson: Las cintas perdidas(2018)', buscar: 'PEROIZG' }, {
 						    	id: '1Ok7kYLq6d0titmlVwvLllnW2BUTm856n', youtubeId: '3HxEXnVSr1w', buttonId: '13u7bzlgDpi8T2VuhS7yGOQ', title: 'INSIDIOUS CHAPTER 3', subtitle: 'La Noche Del Demonio Capítulo 3 (2015)', buscar: 'P3L01' }, {
 						    	id: '1oS8GcK1PoBd89Q-VlSPe1Deee9xBabjp', youtubeId: 'acQyrwQyCOk', buttonId: '1NYx10tiyYi3miwrnLD5Ivw', title: 'INSIDIOUS THE LAST KEY', subtitle: 'La Noche Del Demonio La Ultima Llave (2018)', buscar: 'P3L01' }, {
 						    	id: '1BqZC23ruhRWxZbtqH8uZWlNbKEUZ38Hy', youtubeId: 'emIHzg4VH8A', buttonId: '1zBipMrPHB1Mq1ExoiLG9ww', title: 'INSOMNIA', subtitle: 'Insomnia (2002)', buscar: 'P3L01' }, {
@@ -1384,7 +1385,7 @@
 						   		id: '14IQAawgpj9T2Ir7BD5hBcmNi1TjGf1dY', youtubeId: 'm3zbr0s78QM', buttonId: '10pgaUoDSNtQf0A81CTuJGg', title: 'LOS QUE AMAN ODIAN', subtitle: 'Los Que Aman Odian (2017)', buscar: 'P3L01G' }, {
 						   		id: '1UCx5dLBw18cgIct1IvBKdZmP-lzxFSSS', youtubeId: 'o1M8vDSBLWU', buttonId: '1TcEQTklV3wuM7B1XXrxLMg', title: 'LOS TRES MOSQUETEROS', subtitle: 'Los Tres Mosqueteros (1942)', buscar: 'P3L01G' }, {
 						   		id: '1rHA8dWJNKTudqRVLJFUeMVXOsMx1bXSH', youtubeId: 'Avsf2fYxIJE', buttonId: '1TQj8iZCyro4KWF_Xz8cIqg', title: 'LOUPS GAROUS', subtitle: 'SUBTITULO', buscar: 'P3L02' }, {
-						   		id: '1flxhiKky8_3DnJGTV0gkjIrlQZEd9VGs', youtubeId: 'h6w7Dh-QxzY', buttonId: '1U3DOgpE8B-yoRxVk5TYC7Q', title: 'LOVE & OTHER DRUGS', subtitle: 'De Amor y Otras Adicciones (2010)', buscar: 'P3ROIZG' }, {
+						   		id: '1flxhiKky8_3DnJGTV0gkjIrlQZEd9VGs', youtubeId: 'h6w7Dh-QxzY', buttonId: '1U3DOgpE8B-yoRxVk5TYC7Q', title: 'LOVE & OTHER DRUGS', subtitle: 'De Amor y Otras Adicciones (2010)', buscar: 'PEROIZG' }, {
 						   		id: '1vOnAnwuHZxdzT_wlVkcKLdQm-cN7WUWj', youtubeId: 'wUFwunMKa4E', buttonId: '1iz1Gc78VXk7cVFtoZ6dqXw', title: 'LOVE DEATH & ROBOTS', subtitle: 'Love Death & Robots (2019-24)', subtitle2: 'Serie 4 Temporadas 44 Episodios', buscar: 'P3L01G' }, {
 						   		id: '1v8YJt7YF0BIQjqFTvazilUDgbNaXab9I', youtubeId: 'AnMNYz7bxpY', buttonId: '11liosPAljMUA9kgcwQFG6g', title: 'LOVE ROSIE', subtitle: 'Los Imprevistos Del Amor (2014)', buscar: 'P3L01' }, {
 						   		id: '1YYzUMgwv5X0sF7Hh3bxZLBx5B7CL9udF', youtubeId: 'x6CyqhYsLqo', buttonId: '1nxSwuHczIBxWSfZBB7CtSA', title: 'LOVE WEDDING REPEAT', subtitle: 'Amor, Boda, Azar (2020)', buscar: 'P3L01' }, {
@@ -1436,7 +1437,7 @@
 						   		id: '1SCQj2UW0OpiY2pmIFXDZr9UpHradVcWF', youtubeId: 'vq70brIQP40', buttonId: '16tLiJUaA1KfY4AQ-ubLFKQ', title: 'MONSTER', subtitle: 'Monster Asesina En Serie (2003)', buscar: 'P3L01' }, {
 						   		id: '1PhihTgDIX-JTwIlzaEVS1okiIm6jp-po', youtubeId: 'rACXzbOoHBI', buttonId: '1-s_Y75lIkr106O2y9f5v1w', title: 'MONSTERS INSIDE THE 24 FACES OF BILLY MILLIGAN', subtitle: 'Las 24 Caras De Billy Milligan(2021)', subtitle2: '1 Temporada 4 Episodios', buscar: 'S3R01' }, {
 						   		id: '1aomOpuEYZko9Nuh89pHVb82v882rEnej', youtubeId: 'WWq6ios-HmI', buttonId: '1hB6W2hndW0Kn0xwklSa7pA', title: 'MONSTERS UNIVERSITY', subtitle: 'Monsters University (2013)', buscar: 'P3L02' }, {
-						   		id: '1ue4eC3haYqRCqMK1ueZ4XHz5p6KKhBXa', youtubeId: 'rqmHSR0bFU8', buttonId: '1nANcvNzj115F7s1aJKyJpA', title: 'MORGAN', subtitle: 'Morgan (2016)', buscar: 'P3ROIZG' }, {
+						   		id: '1ue4eC3haYqRCqMK1ueZ4XHz5p6KKhBXa', youtubeId: 'rqmHSR0bFU8', buttonId: '1nANcvNzj115F7s1aJKyJpA', title: 'MORGAN', subtitle: 'Morgan (2016)', buscar: 'PEROIZG' }, {
 						   		id: '1Jktvbu6Mk_dui9QJCGgPXZ5kBYqgp5Ep', youtubeId: 'I1vccr3yWBU', buttonId: '1CMx_HscuBpQstWN3Cg4OkA', title: 'MORTAL KOMBAT LEGENDS SCORPION\’S REVENGE', subtitle: 'Mortal Kombat Leyendas La Venganza De Scorpion (2020)', buscar: 'P3L01' }, {
 						   		id: '1UpThsk_Akztn4IZG_l7uesKq1BMuIHwa', youtubeId: 'ASw47FiEhes', buttonId: '1ZwfkhiIx9KNeka99_tMMHA', title: 'MR. DEEDS', subtitle: 'La Herencia De Mr. Deeds (2002)', buscar: 'P3L01' }, {
 						   		id: '1rgvLvr2S1slmBuHRhF3nn-Qnm-bR8ut2', youtubeId: 'rmCAg6RbkTE', buttonId: '1vMuor-YzG_fYMazva2_ypw', title: 'MULAN', subtitle: 'Mulan (1998)', buscar: 'P3L02' }, {
@@ -1463,6 +1464,7 @@
 						   		id: '1zJuMmrsrqWTeIvfsyxAOr-r7YD8cCMXf', youtubeId: '1MTIrScpSPU', buttonId: '1abZ7E0B4eFLAbMwB8CPPyA', title: 'NARCO SAINTS', subtitle: 'Narcosantos (2022)', subtitle2: '1 Temporada 6 Episodios', buscar: 'S3R01' }, {
 						   		id: '10OihjhXqUXDwW9qcCf99k0YPaRprKErZ', youtubeId: 'PtJ6yAGjsIs', buttonId: '1qq221b-_e4wTj8w2px2haQ', title: 'NARCOS COLOMBIA', subtitle: 'Narcos Colombia (2015-17)', subtitle2: '3 Temporadas 30 Episodios', buscar: 'S3R01' }, {
 						   		id: '1vi-7x3gyb6ulSuxVFlPcFZ4zWtgYxfZQ', youtubeId: 'eHdRMOAT-Lc', buttonId: '1LRLHnPjeIDVswpHt-cZ1PQ', title: 'NARCOS MÉXICO', subtitle: 'Narcos México (2018-21)', subtitle2: '3 Temporadas 30 Episodios', buscar: 'S3R01' }, {
+						   		id: '1flb6z5Tpra_lvzcLWyLv91P8VoytcFsC', youtubeId: '2otR4GFP03I', buttonId: '1gN2-ebEwGXXy-B8j-AdDuQ', title: 'NE ZHA 2', subtitle: 'El Renacer Del Alma (2025)', buscar: 'PEROIZG' }, {
 						   		id: '18wIjpgbrY5oJAFrdxjqDv3EXH_oazBOt', youtubeId: 'rW_Iyyd9IuI', buttonId: '1m1NWBjysWGkLbcL3xlFvng', title: 'NEVER BACK DOWN 2 THE BEATDOWN', subtitle: 'Rompiendo Las Reglas 2 El Desafío (2011)', buscar: 'P3L01G' }, {
 						   		id: '1Mg5as59wEPFE_ebfEyW5pqUFpBgKqfDd', youtubeId: '6q4q7sye_FQ', buttonId: '1jknESRot3nSocBHhwpO-yg', title: 'NEW POLICE STORY', subtitle: 'New Police Story (2004)', buscar: 'P3L02' }, {
 						   		id: '151BBlt7ASAK7-Z3wff7ycJmDA1oKqdFB', youtubeId: 'OwIFRm7sy8E', buttonId: '1mzH9PQZXqqyDpd1o0Dgn1w', title: 'NEXT', subtitle: 'El Vidente (2007)', buscar: 'S3R01' }, {
@@ -1511,8 +1513,8 @@
 						   		id: '1c57NlsU-z6m3VBXXg6stAk6WA3IBdqHy', youtubeId: 'yJkBRzSgBEY', buttonId: '15AsUgGtke48VRcGZbHyLlA', title: 'PET SEMATARY BLOODLINES', subtitle: 'Cementerio De Mascotas El Origen (2023)', buscar: 'P3L01' }, {
 						   		id: '1I6DtucwgPWKYAIZ-KWAsEAa52Lp4v9wl', youtubeId: 'hdn56hGq5O0', buttonId: '1Utqf4m569GVwyQJfQkf80Q', title: 'PET SEMATARY TWO', subtitle: 'Cementerio De Mascotas 2 (1992)', buscar: 'P3L01' }, {
 						   		id: '1sC4vbqdak-bpDtyiprA5gPHOSn7frHda', youtubeId: 'BL6M27fz_d0', buttonId: '1qOtN2NXz9owvZyrft6xNDQ', title: 'PETER PAN\'S NEVERLAND NIGHTMARE', subtitle: 'La pesadilla De Peter Pan (2025)', buscar: 'P3L02' }, {
-						   		id: '1IZ9bvnJo996KUUFm95e4FDUPTkEJRSs3', youtubeId: 'jwfNAPIfip4', buttonId: '16vyxZW245z7qtu7XvttmZA', title: 'PHINEAS AND FERB THE MOVIE: ACROSS THE 2ND DIMENSION', subtitle: 'Phineas y Ferb a Traves De La 2da Dimension (2011)', buscar: 'P3ROIZG' }, {
-						   		id: '1C54v4HdBmXgTXyTqqMkMmK8aG2mJkpZp', youtubeId: 'cuG-Typdck0', buttonId: '1FDq0fVzdgiG_oTyeLpJGVg', title: 'PHINEAS AND FERB THE MOVIE: CANDACE AGAINST THE UNIVERSE', subtitle: 'Phineas y Ferb, la película: Candace contra el universo (2020)', buscar: 'P3ROIZG' }, {
+						   		id: '1IZ9bvnJo996KUUFm95e4FDUPTkEJRSs3', youtubeId: 'jwfNAPIfip4', buttonId: '16vyxZW245z7qtu7XvttmZA', title: 'PHINEAS AND FERB THE MOVIE: ACROSS THE 2ND DIMENSION', subtitle: 'Phineas y Ferb a Traves De La 2da Dimension (2011)', buscar: 'PEROIZG' }, {
+						   		id: '1C54v4HdBmXgTXyTqqMkMmK8aG2mJkpZp', youtubeId: 'cuG-Typdck0', buttonId: '1FDq0fVzdgiG_oTyeLpJGVg', title: 'PHINEAS AND FERB THE MOVIE: CANDACE AGAINST THE UNIVERSE', subtitle: 'Phineas y Ferb, la película: Candace contra el universo (2020)', buscar: 'PEROIZG' }, {
 						   		id: '1GQdr3z4D6CQ5Pg16h1PUZIs8VcSa3ktG', youtubeId: 'vG89ig5P4g0', buttonId: '1Va2yelaAvBG1OcUFLktJHA', title: 'PÍDEME LO QUE QUIERAS', subtitle: 'Pídeme Lo Que Quieras (2024) [Esp T+Chi-Vie-Ing]', buscar: 'P3L01G' }, {
 						   		id: '13jNP5hMHWRCvGI5LG1yKTVZ5aPD3Lfhj', youtubeId: 'Rfhqw7-6uFY', buttonId: '1RR6YHn49W2lEvfeyhBaYGg', title: 'PINOCCHIO', subtitle: 'Pinocho (1940)', buscar: 'P3L01G' }, {
 						   		id: '10LQU8ZRinWmd7NqVluHHrSy04YIzdSjG', youtubeId: 'HKSZtp_OGHY', buttonId: '1Cg66cW4M4K-Wbbj7Rk4U7Q', title: 'PIRATES OF THE CARIBBEAN AT WORLD\'S END', subtitle: 'Pirátas del Caribe: En el fin del mundo (2007)', buscar: 'P3L02' }, {
@@ -1538,7 +1540,7 @@
 						    	id: '11p23i2HjUpRzFeyMbIOqMjdoal6MeEsQ', youtubeId: 'CGO32Zmh2YI', buttonId: '1ENfYb-HLqoWCAvOlvf3-NQ', title: 'POPEYE THE SLAYER MAN', subtitle: 'Popeye El Marino (2025) [Ing T+Esp]', buscar: 'P3L01G' }, {
 						    	id: '18JCXRf_Qa8WkEphPBD7E54ir9K9Yzr2V', youtubeId: 'Vo3FmkleTEQ', buttonId: '1ZSpxAWWgfMtYGSk6cretMA', title: 'PREDATOR', subtitle: 'Depredador (1987)', buscar: 'Prey, P3L02' }, {
 						    	id: '17P8Xu2OVcj3YvNv_QHQpSFY3W3NLxk_Z', youtubeId: 'pLe_1SheJms', buttonId: '1WAY9JYnQTAoGCpZi_XSNaw', title: 'PREDATOR 2', subtitle: 'Depredador 2 (1990)', buscar: 'Prey, P3L02' }, {
-						    	id: '1d3n0_IGeS_fts_kY9g9EFUqbMmyaOC-1', youtubeId: 'cDWhePVoqoM', buttonId: '1rgerbh_373_UvOl_zLUJGw', title: 'PREDATOR: BADLANDS', subtitle: 'Depredador: Tierras Salvajes (2025)', buscar: 'Prey, P3L02' }, {
+						    	id: '1rSWEe-SANazTL7-unL3k-0m3k9SM_Oxk', youtubeId: 'cDWhePVoqoM', buttonId: '1rgerbh_373_UvOl_zLUJGw', title: 'PREDATOR: BADLANDS', subtitle: 'Depredador: Tierras Salvajes (2025)', buscar: 'Prey, P3L02' }, {
 						    	id: '1dISpR3I86U7VkECywjWjRsIfZt6t5Fc6', youtubeId: 'uzqYqoVoU74', buttonId: '15Hsz9M2r47S527sC-eaYUw', title: 'PREDATORS', subtitle: 'Depredadores (2010)', buscar:  'Prey, P3L02' }, {
 						    	id: '1JXAEZs1owyefYh0BY2iv02wb2R6l6CCU', youtubeId: 'xWlmzl2jCNs', buttonId: '1u6TaQs5tKbp4WiMgWNwnEw', title: 'PREHISTORIC PLANET', subtitle: 'Planeta Prehistórico (2022-23)', subtitle2: 'Serie 2 Temporadas 10 Episodios', buscar: 'RP3L01G' }, {
 						    	id: '1YT0U7bLQp2R4R5_-Mx-yQSYnpQSKuKTZ', youtubeId: 'Ee-eE_mIXRo', buttonId: '157ZHyBMD_40RSXC0RYE9FA', title: 'PRESUMED INNOCENT', subtitle: 'Presunto inocente (2024)', subtitle2: 'Serie 1 Temporada 8 Episodios', buscar: 'P3L01G' }, {
@@ -1578,6 +1580,7 @@
 						   		id: '1MWQOAUcSR-jTSevz_RiK2Zp8eyIuQPc3', youtubeId: 'BAVITOn-Usk', buttonId: '12NFjEanCTjOXa2d6eXbW6Q', title: 'RED', subtitle: 'Red (2010)', buscar: 'P3L01' }, {
 						   		id: '1CrmLqSRqcRQDQUwgymbxEgF5H_NWNhUI', youtubeId: 'ZfB8QwYBPxY', buttonId: '1vqVoZsl7NlC7zCHkR0aeTQ', title: 'RED 2', subtitle: 'Red 2 (2013)', buscar: 'P3L01' }, {
 						   		id: '1OzGhACbcme9ljAfd1iymijoe37XezRIX', youtubeId: 'yzQYokimcg0', buttonId: '1n7uQ0VJcXbA2TVG-raZK2g', title: 'REIGN OVER ME', subtitle: 'La Esperanza Vive En Mí (2007)', buscar: 'P3L01' }, {
+						   		id: '10GriI-JKRp4BI_rc3FaIdG7pf7T8A043', youtubeId: 'To87iNMhedU', buttonId: '1hVHKdirq1Kj-bEabJmUD-g', title: 'RELATIONSHIP GOALS', subtitle: 'La Meta Es El Amor(2026)', buscar: 'PEROIZG' }, {
 						   		id: '1RPpMFDPnILnuh-zF8XEq6GY1bbFd8t9L', youtubeId: 'NcKWCVb7f6Y', buttonId: '1Qy4X_cR_hxC9s8kg8e4_sw', title: 'RÉMI NOBODY\'S BOY', subtitle: 'Remi El Niño De Nadie (2018)', buscar: 'P3L01G' }, {
 						   		id: '1jRIT7kbv-H5GU7HEnRDC81VyCjRsJz3c', youtubeId: 'JAHKQPBKSZ8', buttonId: '1_W-_AEoPx2usXOl7j_bwFw', title: 'REPLICAS', subtitle: 'Replicas (2018)', buscar: 'P3L01' }, {
 						   		id: '1kOJ0lzkQzQkBRp7mwMpXDcOrcIPqcCc6', youtubeId: 'HhBAIDHvRTc', buttonId: '1CBbsQwVJS9X4MC1QatawAw', title: 'RESIDENT EVIL', subtitle: 'Resident Evil: El Huésped Maldito (2002)', buscar: 'P3L02' }, {
@@ -1640,7 +1643,7 @@
 						   		id: '1KYfop7ku7bfyZXICqD05F4BevjSfmMOP', youtubeId: 'wBPBSroi_VE', buttonId: '1ZqOshwfjzSBwzp0HjmB6hg', title: 'SANDY WEXLER', subtitle: 'Sandy Wexler (2017)', buscar: 'P3L01' }, {
 						   		id: '1m-zP1ZgAOZCUFqArmPweJHW7nRu7Cye3', youtubeId: '03n1lgk8E9U', buttonId: '1twnSKXShXuN-SUw_Ko0tQQ', title: 'SCREAM 6', subtitle: 'Scream VI (2023)', buscar: 'P3L01G' }, {
 						   		id: '1GOifS2Nuf3RDttl3OM2qZYYbbahDjMJH', youtubeId: '3Ro9ebQxEOY', buttonId: '1T_xR8ANRkoPujSkt1fCzcg', title: 'SEARCHING', subtitle: 'Buscando (2018)', buscar: 'P3L01' }, {
-						   		id: '1jtWvBFWjj1lw4-9mEhGbMA7Bh67o7_7B', youtubeId: '3GB-7qwwIp0', buttonId: '1dfbNWyAN-nClefzALsiumQ', title: 'SECRETS OF THE OCTOPUS', subtitle: 'Secretos De Los Pulpos (2024)', subtitle2: '1 Temporada 3 Episodios', buscar: 'P3ROIZG' }, {
+						   		id: '1jtWvBFWjj1lw4-9mEhGbMA7Bh67o7_7B', youtubeId: '3GB-7qwwIp0', buttonId: '1dfbNWyAN-nClefzALsiumQ', title: 'SECRETS OF THE OCTOPUS', subtitle: 'Secretos De Los Pulpos (2024)', subtitle2: '1 Temporada 3 Episodios', buscar: 'PEROIZG' }, {
 						   		id: '1k2dEuNWpAs_6jMu94Zh1POpfA0ODKQpF', youtubeId: 'mwXK06A2sYM', buttonId: '1IaEOWbyi3VVMQHwTRFVIlA', title: 'SEE', subtitle: 'See (2019-22) (3T24E)', subtitle2: 'Serie 3 Temporadas 24 Episodios', buscar: 'P3L01G' }, {
 						   		id: '1rDo02YtcqqXC6v1ocjkGj45kgp0BM91u', youtubeId: 'CKc-mP5xXQY', buttonId: '1VH7RtFbfkJ4CiOzSEZzh9A', title: 'SEED OF CHUCKY', subtitle: 'El Hijo De Chucky (2004)', buscar: 'Child\'s Play, Bride Of Chucky, Cult Of Chucky, Curse Of Chucky, Living With Chucky, Chucky El Muñeco Diabólico, La novia de chucky, El Culto de chucky. La Maldición de Chucky, Viviendo con chucky, P3L01' }, {
 						    	id: '17a507sxJBwB40dK1JyWDQNNUCMvcu0Pf', youtubeId: 'EVMSuZXEz4s', buttonId: '1ka_Gf0PSXds4YaZbpsAV4w', title: 'SELENA', subtitle: 'Selena (1997)', buscar: 'P3L01' }, {
@@ -1700,7 +1703,7 @@
 						    	id: '1IgJ0gYH6HMaPhxz5gKHijXpKmJuUEkKA', youtubeId: 'sGbxmsDFVnE', buttonId: '1JjGOwosXNTajUs9BKido0g', title: 'STAR WARS EPISODE VII THE FORCE AWAKENS', subtitle: 'Star Wars Episodio VII El Despertar De La Fuerza (2015)', buscar: 'La Guerra De Las Galaxias, Andor, Rogue One, P3L01G' }, {
 						    	id: '1FIl7e1HX4mNmzBUMr3E0md3csTbpalog', youtubeId: 'OmWD0aNUtI8', buttonId: '1QshOjdC61PGy6h1N9ejokg', title: 'STAR WARS EPISODE VIII THE LAST JEDI', subtitle: 'Star Wars Episodio VIII Los Últimos Jedi', buscar: 'La Guerra De Las Galaxias, Andor, Rogue One, P3L01G' }, {
 						    	id: '1dDXfrHeko0Wc7K6buLRLbNWSM28YncTQ', youtubeId: 'f9nFkEdROqQ', buttonId: '1E-V3yfhUe1fpxs84mj_oNw', title: 'STEP BY STEP', subtitle: 'Paso a Paso (1991-94)', subtitle2: '4 Temporadas 93 Episodios', buscar: 'S3R01' }, {
-						    	id: '1slSgkIJxLg6CgzhIImJndXFdt5lUyTKY', youtubeId: 'zy_Xsv5oghE', buttonId: '1oYIlDZqn53Hx3fQjQ9TZUA', title: 'STOLEN YOUTH: INSIDE THE CULT AT SARAH LAWRENCE', subtitle: 'El origen de un culto (2023) [Ing T+Esp] ', subtitle2: '1 Temporada 3 Episodios', buscar: 'P3ROIZG' }, {
+						    	id: '1slSgkIJxLg6CgzhIImJndXFdt5lUyTKY', youtubeId: 'zy_Xsv5oghE', buttonId: '1oYIlDZqn53Hx3fQjQ9TZUA', title: 'STOLEN YOUTH: INSIDE THE CULT AT SARAH LAWRENCE', subtitle: 'El origen de un culto (2023) [Ing T+Esp] ', subtitle2: '1 Temporada 3 Episodios', buscar: 'PEROIZG' }, {
 						    	id: '18k0lcnhuQs_15zF03_y8ZElYzfyZyFLG', youtubeId: 'YSrJiaZnPuU', buttonId: '1AL88pyvCike9Tvkm7spUyA', title: 'STRANGE MAGIC', subtitle: 'Mariane y La Pócima Del Amor (2015)', buscar: 'P3L01G' }, {
 						    	id: '1C-idOTD8XA9-_dvr5T5s3rOH-lKzdZB7', youtubeId: '4QuoL77VSVQ', buttonId: '1dLx9heSvtrSE2cYDkRy4cg', title: 'SU EXCELENCIA', subtitle: 'Su Excelencia (1967)', buscar: 'P3L01G' }, {
 						    	id: '1-_ieao-RsL0PikovQ3TU0pROBnmBIm0G', youtubeId: 'COE9VeiS7MQ', buttonId: '1QQP2pEs_Na1lbUVO0E8B0A', title: 'SUBE Y BAJA', subtitle: 'Sube y Baja (1959)', buscar: 'P3L01G' }, {
@@ -1739,7 +1742,7 @@
 						   		id: '1f9CbQW8kH2S9fcB_e7Cy7q_z_5DFt_I2', youtubeId: 'HZJKgniCvUI', buttonId: '1UIekhZS3zAJoTJA5JVqGsw', title: 'THAT\'S MY BOY!', subtitle: 'Ese Es Mi Hijo (2012)', buscar: 'P3L01' }, {
 						   		id: '1bacyafgXtH_U04cV0NzrfpVIJcNNOrAp', youtubeId: '66-I9T-BIsY', buttonId: '1yx5H8t9k5GTWRWaTXWqTAw', title: 'THE 36 CRAZY FISTS', subtitle: 'Los 36 Puños Locos (1977) [Ing T+Esp]', buscar: 'P3L01' }, {
 						   		id: '1mV950ObU3k6XBrFxY62VEhbX4gPN27VN', youtubeId: 'lMHXh7qdIV4', buttonId: '1hhRw9Oav2Gv8kMWBUp9vjw', title: 'THE ABYSS', subtitle: 'El Abismo De Kiruna (2023)', buscar: 'P3L02' }, {
-						   		id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Adams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'La Familia Adams, P3ROIZG' }, {
+						   		id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Adams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'La Familia Adams, PEROIZG' }, {
 						   		id: '1l8rruzJgCBi3B6fSigTBBxqE0avqwSqR', youtubeId: 'xFCrR3Uw6Mk', buttonId: '1gf9AbiWZyrpWKLnhwZGLkA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Adams (2019)', buscar: 'La Familia Adams, P3L01' }, {
 						   		id: '1IbVuH5G9WyUXpM1pF6XanZhPqWljdkqo', youtubeId: '946LiJiMQrQ', buttonId: '1cU131y6V8AuL_P_aZHd8lg', title: 'THE ADDAMS FAMILY 2', subtitle: 'Los Locos Adams 2 (2021)', buscar: 'La Familia Adams, P3L01' }, {
 						   		id: '1a13UlR2KvfFnJ6wqGt8BWJnIv0WrNVYH', youtubeId: 'G388UMkJIBE', buttonId: '1IL1gf6AzDPgABKLJflqcIw', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Adams (1991)', buscar: 'La Familia Adams, P3L01' }, {
@@ -1767,6 +1770,7 @@
 						   		id: '1NG7MzN8bosbBWnALmGIfGWWh9GHj0Q0U', youtubeId: 'nm2aZz45pGE', buttonId: '1rcemm5XrtWYERbZoa5TUXA', title: 'THE BROTHERHOOD OF WAR', subtitle: 'La Hermandad De La Guerra (2004)', buscar: 'P3L01' }, {
 						   		id: '1SJuK1I0Z7FE1uFnjCRKgv5B8iDxEk4Pm', youtubeId: 'jHghvHMTDXU', buttonId: '1VQAqQUbADJRRUVjZr0ZJoA', title: 'THE CENTIPEDE', subtitle: 'El Cienpiés Gigante (2022)', buscar: 'The 100, P3L02' }, {
 						   		id: '1J7ODzhqZHyYAtd6lLTHop19ovkYQdz-_', youtubeId: '_AswL5MxigI', buttonId: '1z6OpsbX4oWV8ITtX5E-qrA', title: 'THE CHARLIE BROWN AND SNOOPY SHOW', subtitle: 'El Show De Charlie Brown y Snoopy (1983)', subtitle2: '1 Temporada 30 Episodios', buscar: 'Peanuts, S3R01' }, {
+						   		id: '1niGmUipUgsh5bZpdQ5MhazoC48c5gsBm', youtubeId: '8pmJgtLKBXg', buttonId: '1vn6cDWE6eZe7vxQKLhy6nQ', title: 'THE CHESS QUEEN', subtitle: 'La Reina Del Ajedrez (2026)', buscar: 'PEROIZG' }, {
 						   		id: '1G2ea2d71TJUkHBc9bduTC-DXnA_taR06', youtubeId: '28Honaz1R5M', buttonId: '1tKXp-tA1vRNQNyOBcv4fRg', title: 'THE CLOSET', subtitle: 'La Habitación Del Horror (2020)', buscar: 'P3L01G' }, {
 						   		id: '1ZaW-V_maOEFBdF0_3X5A6kg7HTe3IevE', youtubeId: 'lNk1XIejGRA', buttonId: '16-CIHqHVoNDCLi9CWbNqDA', title: 'THE CROODS', subtitle: 'The Ctoods Una Aventura Prehistórica (2013)', buscar: 'P3L01' }, {
 						   		id: '1-FPHkSqWr6CbYI1rENpMn9W4b6d3DLNV', youtubeId: 'XUN5EEDwHcI', buttonId: '1ujNuFeD7OshzMfkPQQwyoA', title: 'THE CROODS A NEW AGE', subtitle: 'Los Croods 2 Una Nueva Era  (2020)', buscar: 'P3L01' }, {
@@ -1805,7 +1809,7 @@
 						    	id: '1Zh68kl5SsIXXZ_yDQ_LX34yYiz8L610t', youtubeId: 'daFnEiLEx70', buttonId: '1pZXxh5m3ds6CvoOvdRDgmw', title: 'THE GOOD DINOSAUR', subtitle: 'Un Gran Dinosaurio (2015)', buscar: 'P3L01' }, {
 						    	id: '15VshHcK280KDvFiKN5FIbYB_Fj9HdKgt', youtubeId: 'lYLAGAwcpSQ', buttonId: '1ECPuNIGISTWOZp1H_82X-Q', title: 'THE GOONIES', subtitle: 'Los Goonies (1985)', buscar: 'P3L01' }, {
 						    	id: '1Gb-64BeqCBE1v3SfxdEllINjwea0nRVl', youtubeId: 'n5xgbJJxYI4', buttonId: '13PhA1CYlhFB91OzFPZQiOA', title: 'THE GORGE', subtitle: 'El Abismo Secreto (2025)', buscar: 'P3L01G' }, {
-						    	id: '1EJDdKM2ao6wLAfG5KXnuVQhm3Uca2v0r', youtubeId: '56601nxTJ2I', buttonId: '1tY0_cFlif5TnnwoiBTQhsA', title: 'THE GREEN HORNET', subtitle: 'El Avispón Verde (1966)', subtitle2: '1 Temporada 26 Episodios', buscar: 'P3ROIZG' }, {
+						    	id: '1EJDdKM2ao6wLAfG5KXnuVQhm3Uca2v0r', youtubeId: '56601nxTJ2I', buttonId: '1tY0_cFlif5TnnwoiBTQhsA', title: 'THE GREEN HORNET', subtitle: 'El Avispón Verde (1966)', subtitle2: '1 Temporada 26 Episodios', buscar: 'PEROIZG' }, {
 						    	id: '1gl19oAdMASmPuv8gAw93QDtiV7NpOuFQ', youtubeId: '6wXcwB17IW4', buttonId: '1wbEMwxU8UdduylsGEtDVBw', title: 'THE GRIM ADVENTURES OF BILLY & MANDY', subtitle: 'Las Sombrías Aventuras De Billy y Mandy (2001-06)', subtitle2: '6 Temporadas 83 Episodios', buscar: 'S3R01' }, {
 						    	id: '1YqOpboL_LsxX7oyM45eO2-D51hyTdPvQ', youtubeId: 'vjnqABgxfO0', buttonId: '1OLO9tkCgFu5_wav_t91aPA', title: 'THE GRINCH', subtitle: 'El Grinch (2018)', buscar: 'P3L01' }, {
 						    	id: '1YmNRU6eWFbRx8R2sRwb8P2nA5ydZ6S6_', youtubeId: 'HCDY9aDjeIY', buttonId: '1XiSfNeoMYWgkpuTIWC7QkA', title: 'THE HAND OF DEATH', subtitle: 'La Mano De La Muerte (1976)', buscar: 'P3L01' }, {
@@ -1861,7 +1865,7 @@
 						    	id: '1pE2jqbVChRyKCz3KzZTMh9amqzYgXQqy', youtubeId: 'eC2eC_pN7ZE', buttonId: '15t2SRf9tEHDZchBzZd37gA', title: 'THE MOSQUITO COAST', subtitle: 'La Costa Mosquito (1986)', buscar: 'P3L01' }, {
 						    	id: '1vxo1PnUew8LCBpXVlmqP9MqN_hHrhvoK', youtubeId: 'N_QksSzK7sI', buttonId: '1QnhNCJ6LnWhwtQkkGgP9bw', title: 'THE MULE', subtitle: 'La Mula (2018)', buscar: 'P3L01' }, {
 						    	id: '1relqXkSNlmyEv6L_lzSvfiqDPOnygSc4', youtubeId: 'fZE8jD6fiZg', buttonId: '1j-ezTY0lpNK-EHY7E9xmkQ', title: 'THE MUMMY', subtitle: 'La Momia (1999)', buscar: 'P3L01' }, {
-						    	id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZG' }, {
+						    	id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'PEROIZG' }, {
 						    	id: '1tZZNId43ij4kR2jd6CRncYVeGzVzvTPu', youtubeId: 'p4gajXkbx4s', buttonId: '1YwhpzlrWoXqZFrWxzXRLyw', title: 'THE MUTATION', subtitle: 'The Mutation (2021)', buscar: 'P3L02' }, {
 						    	id: '13YTRThCzMKIqPgx37ZN1HPHuQMkDW8KK', youtubeId: '1bMaS-Dq3Gk', buttonId: '1Q9SfbjfHXyV4vk605oEt3w', title: 'THE NANNY', subtitle: 'La Niñera (1993-98)', subtitle2: '6 Temporadas 146 Episodios', buscar: 'S3R01' }, {
 						    	id: '1uMHSD9M9A_W8a-78RSR1t4dPnzPWRrTe', youtubeId: 'UeFni9dOv7c', buttonId: '1bUG4iLtNfEXubb3vNrw5jQ', title: 'THE NEVERENDING STORY', subtitle: 'La Historia Sin Fin (1984)', buscar: 'P3L01' }, {
@@ -1907,7 +1911,7 @@
 						    	id: '1wbmOpUd5I1dtc5WHY8pNF5ryq00JPGvx', youtubeId: 'JY_w9Aj7s1o', buttonId: '1JhQIt1B7n4zZBt4KdbdgHA', title: 'THE SWORD IN THE STONE', subtitle: 'La Espada En La Piedra (1963)', buscar: 'P3L01G' }, {
 						    	id: '1ooUwfBOnATMducIBqiFQ1i6NMq5fQ5gl', youtubeId: '28qdJu6R24w', buttonId: '1byRiAOXUPW6Vkw4fmmSUcg', title: 'THE SWORDSMAN', subtitle: 'El Espadachín (2020)', buscar: 'P3L01' }, {
 						    	id: '1XzvjwU8lS2bZvyF7YqWCe8jAu_ErhnzT', youtubeId: 'nGrW-OR2uDk', buttonId: '1nxt5l5_Qwus3Qy0XZeKs8A', title: 'THE TERMINATOR', subtitle: 'El Exterminador (1984)', buscar: 'P3L01' }, {
-						    	id: '1ZrncpXVJXCt3a5H-b3T4c4syDADSkMXa', youtubeId: 'Pdy2aUEjF4c', buttonId: '1OtBDFVdbjWfCd4CXbsY0Zg', title: 'THE UNTOUCHABLES', subtitle: 'Los Intocables (1959-62)', subtitle2: '4 Temporadas 90 Episodios', buscar: 'P3ROIZG' }, {
+						    	id: '1ZrncpXVJXCt3a5H-b3T4c4syDADSkMXa', youtubeId: 'Pdy2aUEjF4c', buttonId: '1OtBDFVdbjWfCd4CXbsY0Zg', title: 'THE UNTOUCHABLES', subtitle: 'Los Intocables (1959-62)', subtitle2: '4 Temporadas 90 Episodios', buscar: 'PEROIZG' }, {
 						    	id: '1Bts4anNmadiLz-pD_C7nxWS6i2EBxPp_', youtubeId: 'zqBN3N8qjtI', buttonId: '1tqUrcPKaAOPUxsaV1xSQRg', title: 'THE VOYAGERS', subtitle: 'Los Viajeros (2022)', buscar: 'P3L02' }, {
 						    	id: '1-QejVlMlfsLFlD0HOx2lZHzRIMerYU5m', youtubeId: 'R1v0uFms68U', buttonId: '13QLTkjfTuMeNWcBFufyq3w', title: 'THE WALKING DEAD', subtitle: 'The Walking Dead (2010-22)', subtitle2: '11 Temporadas 177 Episodios', buscar: 'P3L02G' }, {
 						    	id: '1jhwEYhZKYpyeIfiJrHeoQQEzUmKnfhTS', youtubeId: 'iTOaFootkSk', buttonId: '1H0BWZIUwidI4WcEAyDohOA', title: 'THE WALKING DEAD: DARYL DIXON', subtitle: 'The Walking Dead: Daryl Dixon 2023-24)', subtitle2: '2 Temporadas 12 Episodios', buscar: 'P3L02' }, {
@@ -2052,26 +2056,35 @@
 					'estrenos': {
 						title: '<center><p style="background-color:blue; color:white;">LO MAS RECIENTE</p></center>', carousels: [ {
 						 	id: 'Películas2', data: [ {
-						 			id: '1cQERnDE5fRJ46k7QbwnDBLt-yLnYWVd0', youtubeId: 'c7dGOpMFFeA', buttonId: '1wcxiutG8HvipUCJCT8WPLw', title: 'THE BOOTY', subtitle: 'El botín (2026)', buscar: 'P3L02G' }, {
-						 			id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
 						 			id: '10xgFzQ3pTyAeh_OpH-L7fLKiL3N-2XCH', youtubeId: 'yFzSe2Nuys4', buttonId: '1kcjXOAuOGd2cBJ6F9jpnlg', title: 'CHEETAHS UP CLOSE WITH BERTIE GREGORY', subtitle: 'Guepardos En Primer Plano Con Bertie Gregory (2026)', buscar: 'P3ROIZ' }, {
+						 			id: '1_8su9YgJ42xCpehpZkYII1nua-mlQWOO', youtubeId: 'wg8_JUvvRgg', buttonId: '1S8OkwTCXViFarJ85XyRvbw', title: 'LAND OF SIN', subtitle: 'La Tierra Del Pecado) (2026)', buscar: 'P3ROIZ' }, {
+						 			id: '10GriI-JKRp4BI_rc3FaIdG7pf7T8A043', youtubeId: 'To87iNMhedU', buttonId: '1hVHKdirq1Kj-bEabJmUD-g', title: 'RELATIONSHIP GOALS', subtitle: 'La Meta Es El Amor(2026)', buscar: 'PEROIZG' }, {
+						 			id: '1cQERnDE5fRJ46k7QbwnDBLt-yLnYWVd0', youtubeId: 'c7dGOpMFFeA', buttonId: '1wcxiutG8HvipUCJCT8WPLw', title: 'THE BOOTY', subtitle: 'El botín (2026)', buscar: 'P3L02G' }, {
+						 			id: '1niGmUipUgsh5bZpdQ5MhazoC48c5gsBm', youtubeId: '8pmJgtLKBXg', buttonId: '1vn6cDWE6eZe7vxQKLhy6nQ', title: 'THE CHESS QUEEN', subtitle: 'La Reina Del Ajedrez (2026)', buscar: 'PEROIZG' }, {
+						   		
+						 			
+						 			
 						 			id: '1EsZhSNRB90t-aTfDsHO8PZEtMkbi5Jya', youtubeId: 'x19tdyNa-QI', buttonId: '1Rje3J3TQaZH6M71F0p7-Zw', title: 'BANG', subtitle: 'Bang (2025)', buscar: 'PEROIZG' }, {
 						 			id: '1sC4vbqdak-bpDtyiprA5gPHOSn7frHda', youtubeId: 'BL6M27fz_d0', buttonId: '1qOtN2NXz9owvZyrft6xNDQ', title: 'PETER PAN\'S NEVERLAND NIGHTMARE', subtitle: 'La pesadilla De Peter Pan (2025)', buscar: 'P3L02' }, {
 						 			id: '19TnSPSE_CsTNaUVI-dwUr1W6gO2Fdykr', youtubeId: '8FudANSsWNQ', buttonId: '1-JqSGTx1SkG6ujEBhCC5dQ', title: 'FINAL DESTINATION: BLOODLINES', subtitle: 'Destino Final: Linajes (2025)', buscar: 'S3R01G' }, {
-						 			id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, P3ROIZG' }, {
+						 			id: '1WPGCKUicB2pAGzriNolwSsYo3pIBDN2P', youtubeId: 'Z2H3KY3Wnr4', buttonId: '18yxO6QkrCs28ymHEWFKSIw', title: 'DINASTIA CASILLAS', subtitle: 'Dinastía Casillas (2025)', subtitle2: '1 Temporada 50 Episodios', buscar: 'El Señor De Los Cielos, PEROIZG' }, {
 						 			id: '1J_EFte8kd3WB8KxXRkNgc9Ff-cD61C3O', youtubeId: '5gquha3ICHE', buttonId: '1ZEvaj9VriI5OAFDszLRSbw', title: 'SQUID GAME', subtitle: 'El Juego del Calamar (2021-25)', subtitle2: '3 Temporada 22 Episodios', buscar: 'S3R01' }, {
 						 			id: '1MZkGA1SQonGS-gmz7UOhQbdU9IejkZ_5', youtubeId: 'eotAOKm4l18', buttonId: '1zRA0mxO0XUhmOkN3iEOHQA', title: 'ALIEN: EARTH', subtitle: 'Alien: Planeta Tierra (2025)', subtitle2: '1 Temporada 8 Episodios', buscar: 'P3L00' }, {
 						 			id: '1OfVWpDfjOpvAIiiQvOSAas0MGKveZwG7', youtubeId: 'ixVlecN1Jnw', buttonId: '19XZ45pprU0WNrcDaw7kHug', title: 'SOY FRANKELDA', subtitle: 'Soy Frankelda: La Película (2025)', buscar: 'P3L00' }, {
 						 			id: '16r8Zd9lMpO7OxFm81lqzi9DLDaogTlqG', youtubeId: 'GNgK75OZ0mQ', buttonId: '16vTprkar5mYMpkmUw3vBFg', title: '100 METERS', subtitle: '100 metros (2025)', buscar: 'PEROIZG' }, {
 						 			id: '1SB7FuVM6fQE9ssU5Q3FtEozKH7z5UHsd', youtubeId: 'mhQcpvKHis4', buttonId: '1ZYW9FIM-81WCslsVZuoeiA', title: 'G20', subtitle: 'G20 (2025)', buscar: 'PEROIZG' }, {
+						 			
+						 			
+						 			
 						 			id: '1GUENgqotu2IFlgoISlNF_xcw9QlHoq7N', youtubeId: 'pDgBUVuKXKk', buttonId: '13XZAbXJBVaN-Z4nmnBo0Ug', title: '200% WOLF', subtitle: '200% Lobo (2024)', buscar: '100% Wolf, 100 Wolf, S3R01' }, {
+						 			
+						 			
+						 			
 						 			id: '1hwGT-DjHI4hYhwG_qBSta4igNRNh26Iv', youtubeId: '0JCq_hmNhJs', buttonId: '1xH-bwpuGxXhbityu2mPvtQ', title: 'SQUID GAME: THE CHALLENGE', subtitle: 'El Juego Del Calamar: El desafío (2023)', subtitle2: '1 Temporada 10 Episodios', buscar: 'S3R01' }, {
 						 			id: '1FZcdIt-xfUft_wQ8vaLpSzaermzT-YQJ', youtubeId: 'qhCOAuzcQXY', buttonId: '1LcplNXdFGragDK45_h-YKA', title: '500 DIAS DE ESCOBAR', subtitle: '500 Días De Escobar (2023)', buscar: 'P3L01' }, {
 						 			id: '137YFz_v6vzB8MJuvbloiJEwUH_lIyWVW', youtubeId: 'lnewrKA6BzY', buttonId: '1GqyJeSYrLOt_8248ABwd2Q', title: 'SUPER DRAGON BALL HEROES', subtitle: 'Super Dragon Ball Heroes (2018)', subtitle2: '5 Temporads 49 Episodios', buscar: 'S3R01' }, {
 						 			id: '1G2PCA4EyFw22UbeT-0j4xsEzuBerRfHg', youtubeId: 'IEnmRWU1A1Y', buttonId: '13pNNdoN1OwiG6udYNNRToQ', title: 'EL CAPO', subtitle: 'El Capo (2009-14)', subtitle2: '3 Temporadas 223 Episodios', buscar: 'S3R01' }, {
-						 			id: '1563acEZ4GTAFo2iHI7_dMnuCY6wwR1CP', youtubeId: 'TP5Dhz1LXUg', buttonId: '1OG3dAIacyMYX4wkiRR1j5w', title: 'COMBAT!', subtitle: 'Combate! (1962)', subtitle2: '1 Temporada 31 Episodios', buscar: 'P3L01' }, {
-						 			id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZ' }, {
-						 			id: '12NojynOBFClLAX4gkFTjdpqPZa8gAglZ', youtubeId: 'cfawtDT945o', buttonId: '1qmcBwWeA0OmlKVBF9bCdSA', title: 'THE ADDAMS FAMILY', subtitle: 'Los Locos Addams (1964)', subtitle2: '2 Temporadas 64 Episodios', buscar: 'P3ROIZ' }, 
+						 			id: '1doMHOa8ot_WCH1RLHOn4Hb4Xwk1MDuw3', youtubeId: '148kmAGwMgU', buttonId: '1laIMQYLUXMvBg13LSnokSA', title: 'THE MUNSTERS', subtitle: 'La Familia Monster (1964-65)', subtitle2: '2 Temporadas 70 Episodios', buscar: 'P3ROIZ' }, 
 						 	] },
 						 	
 						 	
@@ -2086,6 +2099,7 @@
 				  				id: '19Pca55vZPPdV0DCjjFy8mtMsmcHpxe-B', youtubeId: ['KJ9B_-3VQQ4', 'r3J_XUfu7xc'], title: 'EL BELLO DURMIENTE', subtitle: 'El Bello Durmiente (1952)', buscar: 'YOUTUBE' }, {
 				  				id: '1NCrBMzMbibhaiBX5HtfT37QLmj5fBjXw', youtubeId: '1EfCjewsSHY', title: 'ELLA, LUCIFER Y YO', subtitle: 'Ella, Lucifer y Yo (1953)', buscar: 'YOUTUBE' }, {
 				  				id: '1IoZmXszXMGGLXuYnp8mFDhya6Khzch2T', youtubeId: 'GGPIqJh7rmc', title: 'HAZLO COMO HOMBRE', subtitle: 'Hazlo Como Hombre (2017)', buscar: 'YOUTUBE' }, {
+				  				id: '1TmOtSBNWbRkE1IsJO1n2MpQ5uCJHEGGC', youtubeId: 'oDKBo0ynjHM', title: 'MATILDA', subtitle: 'Matilda (1996)', buscar: 'YOUTUBE' }, {
 				  				id: '1vjg4pMNtHNHE6Dg9NtkG1OoMjTcMM8sO', youtubeId: 'cMPmhVb0280', title: 'QUIEREME PORQUE ME MUERO', subtitle: 'Quiereme porque me muero (1953)', buscar: 'YOUTUBE' }, {
 				  				id: '1xu_k_VN8XG0fjJHXGCCrI36zM8rpB5ro', youtubeId: '_OWD2gaWdOM', title: 'YETI', subtitle: 'Yeti (2025)', buscar: 'YOUTUBE' }, {
 				  				id: '1vjaLP33nIVD0qhUVLUX-bv2fg7GsdItq', youtubeId: 'rf_ixD_yD_4', title: 'THE INCREDIBLE HULK', subtitle: 'El increíble Hulk (2008)', buscar: 'YOUTUBE' }, 
@@ -2129,8 +2143,10 @@
            			id: '1hVx0VMoRHdXrxA1OqzFSfYIBgpdC0xeG', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=11014', title: 'TELEDIARIO NOW', subtitle: '', buscar: 'IPTV' }, {
            			id: '1XJjdylcwm27Oth2qj-crcSkqiA47p95S', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=771', title: 'TOON GOOGGLES', subtitle: '', buscar: 'IPTV' }, {
            			id: '14sPlkjzxhERlGX55s0jF0LEne0Yzavle', youtubeId: 'https://s5.mexside.net:1936/tvmigrante/tvmigrante/chunklist_w1795049700.m3u8', title: 'TV MIGRANTE', subtitle: '', buscar: 'IPTV' }, {
-           			id: '1HNd_VaPTyOVNzPhqZTUjNe6sClCaczzk', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/63d0269d60bc8f000890facc/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b7f0-c01c-11f0-a655-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=fc6253d2-4c79-41d0-b1d4-b8956b80f50a&userId=&serverSideAds=true', title: 'FOX DEPORTES', subtitle: 'PLUTO TV C 4550', buscar: 'IPTV' }, {
-           			id: '1Z4AyL01sFfzAU1HDylPgbTFTSClrmpkg', title: 'LUCHA LIBRE AAA', subtitle: 'PLUTO TV CH 4570', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5c01df1759ee03633e7b272c/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b85e-c01c-11f0-a806-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=6eacd663-2ada-4b93-a9bd-4bb655b322ec&userId=&serverSideAds=true', buscar: 'IPTV' }, {
+           			id: '1HNd_VaPTyOVNzPhqZTUjNe6sClCaczzk', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/63d0269d60bc8f000890facc/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b7f0-c01c-11f0-a655-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=fc6253d2-4c79-41d0-b1d4-b8956b80f50a&userId=&serverSideAds=true', title: 'FOX DEPORTES', subtitle: 'PLUTO TV C4550', buscar: 'IPTV' }, {
+           			id: '1Z4AyL01sFfzAU1HDylPgbTFTSClrmpkg', title: 'LUCHA LIBRE AAA', subtitle: 'PLUTO TV C4570', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5c01df1759ee03633e7b272c/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b85e-c01c-11f0-a806-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=6eacd663-2ada-4b93-a9bd-4bb655b322ec&userId=&serverSideAds=true', buscar: 'IPTV' }, {
+           			id: '12a_f9KlklAYZ8lv74akLKP1BOarIxvlD', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64dab5fe35425100080e2991/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b8b8-c01c-11f0-8f0f-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=98b83eeb-e062-4ed8-a603-00fd0125f544&userId=&serverSideAds=true', title: 'VEVO REGIONAL MEXICANO', subtitle: 'PLUTO TV C4580', buscar: 'IPTV' }, {
+           			id: '12Lk5hjHl6JJzHNZrXOiQxRUoLJ4jkVlm', youtubeId: 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64d161c93c785e0008df575e/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b912-c01c-11f0-8b87-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=ff6ac883-465f-4243-9c03-47c459f5770c&userId=&serverSideAds=true', title: 'VEVO ICONOS LATINOS', subtitle: 'PLUTO TV C4590', buscar: 'IPTV' }, {
            			id: '1vJjtceZwk0azlG9QjMRTeMwIWbM-_Psd', youtubeId: 'https://stream.ads.ottera.tv/playlist.m3u8?network_id=5504', title: 'WPT', subtitle: '', buscar: 'IPTV' },
            	] },
           
@@ -2155,17 +2171,18 @@
            			id: '1SB7FuVM6fQE9ssU5Q3FtEozKH7z5UHsd', title: '** G20 **', subtitle: 'G20 (2025)', youtubeId: 'https://1a-1791.com/video/fww1/db/s8/2/5/U/S/D/5USDy.aaa.mp4', buscar: 'IPTV' }, {
            			id: '1uBtrjQqzNf15gEG7VL7dvOAWg30caett', title: '** GOODFELLAS **', subtitle: 'Buenos muchachos (1990)', youtubeId: 'https://pomf2.lain.la/f/0ep0qypn.mp4', buscar: 'IPTV' }, {
            			id: '1pLFYfAvaGs4astN5u3_CmvSW5hCV_AR3', title: '** HAVOC **', subtitle: 'Estragos (2025)', youtubeId: 'https://pomf2.lain.la/f/ej6kbln.mp4?download=1', buscar: 'IPTV' }, {
-           			id: '1MHvFWCj-lTAuBvX62CLCqaivRQfv8E9f', title: 'HIGH GROUND', subtitle: 'High Ground: En la tierra de los justos (2025)', youtubeId: 'https://pomf2.lain.la/f/2y9x5848.mp4', buscar: 'IPTV' }, {
-           			id: '1yV3vcQKPqTvDbsMaN3vq5qt7bxICd1Cf', title: 'HIGH ROLLERS', subtitle: 'Ladrones con clase 2: El gran golpe (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/bqywn638073dk5io5sd7y/f-sica.mp4?rlkey=gmxkpeo70ncvrg7mv3fbwznqq&st=986anuq6&dl=0', buscar: 'IPTV' }, {
+           			id: '1MHvFWCj-lTAuBvX62CLCqaivRQfv8E9f', title: '** HIGH GROUND **', subtitle: 'High Ground: En La Tierra De Los Justos (2025)', youtubeId: 'https://pomf2.lain.la/f/2y9x5848.mp4', buscar: 'IPTV' }, {
+           			id: '1j8gxncK5n_hvR7O9QzfObAuCQu-aCDxA', title: '** JOHN WICK CHAPTER 4 **', subtitle: 'John Wick Capítulo 4 (2023)', youtubeId: 'https://dl.dropboxusercontent.com/scl/fi/wfley6gbdthmvx325hzqt/J1H3ON-W1ICFK-4.mp4?rlkey=67es8jxdnyuyzdpx94b2lq7la&st=hih3y17c', buscar: 'IPTV' }, {
+           			id: '1flb6z5Tpra_lvzcLWyLv91P8VoytcFsC', title: '** NE ZHA 2 **', subtitle: 'Ne Zha 2 El Renacer Del Alma (2025)', youtubeId: 'https://pomf2.lain.la/f/3454ux8o.mp4?download=1', buscar: 'IPTV' }, {
+           			id: '1rSWEe-SANazTL7-unL3k-0m3k9SM_Oxk', title: '** PREDATOR BAD LANDS **', subtitle: 'Depredador: Tierra De Nadie (2025) [Esp]', youtubeId: 'https://pomf2.lain.la/f/4557groy.mp4', buscar: 'IPTV' }, {
+           			id: '1yV3vcQKPqTvDbsMaN3vq5qt7bxICd1Cf', title: 'HIGH ROLLERS', subtitle: 'Ladrones con clase 2: El gran golpe (2025) [Esp]', youtubeId: 'https://dl.dropbox.com/scl/fi/bqywn638073dk5io5sd7y/f-sica.mp4?rlkey=gmxkpeo70ncvrg7mv3fbwznqq&st=986anuq6&dl=0', buscar: 'IPTV' }, {
            			id: '1WSLFzfR4WgihsicLM2depW8oiaudkFjs', title: 'HOSTILE TAKEOVER', subtitle: 'Hostile Takeover: Toma de control (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/z687by53gov6n6v0v3ycz/lengua.mp4?rlkey=rhpornxf6ofshwty1d8gs2aa0&st=eolylmmv&dl=0', buscar: 'IPTV' }, {
            			id: '1vBEZDlR1VGQ3LX0vdSuoqYKNwhsoz-Kx', title: 'HUNTING SEASON', subtitle: 'Temporada De Caza (2025)', youtubeId: 'https://pomf2.lain.la/f/t8gamu55.mp4', buscar: 'IPTV' }, {
            			id: '1nwb9Bc75eb2gg1s4LsdyXHGcIOK8EELu', title: 'INSTINCT', subtitle: 'Instintos (2025)', youtubeId: 'https://pomf2.lain.la/f/cv4fc083.mp4?download=1', buscar: 'IPTV' }, {
-           			id: '1j8gxncK5n_hvR7O9QzfObAuCQu-aCDxA', title: '** JOHN WICK CHAPTER 4 **', subtitle: 'John Wick Capítulo 4 (2023)', youtubeId: 'https://dl.dropboxusercontent.com/scl/fi/wfley6gbdthmvx325hzqt/J1H3ON-W1ICFK-4.mp4?rlkey=67es8jxdnyuyzdpx94b2lq7la&st=hih3y17c', buscar: 'IPTV' }, {
            			id: '1ur_DtFbN6X_wy5hte4JIBpMCw41pN-oy', title: 'JUJUTSU KAISEN: EXECUTION', subtitle: 'Jujutsu Kaisen: Execution -Shibuya Incident x The Culling Game Begins- (2025)', youtubeId: 'https://pomf2.lain.la/f/yofrzo5.mp4', buscar: 'IPTV' }, {
            			id: '10pLUQgloFnXRhnq1CGv4g-c3OAtOui6C', title: 'LONDON CALLING', subtitle: 'London Calling: Misión Londres (2025) [Esp]', youtubeId: 'https://pomf2.lain.la/f/hth1an64.mp4', buscar: 'IPTV' }, {
            			id: '1FwQ4DYB-ei9boWyv8baAnEhrOEJzePDG', title: 'MUZZLE', subtitle: 'Muzzle (2023)', youtubeId: 'https://pomf2.lain.la/f/hlbbj67.mp4', buscar: 'IPTV' }, {
            			id: '1uGT-WVwlYGbHrRwD7wdy66OINz0j1nCG', title: 'MUZZLE 2 CITY OF WOLVES', subtitle: 'Muzzle 2: Ciudad De Lobos (2025)', youtubeId: 'https://pomf2.lain.la/f/vob9d876.mp4', buscar: 'IPTV' }, {
-           			id: '1flb6z5Tpra_lvzcLWyLv91P8VoytcFsC', title: 'NE ZHA 2', subtitle: 'Ne Zha 2 El Renacer Del Alma (2025)', youtubeId: 'https://pomf2.lain.la/f/3454ux8o.mp4?download=1', buscar: 'IPTV' }, {
            			id: '17MNrYD_k-MPW_RNlp7sEqmz93QpEFCJV', title: 'PLAY DIRTY', subtitle: 'Juego Sucio (2025)', youtubeId: 'https://pomf2.lain.la/f/5pukrgyk.mp4?download=1', buscar: 'IPTV' }, {
            			id: '1fdloWGrWz8SPSVXWThk9F0_9mcnzQvOw', title: 'JUJUTSU KAISEN PREMATURE DEATH', subtitle: 'Jujutsu Kaisen Premature Death (2025)', youtubeId: 'https://pomf2.lain.la/f/cgop09y7.mp4', buscar: 'IPTV' }, {
            			id: '1z2yJDdkdpT3Bjm2SwEcTavzxaC0qN5NL', title: 'RISQUE', subtitle: 'Risque (2025)', youtubeId: 'https://pomf2.lain.la/f/epnr0qn.mp4', buscar: 'IPTV' }, {
@@ -2185,10 +2202,11 @@
            			id: '1hQRS1naEPRWLvwrrcEHQOpWPM41bpVSD', title: 'TRAP HOUSE', subtitle: 'Refugio Mortal (2025)', youtubeId: 'https://pomf2.lain.la/f/17jap2e4.mp4', buscar: 'IPTV' }, {
            			id: '1QH3YhTdiQxVhiQlrlkPk96z9GadCVu-t', title: 'ONE BATTLE AFTER ANOTHER', subtitle: 'Una Batalla Tras Otra (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/srmvwqynt5tszzszqlypk/f-sica.mp4?rlkey=zsos8mndm2ivsn6ggh905jwpq&st=j3t98swf&dl=0', buscar: 'IPTV' }, {
            			id: '1rhk-IljeUGe2RVg8GyHKSndHKLmgx-0h', title: 'GHOST CAT ANZU', subtitle: 'Anzu El Gato Fantasma (2024) [Esp]', youtubeId: 'https://archive.org/download/anzu-gato-fantasma-2024-2castellano/anzu-gato-fantasma-2024-2%5Bcastellano%5D.mp4', buscar: 'IPTV' }, {
-           			id: '1Q36L0VLOfNsbA-9kK1HbI5y2LvEIf6mc', title: 'TITULOROBOT CHICKEN SELF-DISCOVERY SPECIAL', subtitle: 'Robot Chicken Self-Discovery Special (2024)', youtubeId: 'https://dl.dropbox.com/scl/fi/150ljouy96s0huqx6zad1/sociales-industrial.mp4?rlkey=w71of0yzp96nhkher9fvrdcu3&st=653s8nn5&dl=0', buscar: 'IPTV' }, {
+           			id: '1Q36L0VLOfNsbA-9kK1HbI5y2LvEIf6mc', title: 'ROBOT CHICKEN SELF-DISCOVERY SPECIAL', subtitle: 'Robot Chicken Self-Discovery Special (2024)', youtubeId: 'https://dl.dropbox.com/scl/fi/150ljouy96s0huqx6zad1/sociales-industrial.mp4?rlkey=w71of0yzp96nhkher9fvrdcu3&st=653s8nn5&dl=0', buscar: 'IPTV' }, {
            			id: '1EwogLnvBSsBAwnANkEWeKPbA8oo71d_0', title: 'THE WITCHER', subtitle: 'El Brujo: Sirenas de las Profundidades (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/u8cx3m93edo38b5n38d22/sociales-2.mp4?rlkey=zum4blypsajzh7u4ijy7clrd7&st=lkxnexjl&dl=0', buscar: 'IPTV' }, {
            			id: '1armcPFLyeQrsQiErhlpSZuSHTLMdcq3N', title: 'MONONOKE II THE ASHES OF RAGE', subtitle: 'Mononoke 2 Las Cenizas De La Ira (2025)', youtubeId: 'https://archive.org/download/naturaleza_202508/naturaleza.mp4', buscar: 'IPTV' }, {
            			id: '1pMT2RvqtM_9c6VZTHdcQ4xlISWnJXOj6', title: 'STAND YOUR GROUND', subtitle: 'Venganza Justificada (2025) [Esp]', youtubeId: 'https://pomf2.lain.la/f/wqb7cxbw.mp4', buscar: 'IPTV' }, {
+           			id: '1bN2iDBAZxw-lxDiX6lZeTnBJeIIwxRtA', title: 'SNEAKS', subtitle: 'Un Par Con Suerte (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/k23k2gvok52vdyx6ls0to/fisica.mp4?rlkey=luwo3ovh3sqkjzfjxrn1j8zre&st=529stwr5&dl=0', buscar: 'IPTV' }, {
            			
            			
 
@@ -2197,32 +2215,83 @@
            			
            			/**
            
-           			
-           			
-           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Sneaks (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/k23k2gvok52vdyx6ls0to/fisica.mp4?rlkey=luwo3ovh3sqkjzfjxrn1j8zre&st=529stwr5&dl=0', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Guardianes de la noche: Kimetsu no Yaiba - La fortaleza infinita (2025)', youtubeId: 'https://archive.org/download/ciencia-sociales/ciencia%20sociales.mkv', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Guardianes de la noche: Kimetsu no Yaiba - La fortaleza infinita (2025)', youtubeId: 'https://archive.org/download/ciencia-sociales/ciencia%20sociales.mkv', buscar: 'IPTV' }, {
+           
            			id: 'IMAGEN', title: 'TITULO', subtitle: 'Asesino de demonios Castillo infinito de Kimetsu no Yaiba (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/y8d1okwnr7bzsvxtlldzm/sociales.mp4?rlkey=y2b4nk9e82qx30kmv3555nfsi&st=ei8ad0tw&dl=0', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'TITULO', subtitle: 'Demon Slayer: Kimetsu no Yaiba Infinity Castle (2025)', youtubeId: 'https://dl.dropbox.com/scl/fi/7ybcu6ua7xatk70dchkdx/sociales.mp4?rlkey=43icav3nfy2l8s5837gvhwy4h&st=k9ccmass&dl=0', buscar: 'IPTV' }, {
            			id: 'IMAGEN', title: 'TITULO', subtitle: 'Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train (2020)', youtubeId: 'https://dl.dropbox.com/scl/fi/yw3hcvvpoo6qw0i3nl0js/f-sica.mp4?rlkey=wfq4lk3higi1nv4tav61bpi4j&st=tm7mxr8k&dl=0', buscar: 'IPTV' }, {
-           			id: 'IMAGEN', title: 'TITULO', subtitle: 'Sibling's Bond (2019)', youtubeId: 'https://pomf2.lain.la/f/abm33kzv.mp4', buscar: 'IPTV' }, {
            			
            			
            			
+           			id: 'IMAGEN', youtubeId: 'CANALIPTV', title: 'TITULO', subtitle: 'SUBTITULO', buscar: 'IPTV' }, {
            			
-           			
-           			#EXTM3U
+           			id: 'IMAGEN', title: 'TITULO', subtitle: 'SUBTITULO', youtubeId: 'VIDEO', buscar: 'IPTV' }, {
 
 
-#
 
-#
+	
 
-#EXTINF:0 channel-id="vevo-regional-mexicano-ptv1" channel-number="4580" tvg-logo="https://images.pluto.tv/channels/64dab5fe35425100080e2991/colorLogoPNG.png" tvc-guide-art="https://images.pluto.tv/channels/64dab5fe35425100080e2991/featuredImage.jpg?fill=blur&fit=fill&fm=jpg&h=562&q=75&w=1000" tvc-guide-title="Vevo Regional Mexicano" tvc-guide-description="Del mariachi a banda, vídeos y actuaciones que definen el género." group-title="En Español", Vevo Regional Mexicano
-https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64dab5fe35425100080e2991/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b8b8-c01c-11f0-8f0f-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=98b83eeb-e062-4ed8-a603-00fd0125f544&userId=&serverSideAds=true
 
-#EXTINF:0 channel-id="vevo-iconos-latinos" channel-number="4590" tvg-logo="https://images.pluto.tv/channels/64d161c93c785e0008df575e/colorLogoPNG.png" tvc-guide-art="https://images.pluto.tv/channels/64d161c93c785e0008df575e/featuredImage.jpg?fill=blur&fit=fill&fm=jpg&h=562&q=75&w=1000" tvc-guide-title="Vevo Íconos Latinos" tvc-guide-description="Vídeos y actuaciones de los músicos latinos más legendarios." group-title="En Español", Vevo Íconos Latinos
-https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64d161c93c785e0008df575e/master.m3u8?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=cee6b912-c01c-11f0-8b87-befeec93b554&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=ff6ac883-465f-4243-9c03-47c459f5770c&userId=&serverSideAds=true
+
+
+
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/yKy6RsLEC7lloTcHPETgbaAQApq.jpg",Lefter La historia de un maestro (2025)
+https://dl.dropbox.com/scl/fi/8zlcozklkfvxuo3ep26nd/f-sica.mp4?rlkey=uef1mfj9ct657pxq8pdjdhbpq&st=4f1tf661&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/bAAdoOyCm3DqrOyj0h2icPpeHHw.jpg",Being Eddie (2025)
+https://dl.dropbox.com/scl/fi/vgmh8sx8kg0mhcyig8cdm/natural.mp4?rlkey=610l8virq19x1n176y2g7bddw&st=oxxoaq28&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/iiXW7L30x4U89VEyTRmxkIM0lrN.jpg",Ya se verá (2025)
+https://pomf2.lain.la/f/dy33kb4f.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/4Yal9OAEAr1ifWMEPXf76iIYvZR.jpg",La Máquina: The Smashing Machine (2025)
+https://pomf2.lain.la/f/7tnpnu4v.mp4?download=1
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/w3jnacmMmfOem8RAgz9h1h1T4Wa.jpg",Apocalypse in the Tropics (2025)
+https://archive.org/download/apocalipsis-en-los-tropicos-2025/Apocalipsis%20en%20los%20tr%C3%B3picos%20%282025%29.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/a6AMhzCY0vlnO9KSbawvGg7c2y.jpg",The Partisan (2025)
+https://archive.org/download/06_20251017/rpm/05.mp4
+
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/4n1U0Mwn7djux6VKNYDRWPgS2x6.jpg",Avatar: Fuego y Ceniza (2025)
+https://pomf2.lain.la/f/hi4ypz0u.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/bqOqQ2Tawum3eHKNrc94P4EeaZB.jpg", Avatar 2 (2022) - El camino del agua
+https://dl.dropbox.com/scl/fi/e8reylcpm3rqlmds1ofer/fisica.mp4?rlkey=hu1v29qgkdlnigmh04pwi5ywe&st=zvg1i4d5&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/t5T3LPbLLgP2OP6kloM9p2PXpJL.jpg", Avatar (2009)
+https://dl.dropbox.com/scl/fi/i8ecj1ye7v46fhkj8d3zr/lengua.mp4?rlkey=9c2muijo5qvi5f0oyo90bb5en&st=pv6yaose&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/qIzSyT2AmDxkcQ0zOAeTbtZR9EQ.jpg",El gran diluvio (2025)
+https://pomf2.lain.la/f/bjt0q6ts.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/chpWmskl3aKm1aTZqUHRCtviwPy.jpg",TRON: Ares (2025)
+https://dl.dropbox.com/scl/fi/jpsgjil3ec6hsggc2jnm2/fisica.mp4?rlkey=abkowi1p33s3yhnennjltol2t&st=nqxk8tob&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/7GqEmx1pUQE8pLJR7OR0urXfBuu.jpg",ClearMind (2024)
+https://pomf2.lain.la/f/oohqf4e2.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/oxgsAQDAAxA92mFGYCZllgWkH9J.jpg",Bugonia (2025)
+https://pomf2.lain.la/f/dkqvhpfx.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/sMybEeAn3aFXsIUUcWPSFXlS6qS.jpg",Predator: Badlands (2025)
+https://dl.dropbox.com/scl/fi/svp9zhsqpj0osax8iwjx8/pdb34.mkv?rlkey=kia6vp78xgh2etwrid796lxmp&st=d8aamyeo&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/Aspr0HcItNVbgLC8cV0ZAO0EBcc.jpg",Ahora me ves: ahora no (2025)
+https://pomf2.lain.la/f/izs3mrlw.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/bJToUFSmdyDR1qx2hmjXFJld5vK.jpg",El abismo secreto (2025)
+https://pomf2.lain.la/f/rsmz3cpu.mp4?download=1
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/dFWj2rOGsqSIX1PHFghbCBgpMnk.jpg",Henry Danger: La Película (2025)
+https://pomf2.lain.la/f/54xqf4us.mp4?download=1
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/nCuSMDWhWGJAPdp9rSDIogG5X82.jpg",The Electric State (2025)
+https://pomf2.lain.la/f/abbr1sgs.mp4?download=1
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/nRa8B3tQCUK6pVwjasIyQehbvpF.jpg",Ash (2025)
+https://pomf2.lain.la/f/c2o9w5x1.mp4?download=1
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/xbdRxyr1u5dbhvMm14w7J1jJWQS.jpg",O'Dessa (2025)
+ttps://dl.dropbox.com/scl/fi/qm2wj7xt1b4f88mb2okut/ODessa-2025.avi?rlkey=qdcuws7rkgem8
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/sMybEeAn3aFXsIUUcWPSFXlS6qS.jpg",Predator: Badlands (2025)
+https://pomf2.lain.la/f/elvp4gwy.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/7ubj6nPmJDwGPFW41USMYIs8AKc.jpg",asesinos de Aliens en Espacio Sideral (2025)
+https://dl.dropbox.com/scl/fi/dh4dqg4r8ntds8zvtpuws/sociales.mp4?rlkey=9leb2ctexgdk2khvb0qykry38&st=2lobswps&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/9Y5clHO1bk5Fmkpff7ZYmkzKJaN.jpg",Los sudarios (2025)
+https://dl.dropbox.com/scl/fi/n5shvx1eo4ddd7k0u3qpv/matematica.mp4?rlkey=98rjuaqqrm38n0qhluutdqxbh&st=an1wqybb&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/uEqiAF3jtlyXL4fd1NEgJUlGolZ.jpg",The Toxic Avenger Unrated (2025) 
+https://archive.org/download/ver-el-cuento-del-lobo-2025-online-hd-cuevana/Ver%20The%20Toxic%20Avenger%20Unrated%202025%20online%20HD%20-%20Cuevana.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/hcE07U5vnPZfeF3XX65ljZqHWQv.jpg",Dibujos Imaginarios (2025)
+https://dl.dropbox.com/scl/fi/2a9zp7z6ymxj8ilych5as/sociales.mp4?rlkey=6u6vu9b5fuyo9wol1yoywoae7&st=kikcdzva&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/3YtZHtXPNG5AleisgEatEfZOT2w.jpg",Osiris (2025)
+https://archive.org/download/osiris-2025-latino/osiris-2025-%5Blatino%5D.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/yvirUYrva23IudARHn3mMGVxWqM.jpg",Guerra de los Mundos (2025)
+https://dl.dropbox.com/scl/fi/e9xviyquqjwqp7rd2ivvu/c.sociales.mp4?rlkey=p3o5eycfa3pzgwzozrnc38lw7&st=fpm61u6w&dl=0
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/original/rfMhtJfbQfe6ey8bAg4zx8f1rW1.jpg",Jurassic World Rebirth (2025)
+https://archive.org/download/jurassic-world-el-renacer-online-latino/Jurassic%20World-%20El%20renacer%20Online%20Latino.mp4
+
 
 
 
@@ -2240,13 +2309,6 @@ https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5
            	
            	]}    
                         			
-                        			
-       
-                        			
-                        			
-                        			
-                        			
-                        			               
             ] }
         };
 
@@ -2355,17 +2417,14 @@ https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5
             const saved = localStorage.getItem('lastViewed');
             if (saved) {
                 const item = JSON.parse(saved);
-                // No reproducir automáticamente si el guardado era IPTV
                 if (!(item.buscar && item.buscar.includes('IPTV'))) {
                     selectMedia(item);
                 }
             } else if (allImages.length > 0) {
-                // No reproducir automáticamente si el primero es IPTV
                 if (!(allImages[0].buscar && allImages[0].buscar.includes('IPTV'))) {
                     selectMedia(allImages[0]);
                 }
             }
-            setTimeout(showNews, 1500);
         });
 
         actionButton.onclick = () => window.open(currentUrl, '_blank');
