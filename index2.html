@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html lang= "es">
+<html lang="es">
 <head>
-	<meta charset= "UTF-8">
-	<meta name= "viewport" content= "width=device-width, initial-scale=1.0">
-	<meta http-equiv= "Content-Security-Policy" content= "upgrade-insecure-requests">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	
 	<title>
 		TERABOX LINKS | PREMIUM
 	</title>
 	
-	<script src= "https://code.jquery.com/jquery-3.7.1.min.js">
-	</script>
-	<script src= "https://cdn.tailwindcss.com">
-	</script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
 	
-	<link href= "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel= "stylesheet">
-	<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	
-	<script src= "https://cdn.jsdelivr.net/npm/hls.js@latest">
-	</script>
+	<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 	
 	<style>
 		:root {
@@ -65,18 +62,9 @@
 			border-radius: 0 0 12px 12px;
 		}
 		@keyframes pulse-yellow {
-			0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7);
-			transform: scale(1);
-		}
-		50% {
-			box-shadow: 0 0 0 12px rgba(234, 179, 8, 0);
-			transform: scale(1.05);
-		}
-		100% {
-			box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
-			transform: scale(1);
-		}
-		
+			0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); transform: scale(1); }
+			50% { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); transform: scale(1.05); }
+			100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1); }
 		}
 		.btn-playing {
 			animation: pulse-yellow 1.5s infinite !important;
@@ -92,12 +80,8 @@
 			animation: loading 1.5s infinite;
 		}
 		@keyframes loading {
-			0% {
-				background-position: 200% 0;
-			}
-			100% {
-				background-position: -200% 0;
-			}
+			0% { background-position: 200% 0; }
+			100% { background-position: -200% 0; }
 		}
 		.carousel-wrapper {
 			display: flex;
@@ -107,19 +91,14 @@
 			padding: 8px 0;
 			scrollbar-width: none;
 		}
-		.carousel-wrapper::-webkit-scrollbar {
-			display: none;
-		}
+		.carousel-wrapper::-webkit-scrollbar { display: none; }
 		.carousel-item {
 			flex: 0 0 45%;
 			width: 45%;
 			scroll-snap-align: center;
 		}
 		@media (min-width: 640px) {
-			.carousel-item {
-				flex: 0 0 35%;
-				width: 35%;
-			}
+			.carousel-item { flex: 0 0 35%; width: 35%; }
 		}
 		.modal-overlay {
 			display: none;
@@ -129,19 +108,11 @@
 			background: rgba(0, 0, 0, 0.92);
 			backdrop-filter: blur(12px);
 		}
-		.modal-overlay.active {
-			display: flex;
-		}
+		.modal-overlay.active { display: flex; }
 		@keyframes wa-pulse {
-			0% {
-				box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-			}
-			70% {
-				box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
-			}
-			100% {
-				box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-			}
+			0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+			70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+			100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 		}
 		.wa-launcher {
 			position: fixed; 
@@ -160,9 +131,7 @@
 			animation: wa-pulse 2s infinite;
 			transition: transform 0.3s ease;
 		}
-		.wa-launcher:active {
-			transform: scale(0.9);
-		}
+		.wa-launcher:active { transform: scale(0.9); }
 		.wa-badge {
 			position: absolute;
 			top: -2px;
@@ -202,19 +171,9 @@
 			justify-content: space-between;
 			align-items: center;
 		}
-		.wa-header-info b {
-			display: block;
-			font-size: 15px;
-		}
-		.wa-header-info span {
-			font-size: 12px;
-			opacity: 0.9;
-		}
-		.wa-close {
-			cursor: pointer;
-			font-size: 24px;
-			line-height: 1;
-		}
+		.wa-header-info b { display: block; font-size: 15px; }
+		.wa-header-info span { font-size: 12px; opacity: 0.9; }
+		.wa-close { cursor: pointer; font-size: 24px; line-height: 1; }
 		.wa-body {
 			padding: 15px;
 			background: var(--wa-bg-chat);
@@ -232,19 +191,13 @@
 			position: relative;
 			box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 		}
-		.typing {
-			font-style: italic;
-			color: #777;
-			font-size: 13px;
-			display: none;
-		}
+		.typing { font-style: italic; color: #777; font-size: 13px; display: none; }
 		.wa-footer {
 			padding: 10px;
 			background: #f0f0f0;
 			display: flex;
 			gap: 8px;
-			align-items:
-			center;
+			align-items: center;
 		}
 		.wa-input {
 			flex: 1;
@@ -268,15 +221,9 @@
 			justify-content: center;
 			transition: background 0.2s;
 		}
-		.wa-send:hover {
-			background: var(--wa-dark);
-		}
+		.wa-send:hover { background: var(--wa-dark); }
 		@media (max-width: 480px) {
-			.wa-card {
-				width: 90%;
-				right: 5%;
-				top: 10px;
-			}
+			.wa-card { width: 90%; right: 5%; top: 10px; }
 		}
 		#modal-search-input::placeholder {
 			color: rgba(255, 255, 255, 0.4);
@@ -295,188 +242,148 @@
 	</style>
 </head>
 
-<body class= "select-none overflow-x-hidden">
+<body class="select-none overflow-x-hidden">
 
-	<div class= "wa-card" id= "waCard">
-		<div class= "wa-header">
-			<div class= "wa-header-info">
+	<div class="wa-card" id="waCard">
+		<div class="wa-header">
+			<div class="wa-header-info">
 			 <b>Soporte en línea</b>
-			 <span id= "waStatus">
-			 	Cargando estado...
-			 </span>
+			 <span id="waStatus">Cargando estado...</span>
 			</div>
-			<div class= "wa-close" onclick= "toggleChat()">
-				×
-			</div>
+			<div class="wa-close" onclick="toggleChat()">×</div>
 		</div>
-		<div class= "wa-body">
-			<div id= "waTyping" class= "wa-bubble typing">
-				Escribiendo...
-			</div>
-			<div id= "waMsg" class= "wa-bubble" style= "display:none;">
-				<b> <center> <span id= "pageTarget">
-					esta página
-				</span></center></b><br>
+		<div class="wa-body">
+			<div id="waTyping" class="wa-bubble typing">Escribiendo...</div>
+			<div id="waMsg" class="wa-bubble" style="display:none;">
+				<b> <center> <span id="pageTarget">esta página</span></center></b><br>
 				HOLA !! 👋<br>SI NO ENCONTRASTE LO QUE BUSCAS ... DIME CUAL QUIERES VER Y PRONTO LA PODRAS DESCARGAR AQUI
 			</div>
 		</div>
-		<div class= "wa-footer">
-			<input type= "text" id= "waInput" class= "wa-input" placeholder= "Escribe tu mensaje ...">
-			<button class= "wa-send" onclick= "sendToWhatsapp()">
-				<svg width= "20" height= "20" viewBox= "0 0 24 24" fill= "white">
+		<div class="wa-footer">
+			<input type="text" id="waInput" class="wa-input" placeholder="Escribe tu mensaje ...">
+			<button class="wa-send" onclick="sendToWhatsapp()">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
 					<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
 				</svg>
 			</button>
 		</div>
 	</div>
 	
-	<div class= "wa-launcher" id= "waLauncher" onclick= "toggleChat()">
-		<div class= "wa-badge" id= "waBadge">
-			1
-		</div>
-		<img src= "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width= "32" alt= "WhatsApp">
+	<div class="wa-launcher" id="waLauncher" onclick="toggleChat()">
+		<div class="wa-badge" id="waBadge">1</div>
+		<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="32" alt="WhatsApp">
 	</div>
 	
-	<div id= "news-modal" class= "modal-overlay items-center justify-center p-4">
-		<div class= "glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
-			<div class= "p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
-				<h3 class= "text-md font-extrabold text-yellow-400 flex items-center gap-2">
-					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
-						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"/>
+	<div id="news-modal" class="modal-overlay items-center justify-center p-4">
+		<div class="glass w-full max-w-md rounded-3xl overflow-hidden shadow-2xl">
+			<div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+				<h3 class="text-md font-extrabold text-yellow-400 flex items-center gap-2">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"/>
 					</svg>
 					NOVEDADES
 				</h3>
-				
-				<button onclick= "closeNewsModal()" class= "p-2 hover:bg-white/10 rounded-full transition">
-					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
-						<path d= "M6 18L18 6M6 6l12 12" stroke-width= "2.5"/>
+				<button onclick="closeNewsModal()" class="p-2 hover:bg-white/10 rounded-full transition">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/>
 					</svg>
 				</button>
 			</div>
-			<div id= "news-list" class= "p-3 space-y-2 max-h-[40vh] overflow-y-auto">
-			</div>
+			<div id="news-list" class="p-3 space-y-2 max-h-[40vh] overflow-y-auto"></div>
 			<div class="p-5 pt-2 bg-black/20 text-center">
-				<p class= "text-[12px] text-gray-300 font-medium">
-					Si te gusta el contenido
-				</p>
-				<p class="text-[12px] text-gray-300 font-medium">
-					Considera apoyarnos con una donación
-				</p>
-				<p class= "text-[12px] text-gray-300 font-medium" style= "color:#FF5733;">
-					!!TU AYUDA MANTIENE VIVO ESTE PROYECTO!!
-				</p>
-				<button onclick= "window.open('https://paypal.me/marzam', '_blank')" class= "w-full h-10 glass hover:bg-white/10 rounded-xl transition-all flex items-center justify-center p-2 border-yellow-500/20 shadow-lg mt-2">
-					<img src= "https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt= "Paypal" class= "h-full object-contain" />
+				<p class="text-[12px] text-gray-300 font-medium">Si te gusta el contenido</p>
+				<p class="text-[12px] text-gray-300 font-medium">Considera apoyarnos con una donación</p>
+				<p class="text-[12px] text-gray-300 font-medium" style="color:#FF5733;">!!TU AYUDA MANTIENE VIVO ESTE PROYECTO!!</p>
+				<button onclick="window.open('https://paypal.me/marzam', '_blank')" class="w-full h-10 glass hover:bg-white/10 rounded-xl transition-all flex items-center justify-center p-2 border-yellow-500/20 shadow-lg mt-2">
+					<img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="Paypal" class="h-full object-contain" />
 				</button>
 			</div>
 		</div>
 	</div>
 	
-	<div id= "search-modal" class= "modal-overlay items-center justify-center p-4">
+	<div id="search-modal" class="modal-overlay items-center justify-center p-4">
 		<div class="glass w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
 			<div class="p-4 border-b border-white/10 flex items-center gap-3 bg-white/5">
 				<div class="flex items-center gap-2 flex-grow min-w-0">
-					<span class="w-1.5 h-6 bg-blue-600 rounded-full flex-shrink-0">
-					</span>
-					<input type= "text" id= "modal-search-input" class= "w-full bg-transparent border-none text-sm font-black text-white uppercase tracking-widest outline-none placeholder:text-gray-600" placeholder= "BUSCAR MÁS..." />
+					<span class="w-1.5 h-6 bg-blue-600 rounded-full flex-shrink-0"></span>
+					<input type="text" id="modal-search-input" class="w-full bg-transparent border-none text-sm font-black text-white uppercase tracking-widest outline-none placeholder:text-gray-600" placeholder="BUSCAR MÁS..." />
 				</div>
-				<button onclick= "closeSearchModal()" class= "p-2 hover:bg-white/10 rounded-full transition flex-shrink-0">
-					<svg class="w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
-						<path d= "M6 18L18 6M6 6l12 12" stroke-width= "2.5"/>
+				<button onclick="closeSearchModal()" class="p-2 hover:bg-white/10 rounded-full transition flex-shrink-0">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"/>
 					</svg>
 				</button>
 			</div>
-			<div id= "search-results-grid" class= "p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto">
-			</div>
-			<div id= "search-empty" class= "p-10 text-center hidden">
-				<p class= "text-gray-500 text-xs italic">
-					No hay coincidencias...
-				</p>
+			<div id="search-results-grid" class="p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto"></div>
+			<div id="search-empty" class="p-10 text-center hidden">
+				<p class="text-gray-500 text-xs italic">No hay coincidencias...</p>
 			</div>
 		</div>
 	</div>
 	
-	<div id= "share-modal" class= "modal-overlay items-center justify-center p-4">
-		<div class= "glass w-full max-w-sm rounded-2xl overflow-hidden p-5 flex flex-col gap-4">
-			<div class= "flex justify-between items-center">
-				<h4 class= "text-xs font-black text-blue-400">
-					COPIAR LINK IPTV
-				</h4>
-				<button onclick= "closeShareModal()" class= "text-white opacity-50 hover:opacity-100">
-					×
+	<div id="share-modal" class="modal-overlay items-center justify-center p-4">
+		<div class="glass w-full max-w-sm rounded-2xl overflow-hidden p-5 flex flex-col gap-4">
+			<div class="flex justify-between items-center">
+				<h4 class="text-xs font-black text-blue-400">COPIAR LINK IPTV</h4>
+				<button onclick="closeShareModal()" class="text-white opacity-50 hover:opacity-100">×</button>
+			</div>
+			<div class="relative">
+				<input type="text" id="share-url-input" readonly class="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-3 text-[10px] text-gray-300 pr-10 outline-none" />
+				<button onclick="copyShareUrl()" class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-300">
+					<i class="fas fa-copy"></i>
 				</button>
 			</div>
-			<div class= "relative">
-				<input type= "text" id= "share-url-input" readonly class= "w-full bg-black/40 border border-white/10 rounded-lg py-2 px-3 text-[10px] text-gray-300 pr-10 outline-none" />
-				<button onclick= "copyShareUrl()" class= "absolute right-2 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-300">
-					<i class= "fas fa-copy">
-					</i>
-				</button>
-			</div>
-			<p id= "copy-success" class= "text-[9px] text-green-500 text-center hidden font-bold uppercase">
-				¡Link copiado al portapapeles!
-			</p>
+			<p id="copy-success" class="text-[9px] text-green-500 text-center hidden font-bold uppercase">¡Link copiado al portapapeles!</p>
 		</div>
 	</div>
 	
-	<div class= "sticky-header">
-		<div class= "max-w-screen-xl mx-auto">
-			<div class= "video-container overflow-hidden">
-			
-				<div id= "youtube-player" class= "absolute inset-0 w-full h-full">
-				</div>
-				
-				<video id= "native-video-player" class= "absolute inset-0 w-full h-full" controls playsinline crossorigin= "anonymous">
-				</video>
+	<div class="sticky-header">
+		<div class="max-w-screen-xl mx-auto">
+			<div class="video-container overflow-hidden">
+				<div id="youtube-player" class="absolute inset-0 w-full h-full"></div>
+				<video id="native-video-player" class="absolute inset-0 w-full h-full" controls playsinline crossorigin="anonymous"></video>
 			</div>
-			<div class= "controls-bar glass flex items-center gap-2 px-2 mx-1">
-				<button onclick= "toggleFullScreen()" class= "p-1.5 text-blue-400 hover:text-white transition-colors" title= "Pantalla Completa">
-					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
-						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+			<div class="controls-bar glass flex items-center gap-2 px-2 mx-1">
+				<button onclick="toggleFullScreen()" class="p-1.5 text-blue-400 hover:text-white transition-colors" title="Pantalla Completa">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
 					</svg>
 				</button>
-				
 				<button onclick="showNews()" class="p-1.5 text-yellow-500 hover:text-yellow-400 transition-colors" title="Novedades">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
 					</svg>
 				</button>
-
-				<button id= "share-iptv-btn" onclick= "openShareModal()" class= "p-1.5 text-green-400 hover:text-white transition-colors hidden" title= "Compartir Link">
-					<svg class= "w-5 h-5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
-						<path stroke-linecap= "round" stroke-linejoin= "round" stroke-width= "2" d= "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+				<button id="share-iptv-btn" onclick="openShareModal()" class="p-1.5 text-green-400 hover:text-white transition-colors hidden" title="Compartir Link">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
 					</svg>
 				</button>
-				<div class= "relative flex-grow">
-					<input type= "text" id= "image-search-input" placeholder= "Buscar..." class= "w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
-						<button id= "clear-search" class= "absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5" onclick= "closeSearchModal()">
-							<svg class="w-3.5 h-3.5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24">
-								<path d= "M6 18L18 6M6 6l12 12" stroke-width= "3"/>
-							</svg>
-						</button>
-					</div>
-					<button id= "action-button" class= "bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition active:scale-95 text-[10px]">
-						<span id="btn-text">
-							TERABOX
-						</span>
-						<svg class= "w-3.5 h-3.5" fill= "none" stroke= "currentColor" viewBox= "0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width= "2.5"/>
+				<div class="relative flex-grow">
+					<input type="text" id="image-search-input" placeholder="Buscar..." class="w-full bg-black/40 border border-white/10 rounded-lg py-1 pl-3 pr-8 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500" />
+					<button id="clear-search" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-red-500 p-0.5" onclick="closeSearchModal()">
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path d="M6 18L18 6M6 6l12 12" stroke-width="3"/>
 						</svg>
 					</button>
 				</div>
+				<button id="action-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition active:scale-95 text-[10px]">
+					<span id="btn-text">TERABOX</span>
+					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2.5"/></svg>
+				</button>
 			</div>
 		</div>
-		
-		<div class= "main-content max-w-screen-xl mx-auto">
-			<div id= "original-carousels-section" class= "space-y-6">
-			</div>
-		</div>
-		
-		<button onclick= "window.open('https://paypal.me/marzam', '_blank')" class= "fixed bottom-6 right-6 z-50 glass p-1 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl">
-			<img src= "https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt= "PayPal" class= "h-8 w-auto" />
-		</button>
-		
-		
-		<script>
+	</div>
+	
+	<div class="main-content max-w-screen-xl mx-auto">
+		<div id="original-carousels-section" class="space-y-6"></div>
+	</div>
+	
+	<button onclick="window.open('https://paypal.me/marzam', '_blank')" class="fixed bottom-6 right-6 z-50 glass p-1 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl">
+		<img src="https://drive.google.com/thumbnail?id=1UFiNxdjFMg0-EQM0yCZR-L0x6cShoyWZ" alt="PayPal" class="h-8 w-auto" />
+	</button>
+	
+	<script>
     // --- PANTALLA COMPLETA ---
     $(document).ready(function() {
         $(document).on('click', function() {
@@ -499,7 +406,6 @@
     let hls = null;
     let currentItemUrl = "";
 
-    // YouTube Iframe API
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -511,16 +417,11 @@
             width: '100%',
             videoId: firstVideoId,
             playerVars: { 'autoplay': 0, 'rel': 0, 'enablejsapi': 1, 'origin': window.location.origin },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
+            events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
         });
     }
 
-    function onPlayerReady(event) {
-        isPlayerReady = true;
-    }
+    function onPlayerReady(event) { isPlayerReady = true; }
 
     function onPlayerStateChange(event) {
         const btn = document.getElementById('action-button');
@@ -536,74 +437,46 @@
 
     function toggleFullScreen() {
         const docEl = document.documentElement;
-        if (!document.fullscreenElement) {
-            if (docEl.requestFullscreen) docEl.requestFullscreen();
-        } else {
-            if (document.exitFullscreen) document.exitFullscreen();
-        }
+        if (!document.fullscreenElement) { if (docEl.requestFullscreen) docEl.requestFullscreen(); } 
+        else { if (document.exitFullscreen) document.exitFullscreen(); }
     }
 
-    // Detector de tipos de link
     function isDirectLink(url) {
         if (!url) return false;
         const low = url.toLowerCase();
-        return low.includes('.m3u8') || low.includes('.mp4') || low.includes('.m3u') || (low.startsWith('http') && !low.includes('youtube.com') && !low.includes('youtu.be'));
+        return low.includes('.m3u8') || low.includes('.mp4') || low.includes('.m3u') || (low.startsWith('http') && !low.includes('youtube.com'));
     }
 
     function selectMedia(item) {
         const selectedId = getRandomValue(item.youtubeId);
         const actionBtn = document.getElementById('action-button');
-        const btnText = document.getElementById('btn-text');
         
         currentItemUrl = selectedId;
-        
-        // --- ABRIR IPTV EN VENTANA NUEVA ---
-        
         const isIPTV = item.buscar && item.buscar.includes('IPTV');
+        
         if (isIPTV) {
             window.open(selectedId, '_blank');
-            closeNewsModal();
-            closeSearchModal();
-            return; // Salir para no reproducir internamente
+            closeNewsModal(); closeSearchModal();
+            return;
         }
         
+        if (selectedId.includes('.m3u8')) { shareBtn.classList.remove('hidden'); } 
+        else { shareBtn.classList.add('hidden'); }
 
-        if (selectedId.includes('.m3u8')) {
-            shareBtn.classList.remove('hidden');
-        } else {
-            shareBtn.classList.add('hidden');
-        }
-
-        // Ocultar botón descarga si es video directo o YouTube
-        
         const hideTerabox = (item.buscar && item.buscar.includes('YOUTUBE')) || isDirectLink(selectedId);
         actionBtn.style.display = hideTerabox ? 'none' : 'flex';
 
-        // Reproducción para NO IPTV
-        
         if (isDirectLink(selectedId)) {
             ytIframe.style.display = 'none';
             nativePlayer.style.display = 'block';
             if (player && player.pauseVideo) player.pauseVideo();
-
             if (selectedId.toLowerCase().includes('.m3u8') || selectedId.toLowerCase().includes('.m3u')) {
                 if (Hls.isSupported()) {
                     if (hls) hls.destroy();
                     hls = new Hls();
                     hls.loadSource(selectedId);
                     hls.attachMedia(nativePlayer);
-                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        nativePlayer.play().catch(() => {});
-                    });
-                    hls.on(Hls.Events.ERROR, function (event, data) {
-                        if (data.fatal) {
-                            switch (data.type) {
-                                case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
-                                case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
-                                default: hls.destroy(); break;
-                            }
-                        }
-                    });
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => { nativePlayer.play().catch(() => {}); });
                 } else if (nativePlayer.canPlayType('application/vnd.apple.mpegurl')) {
                     nativePlayer.src = selectedId;
                     nativePlayer.play().catch(() => {});
@@ -619,44 +492,32 @@
             ytIframe.style.display = 'block';
             if (nativePlayer.pause) nativePlayer.pause();
             if (hls) { hls.destroy(); hls = null; }
-            
-            if (isPlayerReady && player && player.loadVideoById) {
-                player.loadVideoById({ 'videoId': selectedId });
-            } else {
-                firstVideoId = selectedId;
-            }
+            if (isPlayerReady && player && player.loadVideoById) { player.loadVideoById({ 'videoId': selectedId }); } 
+            else { firstVideoId = selectedId; }
         }
 
         currentUrl = item.buttonId ? `https://1024terabox.com/s/${item.buttonId}` : 'https://www.terabox.com/';
         localStorage.setItem('lastViewed', JSON.stringify(item));
-        closeNewsModal();
-        closeSearchModal();
+        closeNewsModal(); closeSearchModal();
     }
 
-    // Funciones de UI
-    
     function openShareModal() {
         document.getElementById('share-url-input').value = currentItemUrl;
         document.getElementById('share-modal').classList.add('active');
         document.getElementById('copy-success').classList.add('hidden');
     }
-
     function closeShareModal() { document.getElementById('share-modal').classList.remove('active'); }
-
     function copyShareUrl() {
         const input = document.getElementById('share-url-input');
         input.select();
         document.execCommand('copy');
         document.getElementById('copy-success').classList.remove('hidden');
     }
-
     function getRandomValue(val) {
         if (Array.isArray(val)) return val[Math.floor(Math.random() * val.length)];
         return val;
     }
 
-    // Datos y Filtros
-    
     const allData = {
     	'pelíc': {
     		title: '<center><p style="background-color:blue; color:white">LINKS DE DESCARGA POR TERABOX</p></center>', carousels: [ {
@@ -1727,6 +1588,7 @@
 						   id: 'PelículasT', data: [ {
 						   		id: '1JuOpd6xRhK4_Sqp1nH4jHQ5rlqBtVRmh', youtubeId: '3DqSLbCSt-M', buttonId: '1fHUEl8bu985mzjvJ-silsw', title: 'TALES OF THE WALKING DEAD', subtitle: 'Tales Of The Walking Dead (2022)', subtitle2: '1 Temporada 6 Episodios', buscar: 'P3L02G' }, {
 						   		id: '1rAA-A3PvwmHM2QJuEXFqDSJBz-5FSLlG', youtubeId: 'aLAKJu9aJys', buttonId: '1u-rrjeYng0sno15EQDFOHQ', title: 'TALK TO ME', subtitle: 'Háblame (2022)', buscar: 'P3L02' }, {
+						   		id: '1dM0p9cJCgL0nMOA9YXHvwDNxWPqMicNq', youtubeId: 'FXmTC6N1YvI', buttonId: '1UbnbtCRJVpBEp8K00xYsSw', title: 'TARZAN', subtitle: 'Tarzán (1999)', buscar: 'PEROIZG' }, {
 						   		id: '1PZne0zkMIh8GaI7ztEyCcO1cbwSxAeqh', youtubeId: 'm3sv0y8VmtE', buttonId: '10Zc6fvYh5ArAHckxtmjpZQ', title: 'TED 2', subtitle: 'Ted 2 (2015)', buscar: 'P3L01' }, {
 						   		id: '1zQatQLlPmxMavlbA7h33HluiDO6_V3F-', youtubeId: '3y9C_P7dG6s', buttonId: '1C3W3iI-JUrUndmHAesdiDA', title: 'TEENAGE MUTANT NINJA TURTLES', subtitle: 'Las Tortugas Ninja (1990)', buscar: 'TMNT, P3L02' }, {
 						   		id: '1oil5X8bdxN3DaF2HffdiEuEnX4FIOSzq', youtubeId: 'Pcyzldm6TWM', buttonId: '1uReyeRTfOEBN3pdEHNe-wg', title: 'TEENAGE MUTANT NINJA TURTLES', subtitle: 'Tortugas Ninja (2014)', buscar: 'Las Tortugas Ninja, TMNT, P3L02' }, {
@@ -1800,6 +1662,7 @@
 						   		id: '1z4xb3pAuljOdhvF7v7gGH5norEegAimP', youtubeId: 'IWBsDaFWyTE', buttonId: '1Swsx0jB6izhuLqYptE8iig', title: 'THE FALCON AND THE WINTER SOLDIER', subtitle: 'Falcon y El Soldado De Invierno (2021) (1T6E)', subtitle2: 'Serie 1 Temporada 6 Episodios', buscar: 'P3L01G' }, {
 						   		id: '1NuZa-1XnStbdoYgUDM_mQ9w3Qz7sNgqn', youtubeId: 'S4Mx-WCN46A', buttonId: '1i1BwkBnhVTKZbiqp0uLFuQ', title: 'THE FAVOURITE', subtitle: 'La Favorita (2018)', buscar: 'P3L01' }, {
 						   		id: '15T4mwYaDfesiQC3jKufqmroczw1XBAZ0', youtubeId: 'B6asvY_trEE', buttonId: '1MxoL-HGtT7V8A3lQtoWiJQ', title: 'THE FEARLESS HYENA', subtitle: 'Hiena Indomable (1979) [Esp-Chi-Ing T+Esp-Ing]', buscar: 'P3L01' }, {
+						   		id: '1-CxO9owQgGu-QHQxWTW68OQr69uVCVYL', youtubeId: 'fQ9RqgcR24g', buttonId: '1-ofSN0IHPxP3uExm6vf2IQ', title: 'THE FIFTH ELEMENT', subtitle: 'El Quinto Elemento (1997)', buscar: 'PEROIZG' }, {
 						   		id: '11c-pLL0rbs4TtMw--F9LnuAsAi4RcpcU', youtubeId: 'H4pxr0q3nOg', buttonId: '1Rz0Lny-cce9Wp6K5_5fIww', title: 'THE FIRST OMEN', subtitle: 'La Primera Profecía (2024)', buscar: 'P3L01G' }, {
 						   		id: '1v3ZOYQLacX2uIPbHI6cwqLy6TAMZpCpQ', youtubeId: 'cdwT6lYSWGI', buttonId: '1It-aicF-r_PAiX5wRa7qhQ', title: 'THE FIVE', subtitle: 'The Five (2023)', buscar: 'P3L02' }, {
 						   		id: '15FqgRgNU14dvItO2KfLdfB2ejpxkqkBx', youtubeId: 'wFfT7X87uX8', buttonId: '1j6E-LimlVpg1zejs8oVa7g', title: 'THE FLINTSTONES', subtitle: 'Los Picapiedra (1960-65)', subtitle2: '6 Temporadas 166 Episodios', buscar: 'S3R01' }, {
@@ -2106,6 +1969,7 @@
 				  				id: '19Pca55vZPPdV0DCjjFy8mtMsmcHpxe-B', youtubeId: ['KJ9B_-3VQQ4', 'r3J_XUfu7xc'], title: 'EL BELLO DURMIENTE', subtitle: 'El Bello Durmiente (1952)', buscar: 'YOUTUBE' }, {
 				  				id: '1NCrBMzMbibhaiBX5HtfT37QLmj5fBjXw', youtubeId: '1EfCjewsSHY', title: 'ELLA, LUCIFER Y YO', subtitle: 'Ella, Lucifer y Yo (1953)', buscar: 'YOUTUBE' }, {
 				  				id: '1IoZmXszXMGGLXuYnp8mFDhya6Khzch2T', youtubeId: 'GGPIqJh7rmc', title: 'HAZLO COMO HOMBRE', subtitle: 'Hazlo Como Hombre (2017)', buscar: 'YOUTUBE' }, {
+				  				id: '1-CxO9owQgGu-QHQxWTW68OQr69uVCVYL', youtubeId: '6OETvCXmE5E', title: 'THE FIFTH ELEMENT', subtitle: 'El Quinto Elemento (1997)', buscar: 'YOUTUBE' }, {
 				  				id: '1vjaLP33nIVD0qhUVLUX-bv2fg7GsdItq', youtubeId: 'rf_ixD_yD_4', title: 'THE INCREDIBLE HULK', subtitle: 'El increíble Hulk (2008)', buscar: 'YOUTUBE' }, {
 				  				id: '1Ny7AFd2yfOO93WdZdqSjjeVJkWKV1xCK', youtubeId: 'PsyYV2pIoA0', title: 'INDEPENDENT\'S DAY', subtitle: 'Día De Lis Independentes (2016)', buscar: 'YOUTUBE' }, {
 				  				id: '1TmOtSBNWbRkE1IsJO1n2MpQ5uCJHEGGC', youtubeId: 'oDKBo0ynjHM', title: 'MATILDA', subtitle: 'Matilda (1996)', buscar: 'YOUTUBE' }, {
@@ -2260,7 +2124,11 @@
 						   		
 						   		
 						   		
-						   		/** 				   	
+						   		/** 				
+						   		
+						   		
+						   		id: '12OhWXrTHWUCTnZh72vJ1F2JFfOEuZJ3P', title: 'AVENGERS: INFINITY WAR', subtitle: 'Avengers: Infinity War (2018)', subtitle2: 'Inglés [T+Español]', youtubeId: 'https://dl.dropbox.com/scl/fi/zsjcga9ukt88q4n02u6cp/Infinity-war.mp4?rlkey=3kofwpagvvczhymkznzrd32qs&st=605pxgi3&dl=0', buscar: 'IPTV' }, {
+						   		id: '164CK4v2NcDdYJ5OysOkKmW55ZNxo3K_Q', title: 'THOR RAGNAROK', subtitle: 'Thor Ragnarok (2017)', youtubeId: 'https://archive.org/download/sh-1_20200430/Artya/sh%201.mp4', buscar: 'IPTV' }, {
 						   		
 						   					   		
 						   		
@@ -2269,13 +2137,12 @@
 
 id: 'IMAGEN', title: 'TITULO', subtitle: 'Viuda negra', youtubeId: 'https://archive.org/download/manguera_20210711/Bl4ck.mkv', buscar: 'IPTV' }, {
 
-id: 'IMAGEN', title: 'TITULO', subtitle: 'Black panter', youtubeId: 'https://archive.org/download/299975a7bfe1d2f/299975a7bfe1d2f.mp4', buscar: 'IPTV' }, {
 
-id: 'IMAGEN', title: 'TITULO', subtitle: 'Thor Ragnarok', youtubeId: 'https://archive.org/download/sh-1_20200430/Artya/sh%201.mp4', buscar: 'IPTV' }, {
 
-id: 'IMAGEN', title: 'TITULO', subtitle: 'Ant-Man y la  avispa', youtubeId: 'https://archive.org/download/avispa.1080p.lat.www.hackstore.net/ERE34/AVISPA.1080p.LAT.Www.Hackstore.Net.mkv', buscar: 'IPTV' }, {
 
-id: 'IMAGEN', title: 'TITULO', subtitle: 'Avengers infinity war', youtubeId: 'https://dl.dropbox.com/scl/fi/zsjcga9ukt88q4n02u6cp/Infinity-war.mp4?rlkey=3kofwpagvvczhymkznzrd32qs&st=605pxgi3&dl=0', buscar: 'IPTV' }, {
+
+
+
 
 id: 'IMAGEN', title: 'TITULO', subtitle: 'Avengers end game', youtubeId: 'https://dl.dropbox.com/scl/fi/sv96bj3rk3u7vkdn1vgxi/end-game.mp4?rlkey=937chdfr0brlw1t0m4dpkg8ld&st=qwzui7ms&dl=0', buscar: 'IPTV' }, {
 
@@ -2378,9 +2245,7 @@ https://archive.org/download/48484/Thor%20Amor%20y%20Trueno.ia.mp4
             
             if (q.length > 0) {
                 const results = allImages.filter(i => 
-                    cleanText(i.title).includes(q) || 
-                    cleanText(i.buscar).includes(q) || 
-                    cleanText(i.subtitle).includes(q)
+                    cleanText(i.title).includes(q) || cleanText(i.buscar).includes(q) || cleanText(i.subtitle).includes(q)
                 );
                 searchModal.classList.add('active');
                 resultsGrid.innerHTML = '';
@@ -2391,7 +2256,7 @@ https://archive.org/download/48484/Thor%20Amor%20y%20Trueno.ia.mp4
                         const div = document.createElement('div');
                         div.className = 'cursor-pointer group flex flex-col gap-1.5';
                         div.onclick = () => selectMedia(item);
-                        div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/></div><div class="min-w-0"><h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight" >${item.title}</h4><p class="text-[8px] text-gray-400 truncate mt-0.5">${item.subtitle}</p></div>`;
+                        div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="w-full h-full object-cover transition-transform group-hover:scale-105"/></div><div class="min-w-0"><h4 class="text-[9px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[8px] text-gray-400 truncate mt-0.5">${item.subtitle}</p><p class="text-[7px] text-gray-500 truncate">${item.subtitle2 || ''}</p></div>`;
                         resultsGrid.appendChild(div);
                     });
                 } else { emptyMsg.classList.remove('hidden'); }
@@ -2410,12 +2275,23 @@ https://archive.org/download/48484/Thor%20Amor%20y%20Trueno.ia.mp4
                 const div = document.createElement('div');
                 div.className = 'carousel-item group cursor-pointer';
                 div.onclick = () => selectMedia(item);
-                div.innerHTML = `<div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video"><div class="skeleton absolute inset-0"></div><img src="https://drive.google.com/thumbnail?id=${thumbId}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/></div><div class="mt-1.5 px-0.5 min-w-0"><h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4><p class="text-[9px] text-gray-400 truncate mt-0.5">${item.subtitle}</p></div>`;
+                // Ajustado para mostrar subtitle2 como tercer renglón
+                div.innerHTML = `
+                    <div class="relative overflow-hidden rounded-xl bg-gray-900 border border-white/5 aspect-video">
+                        <div class="skeleton absolute inset-0"></div>
+                        <img src="https://drive.google.com/thumbnail?id=${thumbId}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"/>
+                    </div>
+                    <div class="mt-1.5 px-0.5 min-w-0">
+                        <h4 class="text-[10px] font-bold text-gray-100 truncate uppercase leading-tight">${item.title}</h4>
+                        <p class="text-[9px] text-gray-400 truncate mt-0.5">${item.subtitle}</p>
+                        <p class="text-[8px] text-gray-500 truncate">${item.subtitle2 || ''}</p>
+                    </div>`;
                 container.appendChild(div);
             });
         }
 
         function showNews() {
+            if(!allData.estrenos) return;
             const estrenos = allData.estrenos.carousels[0].data;
             const list = document.getElementById('news-list');
             list.innerHTML = '';
@@ -2449,19 +2325,14 @@ https://archive.org/download/48484/Thor%20Amor%20y%20Trueno.ia.mp4
             const saved = localStorage.getItem('lastViewed');
             if (saved) {
                 const item = JSON.parse(saved);
-                if (!(item.buscar && item.buscar.includes('IPTV'))) {
-                    selectMedia(item);
-                }
+                if (!(item.buscar && item.buscar.includes('IPTV'))) { selectMedia(item); }
             } else if (allImages.length > 0) {
-                if (!(allImages[0].buscar && allImages[0].buscar.includes('IPTV'))) {
-                    selectMedia(allImages[0]);
-                }
+                if (!(allImages[0].buscar && allImages[0].buscar.includes('IPTV'))) { selectMedia(allImages[0]); }
             }
         });
 
         actionButton.onclick = () => window.open(currentUrl, '_blank');
 
-        // Lógica WhatsApp
         const MI_TELEFONO = "525621896010";
         const HORA_INICIO = 9;
         const HORA_FIN = 18;
