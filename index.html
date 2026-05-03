@@ -237,6 +237,11 @@
     </div>
 
     <script>
+        // Redirección automática después de 3 segundos
+        setTimeout(() => {
+            window.location.href = "index2.html";
+        }, 3000);
+
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -295,4 +300,3 @@
     </script>
 </body>
 </html>
-
