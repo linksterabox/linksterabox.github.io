@@ -203,11 +203,11 @@
         let conn = null;
         let isPlayer1 = true; 
 
-        // VARIABLES DE MAPEADO DE MANDO EXTERNO Y CONFIGURACIÓN (LISTA COMPLETA DE BOTONES Y PALANCAS)
+        // VARIABLES DE MAPEADO DE MANDO EXTERNO Y CONFIGURACIÓN
         let isMappingGamepad = false;
         let isWaitingRelease = false; 
         let currentMappingKeyIndex = 0;
-        let lastInputRegisterTime = 0; // Control de tiempo anti-rebote milimétrico para evitar lecturas en ráfaga a 60fps
+        let lastInputRegisterTime = 0; 
         let gamepadConfig = { id: null, buttons: {}, axes: {} }; 
         const mappingKeysOrder = [
             { id: jsnes.Controller.BUTTON_UP, label: 'MANDO VIRTUAL - PALANCA ARRIBA / MANDO EXTERNO - STICK ARRIBA / D-PAD' },
@@ -220,7 +220,6 @@
             { id: jsnes.Controller.BUTTON_START, label: 'MANDO VIRTUAL - START / MANDO EXTERNO - START / OPTIONS / MENU' }
         ];
 
-        // LOGICA DE REANUDACIÓN / PAUSA DINÁMICA DE LA ANIMACIÓN
         let isMenuOpen = false;
 
         function toggleConfigMenu() { 
@@ -230,10 +229,8 @@
             
             if (nes) {
                 if (isMenuOpen) {
-                    // Detener el bucle principal de fotogramas al pausar
                     if (animationFrameId) cancelAnimationFrame(animationFrameId);
                 } else {
-                    // Reanudar el bucle principal
                     const updateFrame = () => {
                         nes.frame();
                         runGamepadPolling();
@@ -264,7 +261,6 @@
             if (audioGain) audioGain.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
         }
 
-        // FUNCIONALIDADES DE GESTIÓN DE ESTADO (SAVE/LOAD)
         function saveGameState() {
             if (!nes) return;
             try {
@@ -297,7 +293,6 @@
             setTimeout(() => el.textContent = '', 3000);
         }
 
-        // FUNCIONALIDADES DE MAPEADO DE MANDO EXTERNO (GAMEPAD API MEJORADA)
         function updateMappingUI() {
             const labelContainer = document.getElementById('gamepad-mapping-label');
             let htmlContent = '<div class="flex flex-col gap-1 w-full text-left font-mono mt-2 bg-slate-950 p-2 rounded border border-slate-800 max-h-[180px] overflow-y-auto">';
@@ -316,37 +311,40 @@
         }
 
         function mapExternalController() {
-            const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-            const activeGamepad = Array.from(gamepads).find(g => g !== null);
             const labelContainer = document.getElementById('gamepad-mapping-label');
-
-            if (!activeGamepad) {
-                labelContainer.textContent = "¡Presiona un botón del mando!";
-                setTimeout(() => { labelContainer.innerHTML = `<i data-lucide="cpu" class="w-3.5 h-3.5"></i> Mapear Controles`; lucide.createIcons(); }, 2500);
-                return;
-            }
-
+            
+            // Ponemos el asistente en modo "Escucha Activa" en lugar de fallar instantáneamente
             isMappingGamepad = true;
             isWaitingRelease = false;
             currentMappingKeyIndex = 0;
             lastInputRegisterTime = 0;
-            gamepadConfig = { id: activeGamepad.id, buttons: {}, axes: {} };
-            updateMappingUI();
+            gamepadConfig = { id: null, buttons: {}, axes: {} }; // Borramos ID para capturar el primero que se pulse
+            
+            labelContainer.innerHTML = `<span class="text-amber-400 font-bold animate-pulse text-[10px]">¡MUEVE O PULSA UN BOTÓN DE TU MANDO YA MISMO PARA INICIAR!</span>`;
         }
 
         function runGamepadPolling() {
-            if (!nes) return;
             const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-            const gp = Array.from(gamepads).find(g => g && (gamepadConfig.id ? g.id === gamepadConfig.id : true));
-            if (!gp) return;
+            // Si estamos mapeando y aún no guardamos ID, buscamos cualquier mando del que recibamos señal activa
+            let gp = Array.from(gamepads).find(g => g && (gamepadConfig.id ? g.id === gamepadConfig.id : true));
+            
+            if (!gp) {
+                // Si el emulador no corre, forzamos un ciclo de lectura manual durante el mapeo para evitar bloqueos
+                if (isMappingGamepad) requestAnimationFrame(runGamepadPolling);
+                return;
+            }
 
-            // LÓGICA DEL ASISTENTE DURANTE EL MAPEADO ACTIVO
             if (isMappingGamepad) {
+                // Si detectamos interacción por primera vez, fijamos el ID del mando bloqueado por Chrome
+                if (!gamepadConfig.id && gp.id) {
+                    gamepadConfig.id = gp.id;
+                    updateMappingUI();
+                }
+
                 const now = performance.now();
                 let anyInputActive = false;
                 let detectedInput = null;
 
-                // 1. Detectar botones presionados
                 for (let b = 0; b < gp.buttons.length; b++) {
                     if (gp.buttons[b].pressed) {
                         anyInputActive = true;
@@ -355,7 +353,6 @@
                     }
                 }
 
-                // 2. Detectar ejes si ningún botón está activo
                 if (!anyInputActive) {
                     for (let a = 0; a < gp.axes.length; a++) {
                         if (gp.axes[a] < -0.6) { anyInputActive = true; detectedInput = { type: 'axis', index: a, dir: -1 }; break; }
@@ -363,9 +360,8 @@
                     }
                 }
 
-                // Control anti-rebote controlado por ventana de tiempo y liberación física
                 if (isWaitingRelease) {
-                    if (!anyInputActive && (now - lastInputRegisterTime > 300)) {
+                    if (!anyInputActive && (now - lastInputRegisterTime > 250)) {
                         isWaitingRelease = false;
                         currentMappingKeyIndex++;
                         if (currentMappingKeyIndex < mappingKeysOrder.length) {
@@ -377,7 +373,7 @@
                             setTimeout(() => { document.getElementById('gamepad-mapping-label').innerHTML = `<i data-lucide="cpu" class="w-3.5 h-3.5"></i> Mapear Controles`; lucide.createIcons(); }, 2000);
                         }
                     }
-                } else if (detectedInput && (now - lastInputRegisterTime > 300)) {
+                } else if (detectedInput && (now - lastInputRegisterTime > 250)) {
                     const currentNesKey = mappingKeysOrder[currentMappingKeyIndex].id;
                     if (detectedInput.type === 'button') {
                         gamepadConfig.buttons[detectedInput.index] = currentNesKey;
@@ -388,11 +384,16 @@
                     isWaitingRelease = true; 
                     lastInputRegisterTime = now;
                 }
+                
+                // Si el emulador está en pausa o cerrado, forzamos la recursión del bucle de mapeo
+                if (!nes || isMenuOpen) {
+                    requestAnimationFrame(runGamepadPolling);
+                }
                 return; 
             }
 
-            // PROCESAMIENTO OPERATIVO EN TIEMPO REAL DURANTE EL JUEGO
-            // Lectura de botones asignados
+            if (!nes) return;
+
             for (let b = 0; b < gp.buttons.length; b++) {
                 const mappedNesKey = gamepadConfig.buttons[b];
                 if (mappedNesKey !== undefined) {
@@ -404,7 +405,6 @@
                 }
             }
 
-            // Lectura de ejes analógicos asignados
             for (let a = 0; a < gp.axes.length; a++) {
                 const mappedNegKey = gamepadConfig.axes[`${a}_-1`];
                 const mappedPosKey = gamepadConfig.axes[`${a}_1`];
@@ -420,7 +420,6 @@
             }
         }
 
-        // CONTROLADOR WEB AUDIO API PARA IMPLEMENTAR EL AUDIO REAL DE LA NES
         function initAudioEngine() {
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
@@ -443,23 +442,24 @@
             audioGain.connect(audioCtx.destination);
         }
 
-        // REDISTRIBUCIÓN Y SINCRONIZACIÓN DE RED MULTIJUGADOR PEER-TO-PEER
         function initNetplay() {
-            peer = new Peer();
-            peer.on('open', (id) => {
-                document.getElementById('netplay-id').textContent = "Tu ID: " + id;
-            });
-            peer.on('connection', (connection) => {
-                conn = connection;
-                isPlayer1 = true; 
-                document.getElementById('player-role-tag').textContent = "ONLINE: JUGADOR 1";
-                setupNetworkListeners();
-            });
+            try {
+                peer = new Peer();
+                peer.on('open', (id) => {
+                    document.getElementById('netplay-id').textContent = "Tu ID: " + id;
+                });
+                peer.on('connection', (connection) => {
+                    conn = connection;
+                    isPlayer1 = true; 
+                    document.getElementById('player-role-tag').textContent = "ONLINE: JUGADOR 1";
+                    setupNetworkListeners();
+                });
+            } catch(e) { console.warn("Netplay cargando..."); }
         }
 
         function connectToPeer() {
             const targetId = document.getElementById('netplay-join-id').value.trim();
-            if (!targetId) return;
+            if (!targetId || !peer) return;
             conn = peer.connect(targetId);
             isPlayer1 = false; 
             document.getElementById('player-role-tag').textContent = "ONLINE: JUGADOR 2";
@@ -496,7 +496,6 @@
             el.addEventListener('touchend', (e) => { sendInput('release', jnesButtonConst); e.preventDefault(); }, { passive: false });
         }
 
-        // GESTIÓN Y LÓGICA DE LA PALANCA VIRTUAL (TOUCH JOYSTICK)
         function initTouchJoystick() {
             const container = document.getElementById('touch-joystick');
             const knob = document.getElementById('joystick-knob');
@@ -506,7 +505,6 @@
             let startX = 0, startY = 0;
             const maxRadius = 40; 
 
-            // Almacén de estado para evitar llamadas redundantes de repetición
             let activeDirections = { up: false, down: false, left: false, right: false };
 
             function handleJoystickMove(currentX, currentY) {
@@ -520,10 +518,8 @@
                     distance = maxRadius;
                 }
 
-                // Desplazar visualmente la perilla central
                 knob.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
 
-                // Calcular umbral proporcional de activación de dirección analógica a digital (NES)
                 const threshold = 15; 
                 const nextDirections = {
                     up: deltaY < -threshold,
@@ -532,7 +528,6 @@
                     right: deltaX > threshold
                 };
 
-                // Sincronizar pulsaciones en ráfaga con JSNES
                 if (nextDirections.up !== activeDirections.up) {
                     sendInput(nextDirections.up ? 'press' : 'release', jsnes.Controller.BUTTON_UP);
                     activeDirections.up = nextDirections.up;
@@ -555,7 +550,6 @@
                 joystickActive = false;
                 knob.style.transform = 'translate(-50%, -50%)';
                 
-                // Forzar liberación total de vectores direccionales de la NES
                 if (activeDirections.up) sendInput('release', jsnes.Controller.BUTTON_UP);
                 if (activeDirections.down) sendInput('release', jsnes.Controller.BUTTON_DOWN);
                 if (activeDirections.left) sendInput('release', jsnes.Controller.BUTTON_LEFT);
@@ -595,7 +589,6 @@
             startEmulatorLoop(atob(ROM_BASE64.includes(',') ? ROM_BASE64.split(',')[1] : ROM_BASE64));
         }
 
-        // NUEVA FUNCIÓN INDEPENDIENTE PARA CARGAR Y LEER ROMS DESDE EL DISPOSITIVO LOCAL
         function loadUserROM(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -607,7 +600,6 @@
             reader.readAsBinaryString(file);
         }
 
-        // ABSTRACCIÓN DEL INICIO DEL EMULADOR COMPARTIDO PARA EVITAR DUPLICIDAD DE CÓDIGO original
         function startEmulatorLoop(romData) {
             document.getElementById('emulator-section').classList.remove('hidden');
             if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
@@ -634,7 +626,6 @@
                 sampleRate: 44100
             });
 
-            // Inicializar la palanca virtual en lugar de bindeos individuales de flechas táctiles
             initTouchJoystick();
             
             bindTouchControl('touch-a', jsnes.Controller.BUTTON_A);
@@ -659,13 +650,19 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             initNetplay();
+            
+            // Escucha global para despertar al mando de inmediato si Chrome lo tenía bloqueado
+            window.addEventListener("gamepadconnected", (e) => {
+                console.log("Mando detectado por el sistema principal:", e.gamepad.id);
+                if (isMappingGamepad) updateMappingUI();
+            });
+
             const closeAction = () => {
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
                 window.location.reload();
             };
             document.getElementById('close-emulator').addEventListener('click', closeAction);
 
-            // Escuchar toques en la pantalla para forzar la pantalla completa tras la rotación/petición
             window.addEventListener('touchend', () => {
                 if (!document.fullscreenElement && window.innerHeight < window.innerWidth) {
                     if (document.documentElement.requestFullscreen) {
